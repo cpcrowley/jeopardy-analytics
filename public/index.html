@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Jeopardy Stats</title>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- Optional theme -->
+    <link rel="stylesheet"
+    href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap-theme.min.css">
+
+    <link rel="stylesheet" href="/jeopardy.css">
+
+</head>
+
+<body role="document">
+    <div class="container theme-showcase" role="main">
+        <div class="page-header">
+            <h1>Jeopardy Statistics</h1>
+        </div>
+
+        <div class="log-div">
+        </div>
+
+        <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+
+            <!-- Collapse panel: Show percent clues answered correctly -->
+            <div class="panel panel-default">
+                <div class="panel-heading" role="tab" id="heading1">
+                    <h4 class="panel-title">
+                        <a data-toggle="collapse" data-parent="#accordion" href="#collapse1" aria-expanded="false" aria-controls="collapse1">
+                            Show percent clues answered correctly
+                        </a>
+                    </h4>
+                </div>
+                <div id="collapse1" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading1">
+                    <div class="panel-body">
+                        <form class="form-horizontal" role="form">
+
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label" for="date-range-select">Select year ranges</label>
+                                <div class="col-sm-10">
+                                    <select id="date-range-select" name="daterange" class="form-control">
+                                        <option selected value="99">All years (1984-2014) combined</option>
+                                        <option value="10">Every 10 years combined</option>
+                                        <option value="5">Every 5 years combined</option>
+                                        <option value="1">Show each year</option>
+                                    </select>
+                                </div>
+
+                                <label class="col-sm-2 control-label" for="j-dj-select">Double Jeopardy data</label>
+                                <div class="col-sm-10">
+                                    <select id="j-dj-select" name="jdj" class="form-control">
+                                        <option selected value="0">Show Jeopardy and Double Jeopardy interspersed</option>
+                                        <option value="1">Show Double Jeopardy after all Jeopardy lines</option>
+                                        <option value="2">Show Jeopardy and Double Jeopardy total combined</option>
+                                    </select>
+                                </div>
+
+                                <label class="col-sm-2 control-label" for="dd-select">Daily Double data</label>
+                                <div class="col-sm-10">
+                                    <select id="dd-select" name="dd" class="form-control">
+                                        <option selected value="0">Show Daily Double at end</option>
+                                        <option value="1">Show Daily Double interspersed</option>
+                                        <option value="2">Don't show Daily Double</option>
+                                    </select>
+                                </div>
+
+                                <div class="col-sm-offset-2 col-sm-10">
+                                    <button id="show-results-button" type="button" class="btn btn-primary">Show results</button>
+                                </div>
+
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <!-- End collapse panel -->
+
+            <!-- Collapse panel: Show percent clues answered correctly by specific player-->
+            <div class="panel panel-default">
+                <div class="panel-heading" role="tab" id="heading5">
+                    <h4 class="panel-title">
+                        <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapse5" aria-expanded="false" aria-controls="collapse5">
+                            Show percent clues answered correctly by specific player
+                        </a>
+                    </h4>
+                </div>
+                <div id="collapse5" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading5">
+                    <div class="panel-body">
+                        <form class="form-horizontal" role="form">
+
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label" for="date-range-select">Select player</label>
+                                <div class="col-sm-10">
+                                    <select id="player-select" name="playerselect" class="form-control">
+                                        <option selected value="Ken Jennings">Ken Jennings</option>
+                                        <option value="Brad Rutter">Brad Rutter</option>
+                                        <option value="Arthur Chu">Arthur Chu</option>
+                                        <option value="Julia Collins">Julia Collins</option>
+                                    </select>
+                                </div>
+
+                                <div class="col-sm-offset-2 col-sm-10">
+                                    <button id="player-results-button" type="button" class="btn btn-primary">Show Player results</button>
+                                </div>
+
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <!-- End collapse panel -->
+
+            <!-- Collapse panel: Search for string in clues -->
+            <div class="panel panel-default">
+                <div class="panel-heading" role="tab" id="heading2">
+                    <h4 class="panel-title">
+                        <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapse2" aria-expanded="true" aria-controls="collapse2">
+                            Search for string in clues
+                        </a>
+                    </h4>
+                </div>
+                <div id="collapse2" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading2">
+                    <div class="panel-body">
+                        <form class="form-horizontal" role="form">
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label" for="search-text">String to find in clues</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" id="search-text" placeholder="Enter clue search string">
+                                </div>
+                                <div class="col-sm-offset-2 col-sm-10">
+                                    <button id="search-clues-button" type="button" class="btn btn-primary">Search clues for string</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <!-- End collapse panel -->
+
+            <!-- Collapse panel: Help -->
+            <div class="panel panel-default">
+                <div class="panel-heading" role="tab" id="heading3">
+                    <h4 class="panel-title">
+                        <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapse3" aria-expanded="false" aria-controls="collapse3">
+                            Help
+                        </a>
+                    </h4>
+                </div>
+                <div id="collapse3" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading3">
+                    <div class="panel-body">
+                        <p>Round: J=Jeaopardy, DJ=Double Jeopardy, DD=daily doubles only</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Collapse panel: About -->
+            <div class="panel panel-default">
+                <div class="panel-heading" role="tab" id="heading4">
+                    <h4 class="panel-title">
+                        <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapse4" aria-expanded="false" aria-controls="collapse4">
+                            About
+                        </a>
+                    </h4>
+                </div>
+                <div id="collapse4" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading4">
+                    <div class="panel-body">
+                        <p>I created this site because I had questions about Jeopardy.</p>
+                        <p>The data used here are taken from the excellent Jeopardy site
+                        <a href="http://j-archive.com/">J! Archive</a>.
+                        I collected the data and converted it to a JSON file (162M bytes)
+                        which the server reads in and searches to get the data.
+                        Everything is written in JavaScript and used node.js.</p>
+                        <p>If there are any statistics you want the site to compute
+                            send me an email and I will try to add it.</p>
+                        <p>Contact me at cpcrowley@gmail.com</a>
+                    </div>
+                </div>
+            </div>
+            <!-- End collapse panel -->
+
+        </div>
+
+        <button id="clear-results-button" type="button" class="btn btn-primary">Remove all results</button>
+        <hr>
+
+        <div id="output-div">
+        </div>
+
+    </div>
+
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+    <script src="/jeopardy.js" type="text/javascript"></script>
+
+</body>
+</html>

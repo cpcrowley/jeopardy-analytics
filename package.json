@@ -1,0 +1,25 @@
+{
+  "name": "jeopstats",
+  "version": "0.0.1",
+  "description": "A web page to compute various Jeopardy statistics",
+  "main": "jeopstats.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "jeopardy"
+  ],
+  "author": "Charles Crowley",
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/cpcrowleu/jeopstats.git"
+  },
+  "dependencies": {
+    "cheerio": "^0.18.0",
+    "express": "^4.10.5",
+    "express-handlebars": "^1.1.0",
+    "jade": "^1.8.1",
+    "underscore": "^1.7.0"
+  }
+}

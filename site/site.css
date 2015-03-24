@@ -1,0 +1,39 @@
+#table-div table {
+    background-color: ghostwhite;
+}
+.controls-div {
+    margin: 0px 0px 5px 0px;
+    background-color: antiquewhite;
+    /*border: solid green 1px;*/
+}
+.controls-block {
+    display: inline-block;
+    width: auto;
+    height: auto;
+    /*border: solid red 1px;*/
+}
+.controls-block select {
+    display: inline-block;
+    width: auto;
+    height: auto;
+    /*border: solid orange 1px;*/
+}
+.controls-title {
+    font-size: 1.75em;
+    font-weight: bold;
+}
+.stats-color-1 {
+    color: green;
+}
+.stats-color-2 {
+    color: blue;
+}
+.stats-color-3 {
+    color: red;
+}
+.stats-color-4 {
+    color: black;
+}
+.space-right {
+    margin-right: 1em;
+}
