@@ -10,9 +10,6 @@
         <!-- bootstrap theme css -->
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css">
         
-        <!-- bootstrap table css -->
-        <!--<link rel="stylesheet"  href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.6.0/bootstrap-table.min.css">-->
-        
         <!-- site CSS -->
         <link rel="stylesheet" href="site/site.css">
         <script type="text/javascript" src="https://www.google.com/jsapi"></script>
@@ -22,8 +19,11 @@
     </head>
 
     <body>
-        <div class="container"> <!-- or container-fluid -->
-            <h1>Jeopardy Analytics</h1>
+        <div class="container-fluid"> <!-- or container -->
+            <h1>Jeopardy Analytics
+                <button type="button" id="refresh-button" class="btn btn-primary graph-button">Refresh</button>
+                <button type="button" id="helpToggle" class="btn btn-primary graph-button">Help</button>
+            </h1>
             <div id="helpDiv" class="well well-sm">
                 No help yet
             </div>
@@ -38,15 +38,15 @@
         <!-- bootstrap -->
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
         
-        <!-- bootstrap table -->
-        <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.6.0/bootstrap-table.min.js">
-              </script>-->
-        
         <!-- lodash -->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/3.5.0/lodash.min.js"></script>
         
         <!-- My JavaScript -->
         <script src="site/index.js"></script>
-        <script src="site/library.js"></script>
+        <script src="site/fillInData.js"></script>
+        <script src="site/graphics.js"></script>
+        <script src="site/reconstructGames.js"></script>
+        <script src="site/showTable.js"></script>
+        <script src="site/ui.js"></script>
     </body>
 </html>

@@ -1,5 +1,26 @@
 # Jeopardy
 
+## To Do
+
++ add out-of-order filter: ignore, first-only, any OO, three options
+
++ add parsing code to capture not just OO but OO1, OO2, OO3, and OO4: OOx = there is still an unpicked cell avobe the picked on and 'n' have been picked including the one just picked
+
++ check parsing code for capturing answers. it seems to be wrong
+
++ add parsing code to capture final jepary data
+
++ the "refresh" button should show a graph of the (up to) 4 options boxes (ones with show not "none") the left-right scale is the five rows $200-$1000 and one line for each option set
+
++ show final jeopardy data
+
++ add mode to show a single game in the matrix
+
++ try browserify
+
++ finish article with overview and analysis based on my site
+
+
 ## Web articles
 
 ### Data Analysis
