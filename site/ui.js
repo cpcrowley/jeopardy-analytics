@@ -1,4 +1,4 @@
-/*global  _, $, refreshBoards, showChart */
+/*global  _, $, refreshBoards, chartByYear, chartBy4 */
 /*jshint node:true */
 "use strict";
 
@@ -69,14 +69,14 @@ var setupUI = function (boards) {
             ["0-1", "right:0 wrong:1"],
             ["0-2", "right:0 wrong:2"],
             ["0-3", "right:0 wrong:3"]])) +
-        makeSelectControlsBlock('include-out-of-order', 'Out of order', makeOptionList([
-            ["include", "Include"],
-            ["first-only", "First OO only"],
-            ["any-only", "Any OO only"]])) +
         makeSelectControlsBlock('include-daily-doubles', 'Daily doubles', makeOptionList([
             ["include", "Include"],
             ["exclude", "Exclude"],
             ["only", "Only"]])) +
+        makeSelectControlsBlock('include-out-of-order', 'Out of order', makeOptionList([
+            ["include", "Include"],
+            ["first-only", "First OO only"],
+            ["any-only", "Any OO only"]])) +
         makeSelectControlsBlock('which-rounds', 'Rounds', makeOptionList([
             ["both", "Both"],
             ["single", "Jeopardy only"],
@@ -98,18 +98,20 @@ var setupUI = function (boards) {
         cbId: '1'
     }));
     cb1.find('select:eq(0)')[0].selectedIndex = 1;
-    cb1.find('select:eq(1)')[0].selectedIndex = 1;
+    cb1.find('select:eq(1)')[0].selectedIndex = 0;
+    cb1.find('select:eq(2)')[0].selectedIndex = 0;
     cb1.find('.graph-button').on('click', function () {
-        showChart(boards[1].boardsByYear);
+        chartByYear(boards[1].boardsByYear);
     });
 
     var cb2 = $(controlBlock({
         cbId: '2'
     }));
     cb2.find('select:eq(0)')[0].selectedIndex = 1;
-    cb2.find('select:eq(1)')[0].selectedIndex = 0;
+    cb2.find('select:eq(1)')[0].selectedIndex = 1;
+    cb2.find('select:eq(2)')[0].selectedIndex = 0;
     cb2.find('.graph-button').on('click', function () {
-        showChart(boards[2].boardsByYear);
+        chartByYear(boards[2].boardsByYear);
     });
 
     var cb3 = $(controlBlock({
@@ -117,15 +119,22 @@ var setupUI = function (boards) {
     }));
     cb3.find('select:eq(0)')[0].selectedIndex = 1;
     cb3.find('select:eq(1)')[0].selectedIndex = 2;
+    cb3.find('select:eq(2)')[0].selectedIndex = 0;
     cb3.find('.graph-button').on('click', function () {
-        showChart(boards[3].boardsByYear);
+        chartByYear(boards[3].boardsByYear);
     });
 
     var cb4 = $(controlBlock({
         cbId: '4'
     }));
     cb4.find('.graph-button').on('click', function () {
-        showChart(boards[4].boardsByYear);
+        chartByYear(boards[4].boardsByYear);
+    });
+    cb4.find('select:eq(0)')[0].selectedIndex = 1;
+    cb4.find('select:eq(2)')[0].selectedIndex = 0;
+    cb4.find('select:eq(2)')[0].selectedIndex = 2;
+    cb4.find('.graph-button').on('click', function () {
+        chartByYear(boards[4].boardsByYear);
     });
 
     $('#options-div').append(cb1, cb2, cb3, cb4);

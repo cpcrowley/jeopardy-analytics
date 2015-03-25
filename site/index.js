@@ -1,7 +1,10 @@
 /*global _, $, document, console */
-/*global fillBoards, showBoards, recontructGames, setupUI */
+/*global fillBoards, showBoards, chartBy4, recontructGames, setupUI */
 /*jshint node:true, -W083 */
 "use strict";
+
+// Just to avoid errors while converting to browserify
+var module = {};
 
 var games = null;
 var boards = null;
@@ -102,6 +105,7 @@ var refreshBoards = function () {
     });
 
     showBoards(boards, boardTable);
+    chartBy4(boards);
 };
 
 

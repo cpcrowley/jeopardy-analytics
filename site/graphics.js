@@ -1,9 +1,57 @@
-/*global  _, yearRange, google, document */
+/*global  _, yearRange, boardRange, google, document */
 /*jshint node:true */
 
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
-var showChart = function (boardsByYear) {
+var chartBy4 = function (boards) {
+    var data = new google.visualization.DataTable();
+    data.addColumn('string', 'Option');
+    data.addColumn('number', '1');
+    data.addColumn('number', '2');
+    data.addColumn('number', '3');
+    data.addColumn('number', '4');
+
+    var dataIn = [];
+
+    for (var row = 1; row < 6; ++row) {
+        var label = '$' + (2*row) + '00/$' + (4*row) + '00';
+        var dataArray = [label];
+        _.each(boardRange, function (boardNumber) {
+            var board = boards[boardNumber];
+            if (board.options.totalToShow === 'none') {
+                dataArray.push(0);
+            } else {
+                var totalOfRowData = board.board1[row][0];
+                var count = totalOfRowData[1];
+                var total = totalOfRowData[0];
+                if (total === 0) {
+                    total = 1;
+                }
+                dataArray.push(Math.round(100 * count / total));
+            }
+        });
+        dataIn.push(dataArray);
+    }
+
+    //console.log('dataIn', dataIn);
+
+    data.addRows(dataIn);
+
+    var options = {
+        title: '% answered correctly (by year)',
+        width: 1200,
+        height: 600
+        //legend: { position: 'bottom' }
+    };
+
+    var chart = new google.visualization.LineChart(document.getElementById('graph-div'));
+
+    chart.draw(data, options);
+};
+
+//------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
+var chartByYear = function (boardsByYear) {
     var data = new google.visualization.DataTable();
     data.addColumn('string', 'Year');
     data.addColumn('number', '$200/$400');
@@ -28,7 +76,6 @@ var showChart = function (boardsByYear) {
         }
         dataIn.push(dataArray);
     });
-    //console.log('dataIn', dataIn);
 
     data.addRows(dataIn);
 
@@ -36,7 +83,7 @@ var showChart = function (boardsByYear) {
         title: '% answered correctly (by year)',
         width: 1200,
         height: 600
-            //legend: { position: 'bottom' }
+        //legend: { position: 'bottom' }
     };
 
     var chart = new google.visualization.LineChart(document.getElementById('graph-div'));
@@ -44,4 +91,4 @@ var showChart = function (boardsByYear) {
     chart.draw(data, options);
 };
 
-module.exports = showChart;
+module.exports = chartByYear;

@@ -23,16 +23,16 @@
     font-weight: bold;
 }
 .stats-color-1 {
-    color: green;
+    color: rgb(51,102,204);
 }
 .stats-color-2 {
-    color: blue;
+    color: rgb(220,56,17);
 }
 .stats-color-3 {
-    color: red;
+    color: rgb(255,153,0);
 }
 .stats-color-4 {
-    color: black;
+    color: rgb(13,148,21);
 }
 .space-right {
     margin-right: 1em;
