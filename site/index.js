@@ -1,5 +1,5 @@
 /*global _, $, document, console */
-/*global fillBoards, showBoards, chartBy4, recontructGames, setupUI */
+/*global fillBoards, showBoards, chartBy4, chartFinal, recontructGames, setupUI */
 /*jshint node:true, -W083 */
 "use strict";
 
@@ -106,6 +106,46 @@ var refreshBoards = function () {
 
     showBoards(boards, boardTable);
     chartBy4(boards);
+};
+
+
+//------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
+var showFinalJeopardy = function () {
+    var fjDiv = $('#final-div');
+    if(fjDiv.text().length > 0) {
+        fjDiv.empty();
+        return;
+    }
+    var rights = 0, wrongs = 0;
+    var rightWrongByYear = {};
+    _.each(yearRange, function (year) {
+        rightWrongByYear[year] = [0,0];
+    });
+    
+    _.each(games, function (gameData) {
+        var finalData = gameData.finalData;
+        var year = parseInt(gameData.gameDate.substring(0,4),10);
+        rights += finalData.rights;
+        wrongs += finalData.wrongs;
+        rightWrongByYear[year][0] += finalData.rights;
+        rightWrongByYear[year][1] += finalData.wrongs;
+    });
+    
+    var divisor = rights + wrongs;
+    if(divisor === 0) divisor = 1;
+    fjDiv.html('Final Jeopardy: right=' + rights + ', wrong=' + wrongs +
+               ' or <span class="stats-color-2">' + Math.round(100*rights/divisor) + '% right</span>');
+    
+    var rightWrongData = [];
+    _.each(yearRange, function (year) {
+        var rw = rightWrongByYear[year];
+        var ratio = 0;
+        var divisor = rw[0] + rw[1];
+        if(divisor !== 0) ratio = Math.round(100*rw[0]/divisor);
+        rightWrongData.push([year.toString(), ratio]);
+    });
+    chartFinal(rightWrongData);
 };
 
 

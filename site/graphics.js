@@ -1,5 +1,24 @@
 /*global  _, yearRange, boardRange, google, document */
-/*jshint node:true */
+/*jshint node:true, -W083 */
+
+//------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
+var chartFinal = function (rightWrongData) {
+    var data = new google.visualization.DataTable();
+    data.addColumn('string', 'year');
+    data.addColumn('number', '% right');
+    data.addRows(rightWrongData);
+
+    var options = {
+        title: 'Final Jeopardy % answered correctly (by year)',
+        width: 1200,
+        height: 600
+    };
+
+    var chart = new google.visualization.LineChart(document.getElementById('graph-div'));
+
+    chart.draw(data, options);
+};
 
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
@@ -33,12 +52,10 @@ var chartBy4 = function (boards) {
         dataIn.push(dataArray);
     }
 
-    //console.log('dataIn', dataIn);
-
     data.addRows(dataIn);
 
     var options = {
-        title: '% answered correctly (by year)',
+        title: 'Chart of the four cases above',
         width: 1200,
         height: 600
         //legend: { position: 'bottom' }

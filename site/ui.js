@@ -1,4 +1,4 @@
-/*global  _, $, refreshBoards, chartByYear, chartBy4 */
+/*global  _, $, refreshBoards, showFinalJeopardy, chartByYear, chartBy4 */
 /*jshint node:true */
 "use strict";
 
@@ -93,6 +93,7 @@ var setupUI = function (boards) {
         '</div>');
 
     var refreshButton = $('#refresh-button').on('click', refreshBoards);
+    var refreshButton = $('#final-jeopardy').on('click', showFinalJeopardy);
 
     var cb1 = $(controlBlock({
         cbId: '1'

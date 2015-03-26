@@ -44,7 +44,8 @@ var recontructGames = function (data) {
             gameDate: item[3],
             errorCount: 0,
             round1: recontructRound(item[4]),
-            round2: recontructRound(item[5])
+            round2: recontructRound(item[5]),
+            finalData: { rights: item[6][0], wrongs: item[6][1] }
         });
     });
     return rgames;

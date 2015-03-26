@@ -20,53 +20,42 @@ function fillRound(roundNumber, board, gameData) {
         var increment_total = 1;
 
         // Check the daily double conditions
-        if (clue.isDD) {
-            switch (board.options.includeDailyDoubles) {
-            case 'include':
-                break;
-            case 'exclude':
-                increment_count = 0;
-                increment_total = 0;
-                break;
-            case 'only':
-                break;
-            }
-        } else {
-            switch (board.options.includeDailyDoubles) {
-            case 'include':
-                break;
-            case 'exclude':
-                break;
-            case 'only':
-                increment_count = 0;
-                increment_total = 0;
-                break;
+        var includeDailyDoubles = board.options.includeDailyDoubles;
+        if(includeDailyDoubles !== 'include') {
+            if (clue.isDD) {
+                if(includeDailyDoubles === 'exclude') {
+                    increment_count = 0;
+                    increment_total = 0;
+                }
+            } else {
+                if(includeDailyDoubles === 'only') {
+                    increment_count = 0;
+                    increment_total = 0;
+                }
             }
         }
 
         // Check the out-of-order conditions
-        if (increment_count === 1) {
-            if (clue.outOfOrder) {
-                switch (board.options.includeOutOfOrder) {
-                case 'include':
-                    break;
-                case 'first-only':
-                    break;
-                case 'any-only':
-                    break;
-                }
-            } else {
-                switch (board.options.includeOutOfOrder) {
-                case 'include':
-                    break;
-                case 'first-only':
-                    increment_count = 0;
-                    increment_total = 0;
-                    break;
-                case 'any-only':
-                    increment_count = 0;
-                    increment_total = 0;
-                    break;
+        var includeOutOfOrder = board.options.includeOutOfOrder;
+        // If we include them in all case, no need to check the details.
+        if(includeOutOfOrder !== 'include') {
+            // This check can only exclude a clue counting,
+            // so we only need to check if it is still included.
+            if (increment_count === 1) {
+                // These are the only case left, 'include' was already checked for.
+                switch (includeOutOfOrder) {
+                    case 'first-only':
+                        if(clue.outOfOrder !== 2) {
+                            increment_count = 0;
+                            increment_total = 0;
+                        }
+                        break;
+                    case 'any-only':
+                        if(clue.outOfOrder > 0) {
+                            increment_count = 0;
+                            increment_total = 0;
+                        }
+                        break;
                 }
             }
         }

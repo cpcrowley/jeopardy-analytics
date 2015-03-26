@@ -1,6 +1,11 @@
 #table-div table {
     background-color: ghostwhite;
 }
+#final-div {
+    font-size: 1.5em;
+    color: blue;
+    background-color: antiquewhite;
+};
 .controls-div {
     margin: 0px 0px 5px 0px;
     background-color: antiquewhite;
