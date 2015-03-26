@@ -5,26 +5,7 @@
 //------------------------------------------------------------------------------
 // Do the linking to show and hide the help
 //------------------------------------------------------------------------------
-var setupHelp = function () {
-    var $helpDiv = $('#helpDiv'),
-        $helpToggle = $('#helpToggle');
-
-    // Set up the help
-    $helpDiv.hide().click(function () {
-        $helpToggle.click();
-    });
-    $helpToggle.click(function () {
-        var newLinkText;
-        if ($helpDiv.is(':visible')) {
-            $helpDiv.hide('normal');
-            newLinkText = 'Show Help';
-        } else {
-            $helpDiv.show('normal');
-            newLinkText = 'Hide Help';
-        }
-        $helpToggle.text(newLinkText);
-    });
-};
+var setupHelp = function () {};
 
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
@@ -52,7 +33,47 @@ var makeSelectControlsBlock = function (bId, label, options) {
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
 var setupUI = function (boards) {
-    setupHelp();
+    var container = $('<div class="container-fluid"></div>')
+    .appendTo('body');
+
+    // Add title and buttons
+    var title = $('<h1>Jeopardy Analytics</h1>')
+        .appendTo(container);
+
+    $('<button type="button" class="btn btn-primary graph-button">Refresh</button>')
+        .on('click', refreshBoards)
+        .appendTo(title);
+    $('<button type="button" class="btn btn-primary graph-button">Final Jeopardy</button>')
+        .on('click', showFinalJeopardy)
+        .appendTo(title);
+
+
+    var $helpDiv = $('<div class="well well-sm">No help yet</div>')
+        .click(function () {
+            $helpToggle.click();
+        })
+        .appendTo(container)
+        .hide();
+
+    var $helpToggle = $('<button type="button" class="btn btn-primary graph-button">Help</button>')
+        .click(function () {
+            var newLinkText;
+            if ($helpDiv.is(':visible')) {
+                $helpDiv.hide('normal');
+                newLinkText = 'Show Help';
+            } else {
+                $helpDiv.show('normal');
+                newLinkText = 'Hide Help';
+            }
+            $helpToggle.text(newLinkText);
+        })
+        .appendTo(title);
+
+    // Add in the blocks we need
+    container.append('<div id="options-div"></div>');
+    container.append('<div id="table-div"></div>');
+    container.append('<div id="final-div"></div>');
+    container.append('<div id="graph-div"></div>');
 
     var controlBlock = _.template(
         '<div class="controls-div stats-color-<%= cbId %>">' +
@@ -91,9 +112,6 @@ var setupUI = function (boards) {
             ["count", "count only"],
             ["fraction", "count/total"]])) +
         '</div>');
-
-    var refreshButton = $('#refresh-button').on('click', refreshBoards);
-    var refreshButton = $('#final-jeopardy').on('click', showFinalJeopardy);
 
     var cb1 = $(controlBlock({
         cbId: '1'

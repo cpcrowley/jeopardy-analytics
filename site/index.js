@@ -205,9 +205,6 @@ var createZeroedBoard = function () {
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
 $(document).ready(function () {
-    var html = createBoardTableHtml();
-    boardTable = $(html);
-    $('#table-div').append(boardTable);
 
     // Initialize boards
     boards = [null]; // boards[0] is never used. Subscripts work out better this way,
@@ -226,6 +223,10 @@ $(document).ready(function () {
     });
 
     setupUI(boards);
+
+    var html = createBoardTableHtml();
+    boardTable = $(html);
+    $('#table-div').append(boardTable);
 
     $.getJSON('data/allGamesCompact.json', function (data) {
         games = recontructGames(data);
