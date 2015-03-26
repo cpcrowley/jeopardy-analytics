@@ -4,11 +4,10 @@
 "use strict";
 
 // Just to avoid errors while converting to browserify
-var module = {};
+//var module = {};
 
 var games = null;
 var boards = null;
-var boardTable = null;
 var yearRange = _.range(1984, 2016);
 var boardRange = _.range(1, 5);
 
@@ -104,7 +103,7 @@ var refreshBoards = function () {
         });
     });
 
-    showBoards(boards, boardTable);
+    showBoards(boards);
     chartBy4(boards);
 };
 
@@ -150,40 +149,6 @@ var showFinalJeopardy = function () {
 
 
 //------------------------------------------------------------------------------
-// Create the HTML for the main display board.
-//------------------------------------------------------------------------------
-var createBoardTableHtml = function () {
-    var topTitles = ['', 'Totals', 'Category 1', 'Category 2', 'Category 3',
-                     'Category 4', 'Category 5', 'Category 6'];
-    var leftTitles = ['$200/$400', '$400/$800', '$600/$1200', '$800/$1600',
-                      '$1000/$2000', 'Totals'];
-
-    var numCols = topTitles.length;
-    var row, col;
-    var html = '<table class="table table-bordered">';
-    html += '<thead><tr>';
-    for (col = 0; col < numCols; ++col) {
-        html += '<th>' + topTitles[col] + '</th>';
-    }
-    html += '</tr></thead>';
-
-    html += '<tbody>';
-    var numRows = leftTitles.length;
-    for (row = 0; row < numRows; ++row) {
-        html += '<tr>';
-        html += '<th>' + leftTitles[row] + '</th>';
-        for (col = 1; col < numCols; ++col) {
-            html += '<td></td>';
-        }
-        html += '</tr>';
-    }
-    html += '</tbody>';
-
-    html += '</table>';
-    return html;
-};
-
-//------------------------------------------------------------------------------
 // This board holds basic infomation about a set of games.
 // This creates initial zeroed-out versions of the boards.
 //------------------------------------------------------------------------------
@@ -207,7 +172,7 @@ var createZeroedBoard = function () {
 $(document).ready(function () {
 
     // Initialize boards
-    boards = [null]; // boards[0] is never used. Subscripts work out better this way,
+    boards = [null]; // boards[0] is never used. Subscripts work out better that way.
     _.each(boardRange, function (boardNumber) {
         var board = {
             boardNumber: boardNumber,
@@ -223,10 +188,6 @@ $(document).ready(function () {
     });
 
     setupUI(boards);
-
-    var html = createBoardTableHtml();
-    boardTable = $(html);
-    $('#table-div').append(boardTable);
 
     $.getJSON('data/allGamesCompact.json', function (data) {
         games = recontructGames(data);

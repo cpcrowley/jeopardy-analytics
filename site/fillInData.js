@@ -129,4 +129,5 @@ var fillBoards = function (boards, games) {
     }
 };
 
-module.exports = fillBoards;
+
+//if(!_.isUndefined(module)) { module.exports = fillBoards; }

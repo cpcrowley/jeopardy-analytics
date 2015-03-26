@@ -51,4 +51,4 @@ var recontructGames = function (data) {
     return rgames;
 };
 
-module.exports = recontructGames;
+//if(module) { module.exports = recontructGames; }

@@ -1,12 +1,15 @@
-/*global  _, $, yearRange, boardRange */
+/*global  _, $, yearRange, boardRange, boardTable */
 /*jshint node:true, -W083 */
 "use strict";
 //------------------------------------------------------------------------------
 // This takes the four board structures and fills in the data in the display table.
 //------------------------------------------------------------------------------
-var showBoards = function (boards, boardTable) {
+var showBoards = function (boards) {
     var boardNumber, row, col;
     var showPercent = $('#percent-select option:selected').val();
+    
+    //console.log('boardTable', boardTable);
+    //console.log('boardTable[0]', boardTable[0]);
 
     boardTable.find('tbody').find('tr').each(function (row) {
         // Adjust row to match where we put the totals
@@ -72,4 +75,4 @@ var showBoards = function (boards, boardTable) {
     });
 };
 
-module.exports = showBoards;
+//if(module) { module.exports = showBoards; }
