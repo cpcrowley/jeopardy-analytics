@@ -130,4 +130,4 @@ var fillBoards = function (boards, games) {
 };
 
 
-//if(!_.isUndefined(module)) { module.exports = fillBoards; }
+//exports.fillBoards = fillBoards; // browserify

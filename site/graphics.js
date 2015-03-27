@@ -108,4 +108,6 @@ var chartByYear = function (boardsByYear) {
     chart.draw(data, options);
 };
 
-//if(module) { module.exports = chartByYear; }
+//exports.chartByYear = chartByYear; // browserify
+//exports.chartBy4 = chartBy4; // browserify
+//exports.chartFinal = chartFinal; // browserify

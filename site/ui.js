@@ -202,7 +202,7 @@ var setupUI = function (boards) {
         .appendTo(container);
 
     // Add in the blocks we need
-    var tableRows = ['', '$200/$400', '$400/$800', '$600/$1200', '$800/$1600', '$1000/$2000', 'Totals']
+    var tableRows = ['', '$200/$400', '$400/$800', '$600/$1200', '$800/$1600', '$1000/$2000', 'Totals'];
     var tableCols = ['Totals'];
     summaryTable = $(createTableHtml(tableRows, tableCols));
     container.append(summaryTable);
@@ -232,10 +232,10 @@ var setupUI = function (boards) {
         })
         .appendTo(container);
 
-    tableRows = ['', 'Total', 'Category 1', 'Category 2', 'Category 3', 'Category 4', 'Category 5', 'Category 6'];
+    tableRows = ['', 'Row Total', 'Cat 1', 'Cat 2', 'Cat 3', 'Cat 4', 'Cat 5', 'Cat 6'];
     tableCols = ['$200/$400', '$400/$800', '$600/$1200', '$800/$1600', '$1000/$2000', 'Total'];
     boardTable = $(createTableHtml(tableRows, tableCols)).hide();
     container.append(boardTable);
 };
 
-//if(module) { module.exports = setupUI; }
+//exports.setupUI = setupUI;
