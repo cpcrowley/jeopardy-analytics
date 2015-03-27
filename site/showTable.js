@@ -1,13 +1,16 @@
-/*global  _, $, yearRange, boardRange, boardTable, summaryTable */
+/*global  _, $ */
 /*jshint node:true, -W083 */
 "use strict";
+
+var ui = require('./ui.js');
+var index = require('./index.js');
 
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
 var fillTD = function (td, row, col, boards) {
     var html = '';
     var addSeperator = false;
-    _.each(boardRange, function (boardNumber) {
+    _.each(index.boardRange(), function (boardNumber) {
         var board = boards[boardNumber];
         var board1 = board.board1;
         var options = board.options;
@@ -69,7 +72,7 @@ var showBoards = function (boards) {
     var boardNumber, row, col;
     var showPercent = $('#percent-select option:selected').val();
 
-    summaryTable.find('tbody').find('tr').each(function (row) {
+    ui.summaryTable().find('tbody').find('tr').each(function (row) {
         $(this).find('td').each(function (col) {
             // Note col is really row since this table is on its side.
             // Adjust row to match where we put the totals
@@ -78,7 +81,7 @@ var showBoards = function (boards) {
         });
     });
 
-    boardTable.find('tbody').find('tr').each(function (row) {
+    ui.boardTable().find('tbody').find('tr').each(function (row) {
         // Adjust row to match where we put the totals
         if (row === 5) row = 0;
         else row += 1;
@@ -88,4 +91,4 @@ var showBoards = function (boards) {
     });
 };
 
-//exports.showBoards = showBoards;
+exports.showBoards = showBoards;

@@ -7,7 +7,7 @@
 // This reconstructs it in objet form with meaningful field names
 // replacing array subscripts.
 //------------------------------------------------------------------------------
-var recontructOneClue = function (clueArray) {
+var reconstructOneClue = function (clueArray) {
     var clue = {
         rightAnswer: clueArray[0],
         wrongAnswers: clueArray[1],
@@ -21,20 +21,20 @@ var recontructOneClue = function (clueArray) {
     };
     return clue;
 };
-var recontructClues = function (cluesArray) {
+var reconstructClues = function (cluesArray) {
     var clues = [];
     _.each(cluesArray, function (clueArray) {
-        clues.push(recontructOneClue(clueArray));
+        clues.push(reconstructOneClue(clueArray));
     });
     return clues;
 };
-var recontructRound = function (cluesArray) {
+var reconstructRound = function (cluesArray) {
     var round = {
-        clues: recontructClues(cluesArray)
+        clues: reconstructClues(cluesArray)
     };
     return round;
 };
-var recontructGames = function (data) {
+var reconstructGames = function (data) {
     var rgames = [];
     _.each(data, function(item){
         rgames.push({
@@ -43,12 +43,12 @@ var recontructGames = function (data) {
             gameNumber: item[2],
             gameDate: item[3],
             errorCount: 0,
-            round1: recontructRound(item[4]),
-            round2: recontructRound(item[5]),
+            round1: reconstructRound(item[4]),
+            round2: reconstructRound(item[5]),
             finalData: { rights: item[6][0], wrongs: item[6][1] }
         });
     });
     return rgames;
 };
 
-//exports.recontructGames = recontructGames;
+exports.reconstructGames = reconstructGames;

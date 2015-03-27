@@ -1,5 +1,8 @@
-/*global  _, yearRange, boardRange, google, document */
+/*global  _, google, document */
 /*jshint node:true, -W083 */
+
+"use strict";
+var index = require('./index.js');
 
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
@@ -35,7 +38,7 @@ var chartBy4 = function (boards) {
     for (var row = 1; row < 6; ++row) {
         var label = '$' + (2*row) + '00/$' + (4*row) + '00';
         var dataArray = [label];
-        _.each(boardRange, function (boardNumber) {
+        _.each(index.boardRange(), function (boardNumber) {
             var board = boards[boardNumber];
             if (board.options.totalToShow === 'none') {
                 dataArray.push(0);
@@ -79,7 +82,7 @@ var chartByYear = function (boardsByYear) {
 
     var dataIn = [];
 
-    _.each(yearRange, function (year) {
+    _.each(index.yearRange(), function (year) {
         var board = boardsByYear[year];
         var dataArray = [year.toString()];
         for (var row = 1; row < 6; ++row) {
@@ -108,6 +111,6 @@ var chartByYear = function (boardsByYear) {
     chart.draw(data, options);
 };
 
-//exports.chartByYear = chartByYear; // browserify
-//exports.chartBy4 = chartBy4; // browserify
-//exports.chartFinal = chartFinal; // browserify
+exports.chartByYear = chartByYear; // browserify
+exports.chartBy4 = chartBy4; // browserify
+exports.chartFinal = chartFinal; // browserify

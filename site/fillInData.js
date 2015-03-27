@@ -1,6 +1,7 @@
 /*global  _ */
 /*jshint node:true, -W083 */
 "use strict";
+
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
 function fillRound(roundNumber, board, gameData) {
@@ -130,4 +131,4 @@ var fillBoards = function (boards, games) {
 };
 
 
-//exports.fillBoards = fillBoards; // browserify
+exports.fillBoards = fillBoards; // browserify

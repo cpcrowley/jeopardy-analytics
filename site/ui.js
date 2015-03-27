@@ -1,6 +1,9 @@
-/*global  _, $, refreshBoards, showFinalJeopardy, chartByYear, chartBy4 */
+/*global  _, $ */
 /*jshint node:true */
 "use strict";
+
+var graphics = require('./graphics.js');
+var index = require('./index.js');
 
 var boardTable = null;
 var summaryTable = null;
@@ -124,10 +127,10 @@ var setupUI = function (boards) {
         .appendTo(container);
 
     $('<button type="button" class="btn btn-primary graph-button">Refresh</button>')
-        .on('click', refreshBoards)
+        .on('click', index.refreshBoards)
         .appendTo(title);
     $('<button type="button" class="btn btn-primary graph-button">Final Jeopardy</button>')
-        .on('click', showFinalJeopardy)
+        .on('click', index.showFinalJeopardy)
         .appendTo(title);
 
 
@@ -161,7 +164,7 @@ var setupUI = function (boards) {
     cb1.find('select:eq(1)')[0].selectedIndex = 0;
     cb1.find('select:eq(2)')[0].selectedIndex = 0;
     cb1.find('.graph-button').on('click', function () {
-        chartByYear(boards[1].boardsByYear);
+        graphics.chartByYear(boards[1].boardsByYear);
     });
 
     var cb2 = $(controlBlock({
@@ -171,7 +174,7 @@ var setupUI = function (boards) {
     cb2.find('select:eq(1)')[0].selectedIndex = 1;
     cb2.find('select:eq(2)')[0].selectedIndex = 0;
     cb2.find('.graph-button').on('click', function () {
-        chartByYear(boards[2].boardsByYear);
+        graphics.chartByYear(boards[2].boardsByYear);
     });
 
     var cb3 = $(controlBlock({
@@ -181,20 +184,17 @@ var setupUI = function (boards) {
     cb3.find('select:eq(1)')[0].selectedIndex = 2;
     cb3.find('select:eq(2)')[0].selectedIndex = 0;
     cb3.find('.graph-button').on('click', function () {
-        chartByYear(boards[3].boardsByYear);
+        graphics.chartByYear(boards[3].boardsByYear);
     });
 
     var cb4 = $(controlBlock({
         cbId: '4'
     }));
-    cb4.find('.graph-button').on('click', function () {
-        chartByYear(boards[4].boardsByYear);
-    });
     cb4.find('select:eq(0)')[0].selectedIndex = 1;
     cb4.find('select:eq(2)')[0].selectedIndex = 0;
     cb4.find('select:eq(2)')[0].selectedIndex = 2;
     cb4.find('.graph-button').on('click', function () {
-        chartByYear(boards[4].boardsByYear);
+        graphics.chartByYear(boards[4].boardsByYear);
     });
 
     $('<div id="options-div"></div>')
@@ -238,4 +238,6 @@ var setupUI = function (boards) {
     container.append(boardTable);
 };
 
-//exports.setupUI = setupUI;
+exports.setupUI = setupUI;
+exports.summaryTable = function(){return summaryTable;};
+exports.boardTable = function(){return boardTable;};

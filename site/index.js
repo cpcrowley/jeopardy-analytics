@@ -1,7 +1,12 @@
 /*global _, $, document, console */
-/*global fillBoards, showBoards, chartBy4, chartFinal, recontructGames, setupUI */
 /*jshint node:true, -W083 */
-"use strict";
+"use strict"; 
+
+var ui = require('./ui.js');
+var showTable = require('./showTable.js');
+var reconstructGames = require('./reconstructGames.js');
+var graphics = require('./graphics.js');
+var fillInData = require('./fillInData.js');
 
 // Just to avoid errors while converting to browserify
 //var module = {};
@@ -92,7 +97,7 @@ var refreshBoards = function () {
     });
     //console.log('refreshBoards: boards', boards);
 
-    fillBoards(boards, games);
+    fillInData.fillBoards(boards, games);
 
     // Compute board totals
     _.each(boardRange, function (boardNumber) {
@@ -103,8 +108,8 @@ var refreshBoards = function () {
         });
     });
 
-    showBoards(boards);
-    chartBy4(boards);
+    showTable.showBoards(boards);
+    graphics.chartBy4(boards);
 };
 
 
@@ -144,7 +149,7 @@ var showFinalJeopardy = function () {
         if(divisor !== 0) ratio = Math.round(100*rw[0]/divisor);
         rightWrongData.push([year.toString(), ratio]);
     });
-    chartFinal(rightWrongData);
+    graphics.chartFinal(rightWrongData);
 };
 
 
@@ -187,13 +192,18 @@ $(document).ready(function () {
         boards.push(board);
     });
 
-    setupUI(boards);
+    ui.setupUI(boards);
 
     $.getJSON('data/allGamesCompact.json', function (data) {
-        games = recontructGames(data);
+        games = reconstructGames.reconstructGames(data);
 
         console.log('games.slice(0,10)', games.slice(0, 10));
 
         refreshBoards();
     });
 });
+
+exports.yearRange = function(){return yearRange;};
+exports.boardRange = function(){return boardRange;};
+exports.showFinalJeopardy = showFinalJeopardy;
+exports.refreshBoards = refreshBoards;

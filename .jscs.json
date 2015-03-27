@@ -1,0 +1,71 @@
+{
+    "disallowKeywords": ["with"],
+    "disallowKeywordsOnNewLine": ["else"],
+    "disallowMixedSpacesAndTabs": "smart",
+    "disallowMultipleVarDecl": "exceptUndefined",
+    "disallowNewlineBeforeBlockStatements": true,
+    "disallowQuotedKeysInObjects": true,
+    "disallowSpaceAfterObjectKeys": true,
+    "disallowSpaceAfterPrefixUnaryOperators": true,
+    "disallowSpacesInFunction": {
+        "beforeOpeningRoundBrace": true
+    },
+    "disallowSpacesInsideParentheses": true,
+    "disallowTrailingComma": true,
+    "disallowTrailingWhitespace": true,
+    "maximumLineLength": {
+        "value": 100,
+        "tabSize": 4,
+        "allowUrlComments": true,
+        "allowRegex": true
+    },
+    "requireCamelCaseOrUpperCaseIdentifiers": true,
+    "requireCapitalizedComments": false,
+    "requireCapitalizedConstructors": true,
+    "requireCurlyBraces": true,
+    "requireDotNotation": "except_snake_case",
+    "requireOperatorBeforeLineBreak": true,
+    "requireParenthesesAroundIIFE": true,
+    "requireSpaceAfterKeywords": [
+        "if",
+        "else",
+        "for",
+        "while",
+        "do",
+        "switch",
+        "case",
+        "return",
+        "try",
+        "catch",
+        "typeof"
+    ],
+    "requireSpacesInsideObjectBrackets": "all",
+    "requireSpacesInsideArrayBrackets": "all",
+    "requireSpacesInConditionalExpression": true,
+    "requireSpaceAfterBinaryOperators": true,
+    "requireLineFeedAtFileEnd": true,
+    "requireSpaceBeforeBinaryOperators": [
+        "=", "+=", "-=", "*=", "/=", "%=", "<<=", ">>=", ">>>=",
+        "&=", "|=", "^=", "+=",
+
+        "+", "-", "*", "/", "%", "<<", ">>", ">>>", "&",
+        "|", "^", "&&", "||", "===", "==", ">=",
+        "<=", "<", ">", "!=", "!=="
+    ],
+    "requireSpaceAfterLineComment": true,
+    "requireSpaceAfterBinaryOperators": true,
+    "requireSpaceBetweenArguments": true,
+    "requireSpaceBeforeBinaryOperators": true,
+    "requireSpaceBeforeBlockStatements": true,
+    "requireSpaceBeforeObjectValues": true,
+    "requireSpacesInForStatement": true,
+    "requireSpacesInFunction": {
+        "beforeOpeningCurlyBrace": true
+    },
+    "requireTrailingComma": {
+        "ignoreSingleLine": true
+    },
+    "validateIndentation": 4,
+    "validateLineBreaks": "LF",
+    "validateQuoteMarks": "'"
+}
