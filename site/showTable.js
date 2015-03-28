@@ -1,9 +1,8 @@
-/*global  _, $ */
-/*jshint node:true, -W083 */
+/*jshint -W083 */
 "use strict";
 
-var ui = require('./ui.js');
 var index = require('./index.js');
+var _ = require('lodash');
 
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
@@ -68,11 +67,10 @@ var fillTD = function (td, row, col, boards) {
 //------------------------------------------------------------------------------
 // This takes the four board structures and fills in the data in the display table.
 //------------------------------------------------------------------------------
-var showBoards = function (boards) {
-    var boardNumber, row, col;
+module.exports = function (boards) {
     var showPercent = $('#percent-select option:selected').val();
 
-    ui.summaryTable().find('tbody').find('tr').each(function (row) {
+    $('#summaryTable').find('tbody').find('tr').each(function (row) {
         $(this).find('td').each(function (col) {
             // Note col is really row since this table is on its side.
             // Adjust row to match where we put the totals
@@ -81,7 +79,7 @@ var showBoards = function (boards) {
         });
     });
 
-    ui.boardTable().find('tbody').find('tr').each(function (row) {
+    $('#boardTable').find('tbody').find('tr').each(function (row) {
         // Adjust row to match where we put the totals
         if (row === 5) row = 0;
         else row += 1;
@@ -90,5 +88,3 @@ var showBoards = function (boards) {
         });
     });
 };
-
-exports.showBoards = showBoards;

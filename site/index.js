@@ -1,12 +1,12 @@
-/*global _, $, document, console */
-/*jshint node:true, -W083 */
+/*jshint -W083 */
 "use strict"; 
 
-var ui = require('./ui.js');
+var setupui = require('./setupui.js');
 var showTable = require('./showTable.js');
 var reconstructGames = require('./reconstructGames.js');
 var graphics = require('./graphics.js');
-var fillInData = require('./fillInData.js');
+var fillBoards = require('./fillBoards.js');
+var _ = require('lodash');
 
 // Just to avoid errors while converting to browserify
 //var module = {};
@@ -47,6 +47,7 @@ var computeBoardTotals = function (board) {
     }
 
     var colTotals = [[0, 0], [0, 0], [0, 0], [0, 0], [0, 0], [0, 0], [0, 0], [0, 0]];
+    var col;
 
     for (var row = 1; row < 6; ++row) {
         var total0 = 0;
@@ -65,7 +66,7 @@ var computeBoardTotals = function (board) {
         colTotals[0][1] += total1;
     }
 
-    for (var col = 0; col < 7; ++col) {
+    for (col = 0; col < 7; ++col) {
         board[0][col][0] = colTotals[col][0];
         board[0][col][1] = colTotals[col][1];
     }
@@ -97,7 +98,7 @@ var refreshBoards = function () {
     });
     //console.log('refreshBoards: boards', boards);
 
-    fillInData.fillBoards(boards, games);
+    fillBoards(boards, games);
 
     // Compute board totals
     _.each(boardRange, function (boardNumber) {
@@ -108,8 +109,8 @@ var refreshBoards = function () {
         });
     });
 
-    showTable.showBoards(boards);
-    graphics.chartBy4(boards);
+    showTable(boards);
+    graphics('chartBy4', boards);
 };
 
 
@@ -149,7 +150,7 @@ var showFinalJeopardy = function () {
         if(divisor !== 0) ratio = Math.round(100*rw[0]/divisor);
         rightWrongData.push([year.toString(), ratio]);
     });
-    graphics.chartFinal(rightWrongData);
+    graphics('chartFinal', rightWrongData);
 };
 
 
@@ -192,10 +193,10 @@ $(document).ready(function () {
         boards.push(board);
     });
 
-    ui.setupUI(boards);
+    setupui(boards);
 
     $.getJSON('data/allGamesCompact.json', function (data) {
-        games = reconstructGames.reconstructGames(data);
+        games = reconstructGames(data);
 
         console.log('games.slice(0,10)', games.slice(0, 10));
 

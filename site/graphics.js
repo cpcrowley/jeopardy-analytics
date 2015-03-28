@@ -1,8 +1,9 @@
-/*global  _, google, document */
-/*jshint node:true, -W083 */
+/*global google */
+/*jshint -W083 */
 
 "use strict";
 var index = require('./index.js');
+var _ = require('lodash');
 
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
@@ -111,6 +112,10 @@ var chartByYear = function (boardsByYear) {
     chart.draw(data, options);
 };
 
-exports.chartByYear = chartByYear; // browserify
-exports.chartBy4 = chartBy4; // browserify
-exports.chartFinal = chartFinal; // browserify
+module.exports = function(chartType, boards) {
+    switch(chartType) {
+        case 'chartByYear': chartByYear(boards); break;
+        case 'chartBy4': chartBy4(boards); break;
+        case 'chartFinal': chartFinal(boards); break;
+    }
+};

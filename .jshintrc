@@ -1,19 +1,15 @@
 {
-    "node": true,
-    "browser": true,
+    "node": true, // define node variables
+    "browser": true, // define browser varialbes
+    "browserify": true, // define browserify varialbes
+    "jquery": true,
     "esnext": true,
-    "bitwise": true,
-    "camelcase": true,
-    "curly": true,
-    "eqeqeq": true,
-    "immed": true,
-    "indent": 2,
-    "latedef": true,
-    "newcap": true,
-    "noarg": true,
-    "quotmark": "single",
-    "undef": true,
-    "unused": true,
+    "bitwise": true, // do not allow bitwise operators
+    "curly": false, // require braces around all bodies
+    "eqeqeq": true, // do not allow == and !=
+    "latedef": true, // varialbes must be defined before first use
+    "undef": true, // do not allow undef'ing variables
+    "unused": true, // warn about unused variables
     "strict": true,
     "trailing": true,
     "smarttabs": true,

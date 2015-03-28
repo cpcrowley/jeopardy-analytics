@@ -1,16 +1,5 @@
 # Jeopardy
 
-## To Do
-
-+ show final jeopardy data
-
-+ add mode to show a single game in the matrix
-
-+ try browserify
-
-+ finish article with overview and analysis based on my site
-
-
 ## Web articles
 
 ### Data Analysis

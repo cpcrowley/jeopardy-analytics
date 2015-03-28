@@ -1,29 +1,37 @@
 {
-    "name": "jeopstats",
-    "version": "0.0.1",
-    "description": "A web page to compute various Jeopardy statistics",
-    "main": "jeopstats.js",
-    "scripts": {
-        "test": "echo \"Error: no test specified\" && exit 1"
-    },
-    "keywords": [
-        "jeopardy"
-    ],
-    "author": "Charles Crowley <cpcrowley@gmail.com>",
-    "license": "ISC",
-    "repository": {
-        "type": "git",
-        "url": "git://github.com/cpcrowleu/jeopstats.git"
-    },
-    "scripts": {
-        "wc": "wc *.js */*.js | sort -nr"
-    },
-    "dependencies": {
-        "cheerio": "^0.18.0",
-        "express": "^4.10.5",
-        "express-handlebars": "^1.1.0",
-        "jade": "^1.8.1",
-        "lodash": "^3.6.0",
-        "underscore": "^1.7.0"
-    }
+  "name": "jeopstats",
+  "version": "0.0.1",
+  "description": "A web page to compute various Jeopardy statistics",
+  "main": "jeopstats.js",
+  "keywords": [
+    "jeopardy"
+  ],
+  "author": "Charles Crowley <cpcrowley@gmail.com>",
+  "license": "ISC",
+  "scripts": {
+    "wc": "wc index.html site/*.css site/[^b]*.js | sort -nr",
+    "wc2": "wc jeopstats.js public/* lib/*.js | sort -nr",
+    "build-js": "browserify site/index.js -d | exorcist site/bundle.js.map > site/bundle.js",
+    "watch-js": "watchify site/index.js -dv  | exorcist site/bundle.js.map > site/bundle.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/cpcrowleu/jeopstats.git"
+  },
+  "dependencies": {
+    "cheerio": "^0.18.0",
+    "express": "^4.10.5",
+    "express-handlebars": "^1.1.0",
+    "jade": "^1.8.1",
+    "lodash": "^3.6.0",
+    "underscore": "^1.7.0"
+  },
+  "devDependencies": {
+    "browserify": "latest",
+    "exorcist": "^0.1.6",
+    "grunt": "^0.4.5",
+    "grunt-browserify": "^3.6.0",
+    "grunt-contrib-watch": "^0.6.1",
+    "watchify": "^2.6.2"
+  }
 }

@@ -1,6 +1,6 @@
-/*global  _, $, document, console */
-/*jshint node:true */
 "use strict";
+
+var _ = require('lodash');
 
 //------------------------------------------------------------------------------
 // allGamesCompact.json is written as arrays to have space.
@@ -34,7 +34,10 @@ var reconstructRound = function (cluesArray) {
     };
     return round;
 };
-var reconstructGames = function (data) {
+
+//------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
+module.exports = function (data) {
     var rgames = [];
     _.each(data, function(item){
         rgames.push({
@@ -50,5 +53,3 @@ var reconstructGames = function (data) {
     });
     return rgames;
 };
-
-exports.reconstructGames = reconstructGames;
