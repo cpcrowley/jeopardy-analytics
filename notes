@@ -1,0 +1,21 @@
+----- To Do
++ show final jeopardy data
++ add mode to show a single game in the matrix
++ finish article with overview and analysis based on my site
+
+
+----- browserify: seems to be working, source map also works
+% npm run build-js -- to create a new version after editing
+% npm run watch-js -- start a watcher to recreate a new version every time a file is saved.
+
+----- package.json
+- added some useful scripts, make replacement
+% npm run wc -- line counts for web site
+% npm run wc2 -- line counts for node.js site
+
+----- grunt: installed and seems to be working
+% grunt browserify -- create new web site
+% grunt watch -- creates a watcher
+% grunt uglify -- not working, a start at minifying
+
+----- webpack: wait for later
