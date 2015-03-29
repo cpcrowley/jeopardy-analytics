@@ -67,10 +67,10 @@ var fillTD = function (td, row, col, boards) {
 //------------------------------------------------------------------------------
 // This takes the four board structures and fills in the data in the display table.
 //------------------------------------------------------------------------------
-module.exports = function (boards) {
-    var showPercent = $('#percent-select option:selected').val();
+module.exports = function () {
+    var boards = dataStore.boards();
 
-    $('#summaryTable').find('tbody').find('tr').each(function (row) {
+    $('#summaryTable').find('tbody').find('tr').each(function () {
         $(this).find('td').each(function (col) {
             // Note col is really row since this table is on its side.
             // Adjust row to match where we put the totals
@@ -78,6 +78,13 @@ module.exports = function (boards) {
             fillTD (this, col, 0, boards);
         });
     });
+    
+    var legendDiv = $('#legend-div').empty();
+    _.each(dataStore.boardRange, function(boardNumber) {
+        legendDiv.append('<div class="stats-color-'+boardNumber+'">'+
+                         dataStore.titleFromOptions(boards[boardNumber].options)+'</div>');
+    });
+    
 
     $('#boardTable').find('tbody').find('tr').each(function (row) {
         // Adjust row to match where we put the totals

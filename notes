@@ -1,7 +1,13 @@
 ----- To Do
-+ show final jeopardy data
 + add mode to show a single game in the matrix
 + finish article with overview and analysis based on my site
++ fix percentages
++ move all buttons to below the legend in a button-row-div
++ add button to hide the legend
++ show help below button row div
++ do a refresh every time one of the select boxes changes
++ when the final jeopardy results are hidden redo the graph
++ maybe add a log div which shows each calcuation you have made, with easy select and copy, and a clear button
 
 
 ----- browserify: seems to be working, source map also works

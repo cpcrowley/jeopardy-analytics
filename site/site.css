@@ -6,6 +6,14 @@
     color: blue;
     background-color: antiquewhite;
 };
+/*#options-div option {
+    color: red;
+    background-color: bisque;
+}
+#options-div select {
+    color: green;
+    background-color: orange;
+}*/
 .controls-div {
     display: block;
     margin: 0px 0px 10px 0px;

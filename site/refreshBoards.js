@@ -75,30 +75,29 @@ var zeroOutBoard = function (board) {
 
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
-module.exports = function (boards, games) {
+module.exports = function () {
 
     // Reinitialize boards
     _.each(dataStore.boardRange, function (boardNumber) {
-        var board = boards[boardNumber];
+        var board = dataStore.boards()[boardNumber];
         board.options = fetchOptions(boardNumber);
         zeroOutBoard(board.board1);
         _.each(dataStore.yearRange, function (year) {
             zeroOutBoard(board.boardsByYear[year]);
         });
     });
-    //console.log('refreshBoards: boards', boards);
 
-    fillBoards(boards, games);
+    fillBoards();
 
     // Compute board totals
     _.each(dataStore.boardRange, function (boardNumber) {
-        var board = boards[boardNumber];
+        var board = dataStore.boards()[boardNumber];
         computeBoardTotals(board.board1);
         _.each(dataStore.yearRange, function (year) {
             computeBoardTotals(board.boardsByYear[year]);
         });
     });
 
-    showTable(boards);
-    graphics('chartBy4', boards);
+    showTable();
+    graphics('chartBy4', dataStore.boards(), 'Results for each of the four option boxes above');
 };

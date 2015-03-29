@@ -1,6 +1,7 @@
 /*jshint -W083 */
 "use strict";
 
+var dataStore = require('./dataStore.js');
 var _ = require('lodash');
 
 //------------------------------------------------------------------------------
@@ -110,8 +111,10 @@ function fillRound(roundNumber, board, gameData) {
 
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
-module.exports = function (boards, games) {
+module.exports = function () {
 
+    var boards = dataStore.boards();
+    var games = dataStore.games();
     for (var boardNumber = 1; boardNumber < boards.length; ++boardNumber) {
         var board = boards[boardNumber];
 

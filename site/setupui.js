@@ -25,7 +25,7 @@ var makeSelectControlsBlock = function (wide, bId, label, options) {
     var s =
         '<div class="' + mainDivClass + '">' +
         '<label for="' + bId + '-<%= cbId %>">' + label + '</label>' +
-        '<select id="' + bId + '-<%= cbId %>" class="form-control">' +
+        '<select id="' + bId + '-<%= cbId %>" class="stats-color-<%= cbId %> form-control">' +
         options +
         '</select>' +
         '</div>';
@@ -85,7 +85,7 @@ var makeControlsBlockTemplate = function (wide) {
 var createTableHtml = function (tableId, topTitles, leftTitles) {
     var numCols = topTitles.length;
     var row, col;
-    var html = '<table id="'+ tableId +'" class="table table-bordered">';
+    var html = '<table id="' + tableId + '" class="table table-bordered">';
     html += '<thead><tr>';
     for (col = 0; col < numCols; ++col) {
         html += '<th>' + topTitles[col] + '</th>';
@@ -110,21 +110,22 @@ var createTableHtml = function (tableId, topTitles, leftTitles) {
 
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
-var showFinalJeopardy = function (games) {
+var showFinalJeopardy = function () {
     var fjDiv = $('#final-div');
-    if(fjDiv.text().length > 0) {
+    if (fjDiv.text().length > 0) {
         fjDiv.empty();
         return;
     }
-    var rights = 0, wrongs = 0;
+    var rights = 0,
+        wrongs = 0;
     var rightWrongByYear = {};
     _.each(dataStore.yearRange, function (year) {
-        rightWrongByYear[year] = [0,0];
+        rightWrongByYear[year] = [0, 0];
     });
 
-    _.each(games, function (gameData) {
+    _.each(dataStore.games(), function (gameData) {
         var finalData = gameData.finalData;
-        var year = parseInt(gameData.gameDate.substring(0,4),10);
+        var year = parseInt(gameData.gameDate.substring(0, 4), 10);
         rights += finalData.rights;
         wrongs += finalData.wrongs;
         rightWrongByYear[year][0] += finalData.rights;
@@ -132,19 +133,19 @@ var showFinalJeopardy = function (games) {
     });
 
     var divisor = rights + wrongs;
-    if(divisor === 0) divisor = 1;
+    if (divisor === 0) divisor = 1;
     fjDiv.html('Final Jeopardy: right=' + rights + ', wrong=' + wrongs +
-               ' or <span class="stats-color-2">' + Math.round(100*rights/divisor) + '% right</span>');
+        ' or <span class="stats-color-2">' + Math.round(100 * rights / divisor) + '% right</span>');
 
     var rightWrongData = [];
     _.each(dataStore.yearRange, function (year) {
         var rw = rightWrongByYear[year];
         var ratio = 0;
         var divisor = rw[0] + rw[1];
-        if(divisor !== 0) ratio = Math.round(100*rw[0]/divisor);
+        if (divisor !== 0) ratio = Math.round(100 * rw[0] / divisor);
         rightWrongData.push([year.toString(), ratio]);
     });
-    graphics('chartFinal', rightWrongData);
+    graphics('chartFinal', rightWrongData, 'Final Jeopardy correct answers by year');
 };
 
 //------------------------------------------------------------------------------
@@ -161,7 +162,9 @@ module.exports = function () {
         .on('click', refreshBoards)
         .appendTo(title);
     $('<button type="button" class="btn btn-primary graph-button">Final Jeopardy</button>')
-        .on('click', function(){showFinalJeopardy(dataStore.games);})
+        .on('click', function () {
+            showFinalJeopardy();
+        })
         .appendTo(title);
 
 
@@ -172,7 +175,7 @@ module.exports = function () {
         .appendTo(container)
         .hide();
 
-    var $helpToggle = $('<button type="button" class="btn btn-primary graph-button">Help 444</button>')
+    var $helpToggle = $('<button type="button" class="btn btn-primary graph-button">Help</button>')
         .click(function () {
             var newLinkText;
             if ($helpDiv.is(':visible')) {
@@ -186,38 +189,50 @@ module.exports = function () {
         })
         .appendTo(title);
 
-    var controlBlock = makeControlsBlockTemplate('square');
+    var controlBlockHtmlTemplate = makeControlsBlockTemplate('square');
 
-    var cb1 = $(controlBlock({cbId: '1'}));
+    var cb1 = $(controlBlockHtmlTemplate({
+        cbId: '1'
+    }));
     cb1.find('select:eq(0)')[0].selectedIndex = 1;
     cb1.find('select:eq(1)')[0].selectedIndex = 0;
     cb1.find('select:eq(2)')[0].selectedIndex = 0;
     cb1.find('.graph-button').on('click', function () {
-        graphics('chartByYear', dataStore.boards[1].boardsByYear);
+        var board = dataStore.boards()[1];
+        graphics('chartByYear', board.boardsByYear, '1: ' + dataStore.titleFromOptions(board.options));
     });
 
-    var cb2 = $(controlBlock({cbId: '2'}));
+    var cb2 = $(controlBlockHtmlTemplate({
+        cbId: '2'
+    }));
     cb2.find('select:eq(0)')[0].selectedIndex = 1;
     cb2.find('select:eq(1)')[0].selectedIndex = 1;
     cb2.find('select:eq(2)')[0].selectedIndex = 0;
     cb2.find('.graph-button').on('click', function () {
-        graphics('chartByYear', dataStore.boards[2].boardsByYear);
+        var board = dataStore.boards()[2];
+        graphics('chartByYear', board.boardsByYear, '2: ' + dataStore.titleFromOptions(board.options));
     });
 
-    var cb3 = $(controlBlock({cbId: '3'}));
+    var cb3 = $(controlBlockHtmlTemplate({
+        cbId: '3'
+    }));
     cb3.find('select:eq(0)')[0].selectedIndex = 1;
     cb3.find('select:eq(1)')[0].selectedIndex = 2;
     cb3.find('select:eq(2)')[0].selectedIndex = 0;
     cb3.find('.graph-button').on('click', function () {
-        graphics('chartByYear', dataStore.boards[3].boardsByYear);
+        var board = dataStore.boards()[3];
+        graphics('chartByYear', board.boardsByYear, '3: ' + dataStore.titleFromOptions(board.options));
     });
 
-    var cb4 = $(controlBlock({cbId: '4'}));
+    var cb4 = $(controlBlockHtmlTemplate({
+        cbId: '4'
+    }));
     cb4.find('select:eq(0)')[0].selectedIndex = 1;
     cb4.find('select:eq(2)')[0].selectedIndex = 0;
     cb4.find('select:eq(2)')[0].selectedIndex = 2;
     cb4.find('.graph-button').on('click', function () {
-        graphics('chartByYear', dataStore.boards[4].boardsByYear);
+        var board = dataStore.boards()[4];
+        graphics('chartByYear', board.boardsByYear, '4: ' + dataStore.titleFromOptions(board.options));
     });
 
     $('<div id="options-div"></div>')
@@ -230,29 +245,39 @@ module.exports = function () {
                       ['Totals']))
         .appendTo(container);
 
+    container.append('<div id="legend-div"></div>');
+
     container.append('<div id="final-div"></div>');
 
     container.append('<div id="graph-div"></div>');
 
     $('<button type="button" class="btn btn-primary graph-button">Show Game Board</button>')
         .on('click', function () {
-        var boardTable = $('#boardTable');
-        if (boardTable.is(':visible')) {
+            var boardTable = $('#boardTable');
+            var newText;
+            if (boardTable.is(':visible')) {
                 boardTable.hide(400);
+                newText = 'Show Game Board';
             } else {
                 boardTable.show(400);
+                newText = 'Hide Game Board';
             }
+            $(this).text(newText);
         })
         .appendTo(container);
 
-    $('<button type="button" class="btn btn-primary graph-button">Show Graph</button>')
+    $('<button type="button" class="btn btn-primary graph-button">Hide Graph</button>')
         .on('click', function () {
             var graphDiv = $('#graph-div');
+            var newText;
             if (graphDiv.is(':visible')) {
                 graphDiv.hide(400);
+                newText = 'Show Graph';
             } else {
                 graphDiv.show(400);
+                newText = 'Hide Graph';
             }
+            $(this).text(newText);
         })
         .appendTo(container);
 

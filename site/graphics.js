@@ -7,14 +7,14 @@ var _ = require('lodash');
 
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
-var chartFinal = function (rightWrongData) {
+var chartFinal = function (rightWrongData, title) {
     var vizData = new google.visualization.DataTable();
     vizData.addColumn('string', 'year');
     vizData.addColumn('number', '% right');
     vizData.addRows(rightWrongData);
 
     var options = {
-        title: 'Final Jeopardy % answered correctly (by year)',
+        title: title,
         width: 1200,
         height: 600
     };
@@ -26,7 +26,7 @@ var chartFinal = function (rightWrongData) {
 
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
-var chartBy4 = function (boards) {
+var chartBy4 = function (boards, title) {
     var vizData = new google.visualization.DataTable();
     vizData.addColumn('string', 'Option');
     vizData.addColumn('number', '1');
@@ -59,7 +59,7 @@ var chartBy4 = function (boards) {
     vizData.addRows(dataIn);
 
     var options = {
-        title: 'Chart of the four cases above',
+        title: title,
         width: 1200,
         height: 600
         //legend: { position: 'bottom' }
@@ -72,7 +72,7 @@ var chartBy4 = function (boards) {
 
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
-var chartByYear = function (boardsByYear) {
+var chartByYear = function (boardsByYear, title) {
     var vizData = new google.visualization.DataTable();
     vizData.addColumn('string', 'Year');
     vizData.addColumn('number', '$200/$400');
@@ -101,7 +101,7 @@ var chartByYear = function (boardsByYear) {
     vizData.addRows(dataIn);
 
     var options = {
-        title: '% answered correctly (by year)',
+        title: title,
         width: 1200,
         height: 600
         //legend: { position: 'bottom' }
@@ -111,10 +111,10 @@ var chartByYear = function (boardsByYear) {
     chart.draw(vizData, options);
 };
 
-module.exports = function(chartType, boards) {
+module.exports = function(chartType, boards, title) {
     switch(chartType) {
-        case 'chartByYear': chartByYear(boards); break;
-        case 'chartBy4': chartBy4(boards); break;
-        case 'chartFinal': chartFinal(boards); break;
+        case 'chartByYear': chartByYear(boards, title); break;
+        case 'chartBy4': chartBy4(boards, title); break;
+        case 'chartFinal': chartFinal(boards, title); break;
     }
 };
