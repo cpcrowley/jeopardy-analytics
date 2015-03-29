@@ -67,6 +67,9 @@ function fillRound(roundNumber, board, gameData) {
         if (increment_count === 1) {
             increment_count = 0;
             switch (board.options.totalToShow) {
+            case 'total':
+                increment_count = 1;
+                break;
             case '1-any':
                 if (clue.rightAnswer === 1) increment_count = 1;
                 break;

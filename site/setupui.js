@@ -47,6 +47,7 @@ var makeControlsBlockTemplate = function (wide) {
         '<button type="button" class="btn btn-default btn-sm graph-button">Graph by Year</button>' +
         makeSelectControlsBlock(wide, 'total-to-show', 'Show', makeOptionList([
             ["none", "None"],
+            ["total", "total only"],
             ["1-any", "right:1 wrong:any"],
             ["1-0", "right:1 wrong:0"],
             ["1-1", "right:1 wrong:1"],
@@ -190,11 +191,12 @@ module.exports = function () {
         .appendTo(title);
 
     var controlBlockHtmlTemplate = makeControlsBlockTemplate('square');
+    var defaultShowIndex = 2; // right:1 wrong:any
 
     var cb1 = $(controlBlockHtmlTemplate({
         cbId: '1'
     }));
-    cb1.find('select:eq(0)')[0].selectedIndex = 1;
+    cb1.find('select:eq(0)')[0].selectedIndex = defaultShowIndex;
     cb1.find('select:eq(1)')[0].selectedIndex = 0;
     cb1.find('select:eq(2)')[0].selectedIndex = 0;
     cb1.find('.graph-button').on('click', function () {
@@ -205,7 +207,7 @@ module.exports = function () {
     var cb2 = $(controlBlockHtmlTemplate({
         cbId: '2'
     }));
-    cb2.find('select:eq(0)')[0].selectedIndex = 1;
+    cb2.find('select:eq(0)')[0].selectedIndex = defaultShowIndex;
     cb2.find('select:eq(1)')[0].selectedIndex = 1;
     cb2.find('select:eq(2)')[0].selectedIndex = 0;
     cb2.find('.graph-button').on('click', function () {
@@ -216,7 +218,7 @@ module.exports = function () {
     var cb3 = $(controlBlockHtmlTemplate({
         cbId: '3'
     }));
-    cb3.find('select:eq(0)')[0].selectedIndex = 1;
+    cb3.find('select:eq(0)')[0].selectedIndex = defaultShowIndex;
     cb3.find('select:eq(1)')[0].selectedIndex = 2;
     cb3.find('select:eq(2)')[0].selectedIndex = 0;
     cb3.find('.graph-button').on('click', function () {
@@ -227,8 +229,8 @@ module.exports = function () {
     var cb4 = $(controlBlockHtmlTemplate({
         cbId: '4'
     }));
-    cb4.find('select:eq(0)')[0].selectedIndex = 1;
-    cb4.find('select:eq(2)')[0].selectedIndex = 0;
+    cb4.find('select:eq(0)')[0].selectedIndex = defaultShowIndex;
+    cb4.find('select:eq(1)')[0].selectedIndex = 0;
     cb4.find('select:eq(2)')[0].selectedIndex = 2;
     cb4.find('.graph-button').on('click', function () {
         var board = dataStore.boards()[4];

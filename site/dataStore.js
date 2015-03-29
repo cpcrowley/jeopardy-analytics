@@ -80,6 +80,9 @@ var titleFromOptions = function (options) {
         case "none":
             title += "None";
             break;
+        case "total":
+            title += "Total";
+            break;
         case "1-any":
             title += "Answered correctly";
             break;
