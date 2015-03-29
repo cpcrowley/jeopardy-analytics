@@ -1,7 +1,7 @@
 "use strict"; 
 
 var showTable = require('./showTable.js');
-var fillBoards = require('./fillBoards.js');
+var computeStats = require('./computeStats.js');
 var graphics = require('./graphics.js');
 var dataStore = require('./dataStore.js');
 var _ = require('lodash');
@@ -87,7 +87,7 @@ module.exports = function () {
         });
     });
 
-    fillBoards();
+    computeStats();
 
     // Compute board totals
     _.each(dataStore.boardRange, function (boardNumber) {
