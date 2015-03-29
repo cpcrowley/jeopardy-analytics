@@ -1,11 +1,9 @@
 "use strict";
 
 var graphics = require('./graphics.js');
-var index = require('./index.js');
+var refreshBoards = require('./refreshBoards.js');
+var dataStore = require('./dataStore.js');
 var _ = require('lodash');
-
-var boardTable = null;
-var summaryTable = null;
 
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
@@ -112,7 +110,46 @@ var createTableHtml = function (tableId, topTitles, leftTitles) {
 
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
-module.exports = function (boards) {
+var showFinalJeopardy = function (games) {
+    var fjDiv = $('#final-div');
+    if(fjDiv.text().length > 0) {
+        fjDiv.empty();
+        return;
+    }
+    var rights = 0, wrongs = 0;
+    var rightWrongByYear = {};
+    _.each(dataStore.yearRange, function (year) {
+        rightWrongByYear[year] = [0,0];
+    });
+
+    _.each(games, function (gameData) {
+        var finalData = gameData.finalData;
+        var year = parseInt(gameData.gameDate.substring(0,4),10);
+        rights += finalData.rights;
+        wrongs += finalData.wrongs;
+        rightWrongByYear[year][0] += finalData.rights;
+        rightWrongByYear[year][1] += finalData.wrongs;
+    });
+
+    var divisor = rights + wrongs;
+    if(divisor === 0) divisor = 1;
+    fjDiv.html('Final Jeopardy: right=' + rights + ', wrong=' + wrongs +
+               ' or <span class="stats-color-2">' + Math.round(100*rights/divisor) + '% right</span>');
+
+    var rightWrongData = [];
+    _.each(dataStore.yearRange, function (year) {
+        var rw = rightWrongByYear[year];
+        var ratio = 0;
+        var divisor = rw[0] + rw[1];
+        if(divisor !== 0) ratio = Math.round(100*rw[0]/divisor);
+        rightWrongData.push([year.toString(), ratio]);
+    });
+    graphics('chartFinal', rightWrongData);
+};
+
+//------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
+module.exports = function () {
     var container = $('<div class="container-fluid"></div>')
         .appendTo('body');
 
@@ -121,10 +158,10 @@ module.exports = function (boards) {
         .appendTo(container);
 
     $('<button type="button" class="btn btn-primary graph-button">Refresh</button>')
-        .on('click', index.refreshBoards)
+        .on('click', refreshBoards)
         .appendTo(title);
     $('<button type="button" class="btn btn-primary graph-button">Final Jeopardy</button>')
-        .on('click', index.showFinalJeopardy)
+        .on('click', function(){showFinalJeopardy(dataStore.games);})
         .appendTo(title);
 
 
@@ -135,7 +172,7 @@ module.exports = function (boards) {
         .appendTo(container)
         .hide();
 
-    var $helpToggle = $('<button type="button" class="btn btn-primary graph-button">Help</button>')
+    var $helpToggle = $('<button type="button" class="btn btn-primary graph-button">Help 444</button>')
         .click(function () {
             var newLinkText;
             if ($helpDiv.is(':visible')) {
@@ -151,44 +188,36 @@ module.exports = function (boards) {
 
     var controlBlock = makeControlsBlockTemplate('square');
 
-    var cb1 = $(controlBlock({
-        cbId: '1'
-    }));
+    var cb1 = $(controlBlock({cbId: '1'}));
     cb1.find('select:eq(0)')[0].selectedIndex = 1;
     cb1.find('select:eq(1)')[0].selectedIndex = 0;
     cb1.find('select:eq(2)')[0].selectedIndex = 0;
     cb1.find('.graph-button').on('click', function () {
-        graphics('chartByYear', boards[1].boardsByYear);
+        graphics('chartByYear', dataStore.boards[1].boardsByYear);
     });
 
-    var cb2 = $(controlBlock({
-        cbId: '2'
-    }));
+    var cb2 = $(controlBlock({cbId: '2'}));
     cb2.find('select:eq(0)')[0].selectedIndex = 1;
     cb2.find('select:eq(1)')[0].selectedIndex = 1;
     cb2.find('select:eq(2)')[0].selectedIndex = 0;
     cb2.find('.graph-button').on('click', function () {
-        graphics('chartByYear', boards[2].boardsByYear);
+        graphics('chartByYear', dataStore.boards[2].boardsByYear);
     });
 
-    var cb3 = $(controlBlock({
-        cbId: '3'
-    }));
+    var cb3 = $(controlBlock({cbId: '3'}));
     cb3.find('select:eq(0)')[0].selectedIndex = 1;
     cb3.find('select:eq(1)')[0].selectedIndex = 2;
     cb3.find('select:eq(2)')[0].selectedIndex = 0;
     cb3.find('.graph-button').on('click', function () {
-        graphics('chartByYear', boards[3].boardsByYear);
+        graphics('chartByYear', dataStore.boards[3].boardsByYear);
     });
 
-    var cb4 = $(controlBlock({
-        cbId: '4'
-    }));
+    var cb4 = $(controlBlock({cbId: '4'}));
     cb4.find('select:eq(0)')[0].selectedIndex = 1;
     cb4.find('select:eq(2)')[0].selectedIndex = 0;
     cb4.find('select:eq(2)')[0].selectedIndex = 2;
     cb4.find('.graph-button').on('click', function () {
-        graphics('chartByYear', boards[4].boardsByYear);
+        graphics('chartByYear', dataStore.boards[4].boardsByYear);
     });
 
     $('<div id="options-div"></div>')
@@ -196,10 +225,10 @@ module.exports = function (boards) {
         .appendTo(container);
 
     // Add in the blocks we need
-    var tableRows = ['', '$200/$400', '$400/$800', '$600/$1200', '$800/$1600', '$1000/$2000', 'Totals'];
-    var tableCols = ['Totals'];
-    summaryTable = $(createTableHtml('summaryTable', tableRows, tableCols));
-    container.append(summaryTable);
+    $(createTableHtml('summaryTable',
+                      ['', '$200/$400', '$400/$800', '$600/$1200', '$800/$1600', '$1000/$2000', 'Totals'],
+                      ['Totals']))
+        .appendTo(container);
 
     container.append('<div id="final-div"></div>');
 
@@ -207,7 +236,8 @@ module.exports = function (boards) {
 
     $('<button type="button" class="btn btn-primary graph-button">Show Game Board</button>')
         .on('click', function () {
-            if (boardTable.is(':visible')) {
+        var boardTable = $('#boardTable');
+        if (boardTable.is(':visible')) {
                 boardTable.hide(400);
             } else {
                 boardTable.show(400);
@@ -226,8 +256,9 @@ module.exports = function (boards) {
         })
         .appendTo(container);
 
-    tableRows = ['', 'Row Total', 'Cat 1', 'Cat 2', 'Cat 3', 'Cat 4', 'Cat 5', 'Cat 6'];
-    tableCols = ['$200/$400', '$400/$800', '$600/$1200', '$800/$1600', '$1000/$2000', 'Total'];
-    boardTable = $(createTableHtml('boardTable', tableRows, tableCols)).hide();
-    container.append(boardTable);
+    $(createTableHtml('boardTable',
+                      ['', 'Row Total', 'Cat 1', 'Cat 2', 'Cat 3', 'Cat 4', 'Cat 5', 'Cat 6'],
+                      ['$200/$400', '$400/$800', '$600/$1200', '$800/$1600', '$1000/$2000', 'Total']))
+        .hide()
+        .appendTo(container);
 };

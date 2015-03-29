@@ -2,16 +2,16 @@
 /*jshint -W083 */
 
 "use strict";
-var index = require('./index.js');
+var dataStore = require('./dataStore.js');
 var _ = require('lodash');
 
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
 var chartFinal = function (rightWrongData) {
-    var data = new google.visualization.DataTable();
-    data.addColumn('string', 'year');
-    data.addColumn('number', '% right');
-    data.addRows(rightWrongData);
+    var vizData = new google.visualization.DataTable();
+    vizData.addColumn('string', 'year');
+    vizData.addColumn('number', '% right');
+    vizData.addRows(rightWrongData);
 
     var options = {
         title: 'Final Jeopardy % answered correctly (by year)',
@@ -21,25 +21,25 @@ var chartFinal = function (rightWrongData) {
 
     var chart = new google.visualization.LineChart(document.getElementById('graph-div'));
 
-    chart.draw(data, options);
+    chart.draw(vizData, options);
 };
 
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
 var chartBy4 = function (boards) {
-    var data = new google.visualization.DataTable();
-    data.addColumn('string', 'Option');
-    data.addColumn('number', '1');
-    data.addColumn('number', '2');
-    data.addColumn('number', '3');
-    data.addColumn('number', '4');
+    var vizData = new google.visualization.DataTable();
+    vizData.addColumn('string', 'Option');
+    vizData.addColumn('number', '1');
+    vizData.addColumn('number', '2');
+    vizData.addColumn('number', '3');
+    vizData.addColumn('number', '4');
 
     var dataIn = [];
 
     for (var row = 1; row < 6; ++row) {
         var label = '$' + (2*row) + '00/$' + (4*row) + '00';
         var dataArray = [label];
-        _.each(index.boardRange(), function (boardNumber) {
+        _.each(dataStore.boardRange, function (boardNumber) {
             var board = boards[boardNumber];
             if (board.options.totalToShow === 'none') {
                 dataArray.push(0);
@@ -56,7 +56,7 @@ var chartBy4 = function (boards) {
         dataIn.push(dataArray);
     }
 
-    data.addRows(dataIn);
+    vizData.addRows(dataIn);
 
     var options = {
         title: 'Chart of the four cases above',
@@ -67,23 +67,23 @@ var chartBy4 = function (boards) {
 
     var chart = new google.visualization.LineChart(document.getElementById('graph-div'));
 
-    chart.draw(data, options);
+    chart.draw(vizData, options);
 };
 
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
 var chartByYear = function (boardsByYear) {
-    var data = new google.visualization.DataTable();
-    data.addColumn('string', 'Year');
-    data.addColumn('number', '$200/$400');
-    data.addColumn('number', '$400/$800');
-    data.addColumn('number', '$600/$1200');
-    data.addColumn('number', '$800/$1600');
-    data.addColumn('number', '$1000/$2000');
+    var vizData = new google.visualization.DataTable();
+    vizData.addColumn('string', 'Year');
+    vizData.addColumn('number', '$200/$400');
+    vizData.addColumn('number', '$400/$800');
+    vizData.addColumn('number', '$600/$1200');
+    vizData.addColumn('number', '$800/$1600');
+    vizData.addColumn('number', '$1000/$2000');
 
     var dataIn = [];
 
-    _.each(index.yearRange(), function (year) {
+    _.each(dataStore.yearRange, function (year) {
         var board = boardsByYear[year];
         var dataArray = [year.toString()];
         for (var row = 1; row < 6; ++row) {
@@ -98,7 +98,7 @@ var chartByYear = function (boardsByYear) {
         dataIn.push(dataArray);
     });
 
-    data.addRows(dataIn);
+    vizData.addRows(dataIn);
 
     var options = {
         title: '% answered correctly (by year)',
@@ -108,8 +108,7 @@ var chartByYear = function (boardsByYear) {
     };
 
     var chart = new google.visualization.LineChart(document.getElementById('graph-div'));
-
-    chart.draw(data, options);
+    chart.draw(vizData, options);
 };
 
 module.exports = function(chartType, boards) {

@@ -37,9 +37,9 @@ var reconstructRound = function (cluesArray) {
 
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
-module.exports = function (data) {
+module.exports = function (jsonData) {
     var rgames = [];
-    _.each(data, function(item){
+    _.each(jsonData, function(item){
         rgames.push({
             seasonNumber: item[0],
             gameId: item[1],

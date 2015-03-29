@@ -1,7 +1,7 @@
 /*jshint -W083 */
 "use strict";
 
-var index = require('./index.js');
+var dataStore = require('./dataStore.js');
 var _ = require('lodash');
 
 //------------------------------------------------------------------------------
@@ -9,7 +9,7 @@ var _ = require('lodash');
 var fillTD = function (td, row, col, boards) {
     var html = '';
     var addSeperator = false;
-    _.each(index.boardRange(), function (boardNumber) {
+    _.each(dataStore.boardRange, function (boardNumber) {
         var board = boards[boardNumber];
         var board1 = board.board1;
         var options = board.options;
