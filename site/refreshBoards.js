@@ -2,7 +2,7 @@
 
 var showTable = require('./showTable.js');
 var computeStats = require('./computeStats.js');
-var graphics = require('./graphics.js');
+var charts = require('./charts.js');
 var dataStore = require('./dataStore.js');
 var _ = require('lodash');
 
@@ -99,5 +99,5 @@ module.exports = function () {
     });
 
     showTable();
-    graphics('chartBy4', dataStore.boards(), 'Results for each of the four option boxes above');
+    charts('chartBy4', dataStore.boards(), 'Results for each of the four option boxes above');
 };

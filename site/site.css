@@ -6,14 +6,12 @@
     color: blue;
     background-color: antiquewhite;
 };
-/*#options-div option {
-    color: red;
-    background-color: bisque;
+#legend-div {
+    margin: 0 0 20px 0;
 }
-#options-div select {
-    color: green;
-    background-color: orange;
-}*/
+#button-div {
+    margin: 15px 0 0 20px;
+}
 .controls-div {
     display: block;
     margin: 0px 0px 10px 0px;
