@@ -1,7 +1,7 @@
-/*jshint -W083 */
 "use strict";
 
 var dataStore = require('./dataStore.js');
+var titleFromOptions = require('./titleFromOptions.js');
 var _ = require('lodash');
 
 //------------------------------------------------------------------------------
@@ -15,7 +15,7 @@ var fillTD = function (td, row, col, boards) {
         var options = board.options;
 
         if (options.totalToShow === 'none') {
-            return;
+            return; 
         }
 
         html += '<span class="stats-color-' + boardNumber + '">';
@@ -82,7 +82,7 @@ module.exports = function () {
     var legendDiv = $('#legend-div').empty();
     _.each(dataStore.boardRange, function(boardNumber) {
         legendDiv.append('<div class="stats-color-'+boardNumber+'">'+
-                         dataStore.titleFromOptions(boards[boardNumber].options)+'</div>');
+                         titleFromOptions(boards[boardNumber].options)+'</div>');
     });
     
 

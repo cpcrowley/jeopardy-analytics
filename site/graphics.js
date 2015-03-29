@@ -1,7 +1,7 @@
 /*global google */
 /*jshint -W083 */
-
 "use strict";
+
 var dataStore = require('./dataStore.js');
 var _ = require('lodash');
 
@@ -111,6 +111,8 @@ var chartByYear = function (boardsByYear, title) {
     chart.draw(vizData, options);
 };
 
+//------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
 module.exports = function(chartType, boards, title) {
     switch(chartType) {
         case 'chartByYear': chartByYear(boards, title); break;

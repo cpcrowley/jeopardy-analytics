@@ -3,6 +3,7 @@
 var graphics = require('./graphics.js');
 var refreshBoards = require('./refreshBoards.js');
 var dataStore = require('./dataStore.js');
+var titleFromOptions = require('./titleFromOptions.js');
 var _ = require('lodash');
 
 //------------------------------------------------------------------------------
@@ -201,7 +202,7 @@ module.exports = function () {
     cb1.find('select:eq(2)')[0].selectedIndex = 0;
     cb1.find('.graph-button').on('click', function () {
         var board = dataStore.boards()[1];
-        graphics('chartByYear', board.boardsByYear, '1: ' + dataStore.titleFromOptions(board.options));
+        graphics('chartByYear', board.boardsByYear, '1: ' + titleFromOptions(board.options));
     });
 
     var cb2 = $(controlBlockHtmlTemplate({
@@ -212,7 +213,7 @@ module.exports = function () {
     cb2.find('select:eq(2)')[0].selectedIndex = 0;
     cb2.find('.graph-button').on('click', function () {
         var board = dataStore.boards()[2];
-        graphics('chartByYear', board.boardsByYear, '2: ' + dataStore.titleFromOptions(board.options));
+        graphics('chartByYear', board.boardsByYear, '2: ' + titleFromOptions(board.options));
     });
 
     var cb3 = $(controlBlockHtmlTemplate({
@@ -223,7 +224,7 @@ module.exports = function () {
     cb3.find('select:eq(2)')[0].selectedIndex = 0;
     cb3.find('.graph-button').on('click', function () {
         var board = dataStore.boards()[3];
-        graphics('chartByYear', board.boardsByYear, '3: ' + dataStore.titleFromOptions(board.options));
+        graphics('chartByYear', board.boardsByYear, '3: ' + titleFromOptions(board.options));
     });
 
     var cb4 = $(controlBlockHtmlTemplate({
@@ -234,7 +235,7 @@ module.exports = function () {
     cb4.find('select:eq(2)')[0].selectedIndex = 2;
     cb4.find('.graph-button').on('click', function () {
         var board = dataStore.boards()[4];
-        graphics('chartByYear', board.boardsByYear, '4: ' + dataStore.titleFromOptions(board.options));
+        graphics('chartByYear', board.boardsByYear, '4: ' + titleFromOptions(board.options));
     });
 
     $('<div id="options-div"></div>')
