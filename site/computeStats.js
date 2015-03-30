@@ -19,6 +19,7 @@ function fillRound(roundNumber, board, gameData) {
         var cell1 = board1[clue.row][clue.col];
         var cell2 = board2[clue.row][clue.col];
 
+        // Start out assuming this clue will be counted.
         var increment_count = 1;
         var increment_total = 1;
 
@@ -27,11 +28,13 @@ function fillRound(roundNumber, board, gameData) {
         if(includeDailyDoubles !== 'include') {
             if (clue.isDD) {
                 if(includeDailyDoubles === 'exclude') {
+                    // Exclude this daily double
                     increment_count = 0;
                     increment_total = 0;
                 }
             } else {
                 if(includeDailyDoubles === 'only') {
+                    // Exclude this non-daily double
                     increment_count = 0;
                     increment_total = 0;
                 }
@@ -45,7 +48,7 @@ function fillRound(roundNumber, board, gameData) {
             // This check can only exclude a clue counting,
             // so we only need to check if it is still included.
             if (increment_count === 1) {
-                // These are the only case left, 'include' was already checked for.
+                // These are the only cases left, 'include' was already checked for.
                 switch (includeOutOfOrder) {
                     case 'first-only':
                         if(clue.outOfOrder !== 2) {

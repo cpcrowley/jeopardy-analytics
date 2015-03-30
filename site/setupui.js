@@ -122,10 +122,10 @@ module.exports = function () {
             var boardTable = $('#boardTable');
             var newText;
             if (boardTable.is(':visible')) {
-                boardTable.hide(400);
+                boardTable.slideUp('normal');
                 newText = 'Show Game Board';
             } else {
-                boardTable.show(400);
+                boardTable.slideDown('normal');
                 newText = 'Hide Game Board';
             }
             $(this).text(newText);
@@ -138,10 +138,10 @@ module.exports = function () {
             var graphDiv = $('#graph-div');
             var newText;
             if (graphDiv.is(':visible')) {
-                graphDiv.hide(400);
+                graphDiv.slideUp('normal');
                 newText = 'Show Graph';
             } else {
-                graphDiv.show(400);
+                graphDiv.slideDown('normal');
                 newText = 'Hide Graph';
             }
             $(this).text(newText);
@@ -153,10 +153,10 @@ module.exports = function () {
         .click(function () {
             var newLinkText;
             if ($helpDiv.is(':visible')) {
-                $helpDiv.hide('normal');
+                $helpDiv.slideUp('normal');
                 newLinkText = 'Show Help';
             } else {
-                $helpDiv.show('normal');
+                $helpDiv.slideDown('normal');
                 newLinkText = 'Hide Help';
             }
             $helpToggle.text(newLinkText);

@@ -1,25 +1,33 @@
 # Jeopardy
 
-## The Jeopardy Baord
+## The Jeopardy Board
 
-For this analysis we will often refer to the "rows" on the board.
-The board has five rows which we will number one to five.
-In the Jeopardy round the dollar values of the five rows are:
-$200, $400, $600, $800, and $1000.
-In the Jeopardy round the dollar values of the five rows are:
-$400, $800, $1200, $1600, and $2000.
-The questions get harder as the row numbers increase.
-
-The Jeopardy board has six columns or categories.
+The Jeopardy board has five *rows* and six *columns*.
+Each square on the board will be called a *cell*.
+Each column is a *category* but in this analysis we will only not be
+concerned with the actual content of the clues and responses so
+we will just use the word *column*.
 
 A Jeopardy game consists of two rounds, Jeopardy and Double Jeopardy.
 The dollar value of the answers is doubled in Double Jeopardy.
-The clues are generall harder in Double Jeopardy.
 
+The board has five rows which we will number one to five.
+Going to higher numbered rows will be called *going down the rows*.
+In the Jeopardy round the dollar values of the five rows are:
+$200, $400, $600, $800, and $1000.
+In the Double Jeopardy round the dollar values of the five rows are:
+$400, $800, $1200, $1600, and $2000.
 
-## Correct answers
+A Jeopardy game has three *contestants*.
 
-A correct answer to is made:
+The words written on a board cell are called the *clue*.
+When a contestant answers they give a *response*.
+
+## Correct responses
+
+### How often are correct responces made?
+
+The correct response percentage is:
 
 * Both rounds: 85%
 * Jeopardy round: 88%
@@ -28,9 +36,9 @@ A correct answer to is made:
 So it is true that Double Jeopardy is harder but the difference is not large.
 
 
-### How much harder to the answer get as you move down the rows?
+### How much harder do the clues get as you move down the rows?
 
-Here is the percent answered correctly by row:
+Here is the percent correct responses by row:
 
 1. 95%
 2. 91%
@@ -38,10 +46,10 @@ Here is the percent answered correctly by row:
 4. 80%
 5. 71%
 
-The questions do get harder as you go down the row.
+The clues do get harder as you go down the row, the percentage drops about 4% a row.
 Row 5 is especially hard, from 80% to 71% correct going from row 4 to row 5.
 
-Here are the percent answered correctly by row and by round, Jeopardy / Double Jeopardy
+Here are the percent of correct responses by row and by round: Jeopardy / Double Jeopardy
 
 1. 96% / 95%
 2. 93% / 89%
@@ -49,20 +57,27 @@ Here are the percent answered correctly by row and by round, Jeopardy / Double J
 4. 84% / 76%
 5. 76% / 66%
 
-Again confirming that the Double Jeopardy round has harder questions.
+So the Double Jeopardy round has harder questions both overall and by row.
 
 
-### Does question hardness vary by columns?
+### Does clue hardness vary by columns?
 
-Not by much, it is probably just statistical noise.
-Although the left-hand column is consistently harder than the rest
-and the right-hand column is consistently easier than the rest.
-The middle four columns are indistinguishable.
+Not by much, the middle four columns are indistinguishable
+but the left-hand column is consistently a litle harder (2% less) than the rest
+and the right-hand column is consistently a little easier (2% more) than the rest.
 
-### How does the number wrong vary by rows (and columns)?
 
-Add more options to show this.
+### How does the number wrong vary by rows?
 
+Here is the percent wrong responses by row:
+
+1. 8%
+2. 10%
+3. 13%
+4. 15%
+5. 16%
+
+So as the clues get harder down the row the number of wrong responses increases but not by a lot.
 
 
 ## Daily Double Analysis
@@ -96,7 +111,7 @@ Here are the percent answered correctly by row, regular clues / Daily Doubles (b
 4. 82% / 64%
 5. 72% / 60%
 
-So the daily doubles in each row are considerably harder than the regular clues in that row,
+The daily double clues in each row are considerably harder than the regular clues in that row,
 roughly 20% fewer correct answers down the board.
 Like the regular clues, the daily doubles also get harder as we go down the board,
 with roughly the same drops per row (about 4-5% per row).
@@ -106,7 +121,7 @@ rows 4 and 5, with a 10% drop in percent correct (double the drops between other
 You can safely ignore the results for row 1 since there are so few data points that
 the statistics mean little.
 In 31 seasons and almost 5000 games a Daily Double has been in row 1 only 16 times.
-Caompare that with over 5000 times in row 4.
+Compare that with over 5000 times in row 4.
 
 
 ## Final Jeopardy
@@ -114,6 +129,7 @@ Caompare that with over 5000 times in row 4.
 Anyone watching Jeopardy knows that the Final Jeopardy questions can get very hard.
 It is not uncommon for all three players to miss the Final Jeopardy question.
 Overall players get 49% correct on final jeopardy questions.
+
 As we saw above, 85% of the clues in the game are answered correctly.
 Even the hardest game questions, row 5 Daily Doubles, are answered correctly 60% of the time.
 
@@ -122,6 +138,65 @@ Even the hardest game questions, row 5 Daily Doubles, are answered correctly 60%
 ## Variations over the years
 
 TODO
+
+
+
+## Daily Double Hunting
+
+Typically the contestants picks the clues in a row from top to bottom, row 1 to row 5.
+But the daily doubles are most commonly found in rows 4, then row 3, then row 5.
+A contestant gets a big advantage getting a daily double since they can bet as much
+as they want and they don't have to compete with the other contestants for the answer.
+As a consequence, contestents often jump into columns in row 3 or 4.
+We call this *Daily Double hunting*.
+
+The home viewer tend not to like this since they don't get to see the category unfold
+by seeing the easier questions first.
+
+Once question is whether this affects the contestants, that is, do they do better or worse on
+clues found during hunting?
+
+First let's look at all cases where clues are chosen out of the usual row 1 to row 5 order.
+We will distinguish between *first-time out of order* where the first clue chosen in a column
+is not in row 1 and *any out of order* where a clue is chosen in a column when there are
+still unchosen clues in an eariler row.
+We will exclude clues out of order that turn out to be daily doubles.
+Here is the number of correct responses in three cases:
+all clues in or out of order / clues out of order / clues first out of order:
+
+1. 96% / --- / ---
+2. 92% / 92% / 89%
+3. 87% / 87% / 87%
+4. 82% / 82% / 82%
+5. 72% / 72% / 72%
+
+
+NOTE TO SELF: actually row 1, any out of order is not zero, look into that and see what is wrong.
+
+
+So there is no difference in the percent of correct responses when clues are taken out of order.
+One might think that not seeing how the category works would affect the rate but it seems not.
+
+Now we will look at the same statistics but for daily doubles only:
+
+1. 56% / --- / ---
+2. 73% / 73% / 88%
+3. 68% / 68% / 72%
+4. 64% / 65% / 66%
+5. 60% / 59% / 71%
+
+In all cases the percentage correct is greater on out-of-order daily doubles than in order daily doubles.
+in the cases of rows 2 and 5 the difference is quite large.
+Going out of order would seem to be a disadvantage but the correct response percentage is higher
+for out of order cases.
+One possible explanation for this is that out of order daily doubles are most commonly found
+by contestants who are hunting for daily double and therefor using a more sophisticated
+Jeopardy strategy than the contestants who encounter daily doubles in order of going down a column.
+These contestants might alos have studied for or just be better player and so they get a higher
+percentage correct.
+
+
+
 
 
 
