@@ -1,5 +1,7 @@
 # Jeopardy Analytics
 
+NOTE: this code is still being developed. I change it often and it doesn't always work.
+
 ## Steps to recreate and use data 
 
 1. RUN: `node lib/fetchGames.js`
