@@ -2,6 +2,7 @@
 
 var charts = require('./charts.js');
 var dataStore = require('./dataStore.js');
+var refreshBoards = require('./refreshBoards.js');
 var titleFromOptions = require('./titleFromOptions.js');
 var _ = require('lodash');
 
@@ -130,6 +131,10 @@ module.exports = function () {
         charts('chartByYear', board.boardsByYear, '4: ' + titleFromOptions(board.options));
     });
 
-    return $('<div id="options-div"></div>').append(cb1, cb2, cb3, cb4);
+    var optionsBlock = $('<div id="options-div"></div>').append(cb1, cb2, cb3, cb4);
+
+    optionsBlock.find('select').on('change', refreshBoards);
+    
+    return optionsBlock;
 
 };

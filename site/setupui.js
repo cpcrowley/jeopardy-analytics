@@ -36,42 +36,42 @@ var createTableHtml = function (tableId, topTitles, leftTitles) {
 
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
-var showFinalJeopardy = function () {
+var getFinalJeopardyDiv = function () {
     var fjDiv = $('#final-div');
-    if (fjDiv.text().length > 0) {
-        fjDiv.empty();
-        return;
+    if (fjDiv.text().length === 0) {
+        var rights = 0,
+            wrongs = 0;
+        var rightWrongByYear = {};
+        _.each(dataStore.yearRange, function (year) {
+            rightWrongByYear[year] = [0, 0];
+        });
+
+        _.each(dataStore.games(), function (gameData) {
+            var finalData = gameData.finalData;
+            var year = parseInt(gameData.gameDate.substring(0, 4), 10);
+            rights += finalData.rights;
+            wrongs += finalData.wrongs;
+            rightWrongByYear[year][0] += finalData.rights;
+            rightWrongByYear[year][1] += finalData.wrongs;
+        });
+
+        var divisor = rights + wrongs;
+        if (divisor === 0) divisor = 1;
+        fjDiv.html('Final Jeopardy: right=' + rights + ', wrong=' + wrongs +
+            ' or <span class="stats-color-2">' + Math.round(100 * rights / divisor) + '% right</span>');
+
+        var rightWrongData = [];
+        _.each(dataStore.yearRange, function (year) {
+            var rw = rightWrongByYear[year];
+            var ratio = 0;
+            var divisor = rw[0] + rw[1];
+            if (divisor !== 0) ratio = Math.round(100 * rw[0] / divisor);
+            rightWrongData.push([year.toString(), ratio]);
+        });
+        charts('chartFinal', rightWrongData, 'Final Jeopardy correct answers by year');
     }
-    var rights = 0,
-        wrongs = 0;
-    var rightWrongByYear = {};
-    _.each(dataStore.yearRange, function (year) {
-        rightWrongByYear[year] = [0, 0];
-    });
 
-    _.each(dataStore.games(), function (gameData) {
-        var finalData = gameData.finalData;
-        var year = parseInt(gameData.gameDate.substring(0, 4), 10);
-        rights += finalData.rights;
-        wrongs += finalData.wrongs;
-        rightWrongByYear[year][0] += finalData.rights;
-        rightWrongByYear[year][1] += finalData.wrongs;
-    });
-
-    var divisor = rights + wrongs;
-    if (divisor === 0) divisor = 1;
-    fjDiv.html('Final Jeopardy: right=' + rights + ', wrong=' + wrongs +
-        ' or <span class="stats-color-2">' + Math.round(100 * rights / divisor) + '% right</span>');
-
-    var rightWrongData = [];
-    _.each(dataStore.yearRange, function (year) {
-        var rw = rightWrongByYear[year];
-        var ratio = 0;
-        var divisor = rw[0] + rw[1];
-        if (divisor !== 0) ratio = Math.round(100 * rw[0] / divisor);
-        rightWrongData.push([year.toString(), ratio]);
-    });
-    charts('chartFinal', rightWrongData, 'Final Jeopardy correct answers by year');
+    return fjDiv;
 };
 
 //------------------------------------------------------------------------------
@@ -105,16 +105,9 @@ module.exports = function () {
     var buttonDiv = container.append('<div id="button-div"></div>');
 
     // Button to Refresh everything )going away soon)
-    $('<button type="button" class="btn btn-primary graph-button">Refresh</button>')
+    /*$('<button type="button" class="btn btn-primary graph-button">Refresh</button>')
         .on('click', refreshBoards)
-        .appendTo(buttonDiv);
-    
-    // Button to show the Final Jeopardy statistics
-    $('<button type="button" class="btn btn-primary graph-button">Final Jeopardy</button>')
-        .on('click', function () {
-            showFinalJeopardy();
-        })
-        .appendTo(buttonDiv);
+        .appendTo(buttonDiv);*/
 
     // Button to show or hide the game board
     $('<button type="button" class="btn btn-primary graph-button">Show Game Board</button>')
@@ -122,10 +115,10 @@ module.exports = function () {
             var boardTable = $('#boardTable');
             var newText;
             if (boardTable.is(':visible')) {
-                boardTable.slideUp('normal');
+                boardTable.hide(500);
                 newText = 'Show Game Board';
             } else {
-                boardTable.slideDown('normal');
+                boardTable.show(500);
                 newText = 'Hide Game Board';
             }
             $(this).text(newText);
@@ -138,14 +131,30 @@ module.exports = function () {
             var graphDiv = $('#graph-div');
             var newText;
             if (graphDiv.is(':visible')) {
-                graphDiv.slideUp('normal');
+                graphDiv.slideUp(500);
                 newText = 'Show Graph';
             } else {
-                graphDiv.slideDown('normal');
+                graphDiv.slideDown(500);
                 newText = 'Hide Graph';
             }
             $(this).text(newText);
         })
+        .appendTo(buttonDiv);
+
+    // Button to show the Final Jeopardy statistics
+    $('<button type="button" class="btn btn-primary graph-button">Show Final Jeopardy</button>')
+        .on('click', function () {
+        var finalJeopardyDiv = getFinalJeopardyDiv();
+        var newText;
+        if (finalJeopardyDiv.is(':visible')) {
+            finalJeopardyDiv.hide(500);
+            newText = 'Show Final Jeopardy';
+        } else {
+            finalJeopardyDiv.show(500);
+            newText = 'Hide Final Jeopardy';
+        }
+        $(this).text(newText);
+    })
         .appendTo(buttonDiv);
 
     // Add in the show an hide Help button
@@ -153,10 +162,10 @@ module.exports = function () {
         .click(function () {
             var newLinkText;
             if ($helpDiv.is(':visible')) {
-                $helpDiv.slideUp('normal');
+                $helpDiv.slideUp(500);
                 newLinkText = 'Show Help';
             } else {
-                $helpDiv.slideDown('normal');
+                $helpDiv.slideDown(500);
                 newLinkText = 'Hide Help';
             }
             $helpToggle.text(newLinkText);
