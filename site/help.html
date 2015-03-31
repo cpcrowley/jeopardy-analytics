@@ -1,0 +1,153 @@
+<h4>Overview</h4>
+
+<p>
+    This site allows you to perform simple analyses on the results of almost 5000 games of Jeopardy.
+    You can compute from one to four different statistics on the game data at a time.
+    These results are shown in a summary table and as a graph.
+    If you want you call also see a full table of the statistics broken down by individual
+    cell on the 5 rows by 6 categories Jeopary game board.
+</p>
+
+<h4>Filtering the data</h4>
+
+<p>
+    The <i>options blocks</i> along the top of the window allow you to specify what you want to count.
+    Each option block is a separate calculation and all four are shown in the summary table,
+    the graph, and the full game board.
+</p>
+<p>
+    Each calculation counts up two numbers, a count and a total.
+    The result is presented as a percent, detemined by dividing the count by the total.
+    Some of the selections in the option block affect only the count
+    and some affect both the count and the total.
+    Let's look at what the selections in an option block mean.
+</p>
+
+<ul>
+    <li>
+        # correct: this affects only the count. It will count clues where the number of
+        correct responses matched the value selected.
+        Here is the meaning of each value that can be selected.
+        <ul>
+            <li>
+                Do not show: do not show the results of this calulcation in the summary table,
+                the graph, or the full board table.
+            </li>
+            <li>
+                Any: add to the count for every clue, no matter if there was a correct response or not.
+            </li>
+            <li>
+                0: count the clue if there was no correct response
+            </li>
+            <li>
+                1: count the clue if there was a correct response
+            </li>
+        </ul>
+    </li>
+    <li># wrong: this affects only the count. It will count clues where the number of
+        wrong responses matched the value selected.
+        <ul>
+            <li>
+                Any: add to the count for every clue, no matter how many wrong responses were given.
+            </li>
+            <li>
+                1-3: count the clue if there was one or more wrong responses
+            </li>
+            <li>
+                0: count the clue if there was no wrong responses
+            </li>
+            <li>
+                1: count the clue if there was exactly one wrong response
+            </li>
+            <li>
+                2: count the clue if there was exactly two wrong responses
+            </li>
+            <li>
+                3: count the clue if there was exactly three wrong responses
+            </li>
+        </ul>
+    </li>
+    <li>
+        Daily doubles: this affects the count and the total. Skip the clue if the daily double
+        specification does not match. Otherwise count and total the clue of the other filters match.
+        <ul>
+            <li>
+                Don't care: do not reject any clues.
+            </li>
+            <li>
+                No (exclude): exclude any clues that are daily doubles.
+            </li>
+            <li>
+                Yes (only): only count clues that are daily doubles. Exclude clues that
+                are not daily doubles.
+            </li>
+        </ul>
+    </li>
+    <li>
+        Out of order: this affects the count and the total. Skip the clue if the out-of-order
+        specification does not match. Otherwise count and total the clue of the other filters match.
+        <ul>
+            <li>
+                Don't care: do not reject any clues.
+            </li>
+            <li>
+                No (exclude): exclude any clues that are out of order.
+            </li>
+            <li>
+                Yes (only): only count clues that are out of order. Exclude clues that
+                are not out of order.
+            </li>
+        </ul>
+    </li>
+    <li>
+        Rounds: this affects the count and the total. Skip the clue if the round
+        specification does not match. Otherwise count and total the clue of the other filters match.
+        <ul>
+            <li>
+                Don't care: do not reject any clues.
+            </li>
+            <li>
+                Jeopardy: only count clues from the  Jeopardy round.
+            </li>
+            <li>
+                Double Jeopardy: only count clues from the Double Jeopardy round.
+            </li>
+        </ul>
+    </li>
+    <li>
+        %: this determines the total that is used for the percentage caclulation.
+        The count is always the same but the divisor can change.
+        <ul>
+            <li>
+                passed/cell total: the percent is determined by the count and total in the cell.
+            </li>
+            <li>
+                passed/row total: the percent is determined by the count and total in the row.
+            </li>
+            <li>
+                passed/column total: the percent is determined by the count and total in the column.
+            </li>
+            <li>
+                passed/board total: the percent is determined by the count and total in the whole board.
+            </li>
+        </ul>
+        Note that in the summary table the cell total and the row total are always the same,
+        and the column total and the board total are always the same.
+        In the full board view, with all the rows and columns, the four totals are all different.
+    </li>
+    <li>
+        Counts: for each cell we compute a count and a total. Usually we just display the ratio
+        of these two as a percentage but we can show the count and total also.
+        <ul>
+            <li>
+                None: do not show counts or totals.
+            </li>
+            <li>
+                Count only: show the count but not the total.
+            </li>
+            <li>
+                count/total: show the count and the total.
+            </li>
+        </ul>
+    </li>
+</ul>

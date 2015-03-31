@@ -19,6 +19,8 @@ module.exports = function (options) {
     }
     title += ' ';
     switch (options.numberRight) {
+        case 'doNotShow':
+            return '';
         case 'any':
             title += '# right: 0 or 1';
             break;

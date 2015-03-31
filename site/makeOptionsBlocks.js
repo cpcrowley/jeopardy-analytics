@@ -20,9 +20,8 @@ var makeOptionList = function (items) {
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
 var makeSelectControlsBlock = function (bId, label, options) {
-    var mainDivClass = 'controls-block';
     var s =
-        '<div class="' + mainDivClass + '">' +
+        '<div class="controls-block">' +
         '<label for="' + bId + '-<%= cbId %>">' + label + '</label>' +
         '<select id="' + bId + '-<%= cbId %>" class="stats-color-<%= cbId %> form-control">' +
         options +
@@ -36,9 +35,8 @@ var makeSelectControlsBlock = function (bId, label, options) {
 // Otherwise there is one label-control per line so the box is roughly square.
 //------------------------------------------------------------------------------
 var makeControlsBlockTemplate = function () {
-    var mainDivClass = 'controls-div-inline';
     return _.template(
-        '<div class="' + mainDivClass + ' stats-color-<%= cbId %>">' +
+        '<div class="controls-div-inline stats-color-<%= cbId %>">' +
         '<span class="controls-title"><%= cbId %>:</span>' +
         '<button type="button" class="btn btn-default btn-sm graph-button">Graph by Year</button>' +
         makeSelectControlsBlock('number-right', '# correct', makeOptionList([
@@ -125,6 +123,7 @@ module.exports = function () {
             cb2.find(selector)[0].selectedIndex = selectedIndex;
             cb3.find(selector)[0].selectedIndex = selectedIndex;
             cb4.find(selector)[0].selectedIndex = selectedIndex;
+            refreshBoards();
         });
     });
 

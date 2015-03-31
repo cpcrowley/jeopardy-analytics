@@ -36,31 +36,83 @@
 
 <body>
     <div class="container-fluid">
-        <h1>Jeopardy</h1>
+        <h1 class="text-center">Jeopardy!: Right or Wrong?</h1>
+        
+        <p>
+            Early in 2014 
+            Arthur Chu was a
+    <a href="http://www.salon.com/2014/02/04/in_praise_of_arthur_chu_the_game_theory_nerd_who_broke_jeopardy/">
+        controversial contestant</a> on Jeopardy.
+            Some people did not like how he skipped around the categories and did not start at the top of a column.
+            This got me to wondering whether starting in the middle of a category decreased your chance of getting
+            the clue right.
+            It seems like it would since you would not have the experience with how the category works you get
+            wth the easier clues.
+            This led me to think about more questions about how often clues are answered correctly in
+            various situations.
+            This required the collection of data about past Jeopardy games.
+        </p>
+        
+        <p>
+            The first stop for data on Jeopardy games is the extensive
+            <a href="http://www.j-archive.com/">J! Archive</a> web site which contains records of thousands
+            of past Jeopardy games.
+            While the J! Archive site provides interesting browsing of past games, including clues, responses,
+            wagers, etc. it does not appear to have a API interface to fetch the data directly.
+            This means that anyone wishing to analyze the data must first scrape it from the site,
+            that is, use a program to pretend to be a web browser and fetch the data and parse the
+            resulting web pages into a useable database.
+        </p>
+        
+        <p>
+            A survey of GitHub reveals a number of projects to do this:
+            <a href="https://github.com/whymarrh/jeopardy-parser">python into SQLite</a>,
+            <a href="https://github.com/citizenparker/clojeopardy">in clojure</a>,
+            <a href="https://github.com/tpavlek/jeopardy-parser">in php</a>,
+            <a href="https://github.com/frolino/j-archive-player">in phpagain</a>,
+            <a href="https://github.com/zeo210/jArchive_Scrape">in python</a>,
+            <a href="https://github.com/seidelj/jeopardy_scrape">in Django</a>.
+            I wrote one of my own in JavaScript just to learn how to do it
+            and make sure I had the information I needed. 
+        </p>
+        
+        <p>
+            I wrote an <a href="http://thechar.com/vps/jeopardyStats/">analyzer</a>a>
+            which reads a compressed version of the data I scraped from j-archive
+            and performs verious kinds of analysis on it.
+            The results reported here were computed using that tool.
+        </p>
 
         <h3>The Jeopardy Board</h3>
 
         <p>
-            The Jeopardy board has five *rows* and six *columns*. Each square on the board will be called a *cell*. Each column is a *category* but in this analysis we will only not be concerned with the actual content of the clues and responses so we will just use the word *column*.
+            The Jeopardy board has five <dfn>rows</dfn> and six <dfn>columns</dfn>.
+            Each square on the board will be called a <dfn>cell</dfn>dfn>.
+            Each column is a <dfn>category</dfn>dfn> but in this analysis we will only
+            not be concerned with the actual content of the clues and responses
+            so we will just use the word <dfn>column</dfn>dfn>.
+        </p>
+        
+        <p>
+            A Jeopardy game consists of two rounds, Jeopardy and Double Jeopardy.
+            The dollar value of the answers is doubled in Double Jeopardy.
         </p>
         <p>
-            A Jeopardy game consists of two rounds, Jeopardy and Double Jeopardy. The dollar value of the answers is doubled in Double Jeopardy.
-        </p>
-        <p>
-            The board has five rows which we will number one to five. Going to higher numbered rows will be called *going down the rows*. In the Jeopardy round the dollar values of the five rows are: $200, $400, $600, $800, and $1000. In the Double Jeopardy round the dollar values of the five rows are: $400, $800, $1200, $1600, and $2000.
+            The board has five rows which we will number one to five.
+            Going to higher numbered rows will be called <dfn>going down the rows</dfn>dfn>.
+            In the Jeopardy round the dollar values of the five rows are:
+            $200, $400, $600, $800, and $1000.
+            In the Double Jeopardy round the dollar values of the five rows are:
+            $400, $800, $1200, $1600, and $2000.
         </p>
         <p>
             A Jeopardy game has three *contestants*.
-        </p>
-        <p>
-            The words written on a board cell are called the *clue*. When a contestant answers they give a *response*.
+            The words written on a board cell are called the <dfn>clue</dfn>.
+            When a contestant answers they give a <dfn>response</dfn>.
         </p>
 
+        
         <h3>How often are correct responses made?</h3>
-
-        <p>
-            The correct response percentage is:
-        </p>
 
         <div id="overall-correct-by-round"></div>
 
@@ -71,100 +123,93 @@
 
         <h3>How much harder do the clues get as you move down the rows?</h3>
 
-        <p>
-            Here is the percent correct responses by row:
-        </p>
-
         <div id="correct-by-row"></div>
 
         <p>
-            The clues do get harder as you go down the row, the percentage drops about 4% a row. Row 5 is especially hard, from 80% to 71% correct going from row 4 to row 5.
-        </p>
-
-        <p>
-            Here are the percent of correct responses by row and by round:
+            The clues do get harder as you go down the row, the percentage drops about 4% a row.
+            Row 5 is especially hard, from 80% to 71% correct going from row 4 to row 5.
         </p>
 
         <div id="correct-by-row-and-round"></div>
-        <!--<div id="correct-by-row-and-round-chart"></div>-->
-        <!--<div id="correct-by-row-and-round-chart0"></div>-->
 
         <p>
-            So the Double Jeopardy round has harder questions both overall and by row.
+            Breaking this out by round we see that the Double Jeopardy round has harder questions
+            both overall and by row.
         </p>
 
 
         <h3>Does clue hardness vary by columns?</h3>
 
         <p>
-            Not by much, the middle four columns are indistinguishable but the left-hand column is consistently a litle harder (2% less) than the rest and the right-hand column is consistently a little easier (2% more) than the rest.
+            Not by much, the middle four columns are indistinguishable
+            but the left-hand column is consistently a litle harder (2% less)
+            than the rest and the right-hand column is consistently a little easier (2% more) than the rest.
         </p>
 
 
         <h3>How does the number wrong vary by rows?</h3>
 
-        <p>
-            Here is the percent wrong responses by row:
-        </p>
-
         <div id="wrong-by-row"></div>
-
 
         <p>
             So as the clues get harder down the row the number of wrong responses increases but not by a lot.
         </p>
 
 
-
         <h3>Are Daily Doubles harder than other clues?</h3>
 
         <p>
-            The above figures combine regular clues with Daily Doubles. In this section we will separate these and compute the percentages separately.
-        </p>
-
-        <p>
-            Here is the percent answered correctly for regular clues / daily doubles:
+            The above figures combine regular clues with Daily Doubles.
+            In this section we will separate these and compute the percentages separately.
         </p>
 
         <div id="regular-dd-correct-by-round"></div>
-        <!--<div id="regular-dd-correct-by-round-chart"></div>-->
-        <!--<div id="regular-dd-correct-by-round-chart0"></div>-->
 
         <p>
-            The Daily Double clues are considerably harder than the regular clues. Note that the percent correct for regular clues is a bit up from the percentages for all clues in above sections.
+            The Daily Double clues are considerably harder than the regular clues.
+            Note that the percent correct for regular clues is a bit up from the percentages
+            for all clues in above sections.
         </p>
 
         <p>
-            These figures are misleading though since they include all five rows. The rows get harder as you go down and there are more daily doubles in the lower rows so these results need breaking out.
+            <strong>But</strong> these figures are misleading though since they include all five rows.
+            The rows get harder as you go down and there are more daily doubles in the hihger value rows
+            so these results need breaking out.
         </p>
 
         <h3>Are Daily Doubles harder than other clues by row?</h3>
 
-        <p>
-            Here are the percent answered correctly by row, regular clues / Daily Doubles (both rounds):
-        </p>
-
         <div id="regular-dd-correct-by-row"></div>
-        <!--<div id="regular-dd-correct-by-row-chart"></div>-->
-        <!--<div id="regular-dd-correct-by-row-chart0"></div>-->
 
         <p>
-            The daily double clues in each row are considerably harder than the regular clues in that row, roughly 20% fewer correct answers down the board. Like the regular clues, the daily doubles also get harder as we go down the board, with roughly the same drops per row (about 4-5% per row). The main difference is that, for regular clues, there is a large difference between rows 4 and 5, with a 10% drop in percent correct (double the drops between other rows).
+            The daily double clues in each row are considerably harder than the regular clues in that row,
+            roughly 20% fewer correct answers down the board.
+            Like the regular clues, the daily doubles also get harder as we go down the board,
+            with roughly the same drops per row (about 4-5% per row).
+            The main difference is that, for regular clues, there is a large difference between rows 4 and 5,
+            with a 10% drop in percent correct (double the drops between other rows).
         </p>
 
         <p>
-            You can safely ignore the results for row 1 since there are so few data points that the statistics mean little. In 31 seasons and almost 5000 games a Daily Double has been in row 1 only 16 times. Compare that with over 5000 times in row 4.
+            You can safely ignore the results for row 1 since there are so few data points
+            that the statistics mean little. In 31 seasons and almost 5000 games a Daily Double
+            has been in row 1 only 16 times.
+            Compare that with over 5000 times in row 4.
         </p>
 
 
-        <h3>Final Jeopardy</h3>
+        <h3>Are Final Jeopardy clues harder than other clues?</h3>
 
         <p>
-            Anyone watching Jeopardy knows that the Final Jeopardy questions can get very hard. It is not uncommon for all three players to miss the Final Jeopardy question. Overall players get 49% correct on final jeopardy questions.
+            Yes.
+            Anyone watching Jeopardy knows that the Final Jeopardy questions can get very hard.
+            It is not uncommon for all three players to miss the Final Jeopardy question.
+            Overall players get 49% correct on final jeopardy questions.
         </p>
 
         <p>
-            As we saw above, 85% of the clues in the game are answered correctly. Even the hardest game questions, row 5 Daily Doubles, are answered correctly 60% of the time.
+            As we saw above, 85% of the clues in the game are answered correctly.
+            Even the hardest game questions, row 5 Daily Doubles, are answered correctly 60% of the time.
         </p>
 
 
@@ -177,65 +222,23 @@
 
 
 
-        <h3>Daily Double Hunting</h3>
-
-        <p>
-            Typically the contestants picks the clues in a row from top to bottom, row 1 to row 5. But the daily doubles are most commonly found in rows 4, then row 3, then row 5. A contestant gets a big advantage getting a daily double since they can bet as much as they want and they don't have to compete with the other contestants for the answer. As a consequence, contestents often jump into columns in row 3 or 4. We call this *Daily Double hunting*.
-        </p>
-
-        <p>
-            The home viewer tend not to like this since they don't get to see the category unfold by seeing the easier questions first.
-        </p>
-
-        <p>
-            Once question is whether this affects the contestants, that is, do they do better or worse on clues found during hunting?
-        </p>
-
-        <p>
-            First let's look at all cases where clues are chosen out of the usual row 1 to row 5 order. We will distinguish between *first-time out of order* where the first clue chosen in a column is not in row 1 and *any out of order* where a clue is chosen in a column when there are still unchosen clues in an eariler row. We will exclude clues out of order that turn out to be daily doubles. Here is the number of correct responses in three cases: all clues in or out of order / clues out of order / clues first out of order:
-        </p>
-
-        <div id="overall-correct-by-row-oo"></div>
-        <!--<div id="overall-correct-by-row-oo-chart"></div>-->
-
-
-        <p>
-            NOTE TO SELF: actually row 1, any out of order is not zero, look into that and see what is wrong.
-        </p>
-
-
-        <p>
-            So there is no difference in the percent of correct responses when clues are taken out of order. One might think that not seeing how the category works would affect the rate but it seems not.
-        </p>
-
-        <p>
-            Now we will look at the same statistics but for daily doubles only:
-        </p>
-
-        <div id="dd-correct-by-row-oo"></div>
-        <!--<div id="dd-correct-by-row-oo-chart"></div>-->
-
-        <p>
-            In all cases the percentage correct is greater on out-of-order daily doubles than in order daily doubles. in the cases of rows 2 and 5 the difference is quite large. Going out of order would seem to be a disadvantage but the correct response percentage is higher for out of order cases. One possible explanation for this is that out of order daily doubles are most commonly found by contestants who are hunting for daily double and therefor using a more sophisticated Jeopardy strategy than the contestants who encounter daily doubles in order of going down a column. These contestants might alos have studied for or just be better player and so they get a higher percentage correct.
-        </p>
-
-
-
-
         <h3>Where are the daily doubles?</h3>
 
         <p>
-            Anyone who watches Jeopardy for a while notices that daily doubles rarely occur in the first row. It is even unusual to find them in the second row. The third and fourth rows are where they seem to occur the most. The sign that a player is "hunting" for a Daily Double is that the player chooses the to start a column in the third or fourth row.
-        </p>
-
-        <p>
+            Anyone who watches Jeopardy for a while notices that daily doubles rarely occur in the first row.
+            It is even unusual to find them in the second row.
+            The third and fourth rows are where they seem to occur the most.
+            The sign that a player is "hunting" for a Daily Double is that the player chooses
+            the to start a column in the third or fourth row.
             Here is where the daily doubles are most often found by row:
         </p>
 
         <div id="dd-occur-by-row"></div>
 
         <p>
-            This is way serious Daily Double hunters start in the fourth row. After the fourth row they usually go to the third row since the clues are easier there than in the fifth row (see the next section).
+            This is why serious Daily Double hunters start in the fourth row.
+            After the fourth row they usually go to the third row since the clues are easier
+            there than in the fifth row.
         </p>
 
         <h3>Do daily doubles vary by column?</h3>
@@ -248,11 +251,72 @@
             SHOW GRAPH
         </p>
 
+        <p>
+            The <a href="http://flowingdata.com/2015/03/03/where-to-find-jeopardy-daily-doubles">
+            Flowing Data</a> site has an entertaining interactive graphic of where daily doubles are found.
+        </p>
+
+
+        <h3>Daily Double Hunting</h3>
+
+        <p>
+            Typically the contestants picks the clues in a row from top to bottom, row 1 to row 5.
+            But the daily doubles are most commonly found in rows 4, then row 3, then row 5.
+            A contestant gets a big advantage getting a daily double since they can bet as much
+            as they want and they don't have to compete with the other contestants for the answer.
+            As a consequence, contestents often jump into columns in row 3 or 4.
+            We call this <dfn>Daily Double hunting</dfn>.
+            The home viewer tend not to like this since they don't get to see the category
+            unfold by seeing the easier questions first.
+        </p>
+
+        <h3>Does Daily Double hunting affect the number of correct responses to clues?</h3>
+        
+        <p>
+            First let's look at all cases where clues are chosen out of the usual row 1 to row 5 order.
+            We will distinguish between <dfn>first-time out of order</dfn> where the first clue chosen
+            in a column is not in row 1 and <dfn>any out of order</dfn>dfn> where a clue is chosen in a column
+            when there are still unchosen clues in an earlier row.
+            We will exclude clues out of order that turn out to be daily doubles.
+        </p>
+
+        <div id="overall-correct-by-row-oo"></div>
+
+        <p>
+            NOTE TO SELF: actually row 1, any out of order is not zero, look into that and see what is wrong.
+        </p>
 
 
         <p>
-            The [Flowing Date](http://flowingdata.com/2015/03/03/where-to-find-jeopardy-daily-doubles) site has an entertaining interactive graphic of where daily doubles are found.
+            So there is no difference in the percent of correct responses when clues are taken out of order.
+            One might think that not seeing how the category works would affect the rate but it seems not.
         </p>
+
+        <p>
+            Now we will look at the same statistics but for <strong>daily doubles only</strong>:
+        </p>
+
+        <div id="dd-correct-by-row-oo"></div>
+
+        <p>
+            In all cases the percentage correct is greater on out-of-order daily doubles
+            than in-order daily doubles.
+            And in the first-out-of-order cases the correct percentage for out-of-order
+            daily doubles is considerably higher than for in-order daily doubles.
+            In the cases of rows 2 and 5 the difference is especially large.
+        </p>
+        <p>
+            Going out of order would seem to be a disadvantage but the correct response percentage
+            is higher for out of order cases.
+            One possible explanation for this is that out of order daily doubles are most commonly
+            found by contestants who are hunting for daily double and therefor using a more
+            sophisticated Jeopardy strategy than the contestants who encounter daily doubles
+            in order of going down a column.
+            These contestants might also have studied more or just be better players
+            and so they get a higher percentage correct.
+        </p>
+
+
 
 
         <h3>Jeopardy Recent Events</h3>
@@ -300,17 +364,17 @@
         </p>
 
         <p>
-            Arthur Chu's run on Jeopardy got lots of commentary: in <a href="http://www.salon.com/2014/02/04/in_praise_of_arthur_chu_the_game_theory_nerd_who_broke_jeopardy/">
-            Salon</a>. in <a href="http://mashable.com/2014/02/05/jeopardy-arthur-chu/">Mashable</a>. and more <a href="xxx">http://kotaku.com/meet-the-man-who-hacked-jeopardy-1516792430</a>.
+            Arthur Chu's run on Jeopardy got lots of commentary, in <a href="http://www.salon.com/2014/02/04/in_praise_of_arthur_chu_the_game_theory_nerd_who_broke_jeopardy/">
+            Salon</a>, in <a href="http://mashable.com/2014/02/05/jeopardy-arthur-chu/">Mashable</a>, and more <a href="http://kotaku.com/meet-the-man-who-hacked-jeopardy-1516792430">Here</a>.
 
             <a href="http://mentalfloss.com/article/54853/our-interview-jeopardy-champion-arthur-chu">Here</a> is an interview.
 
 
             <a href="http://www.metafilter.com/136347/The-Prisoners-Dilemma-For-100-Alex">Here</a> is a discussion of his strategies. This article has lots of good comments.
 
-            <a href="http://www.thewire.com/entertainment/2014/01/jeopardys-newest-star-proves-optimal-strategy-really-unfriendly/357609/">More</a> on his strategires. And Ken Jennings weighs in
+            <a href="http://www.thewire.com/entertainment/2014/01/jeopardys-newest-star-proves-optimal-strategy-really-unfriendly/357609/">More</a> on his strategies. And Ken Jennings weighs in
             <a href="http://www.slate.com/articles/arts/culturebox/2014/02/ken_jennings_on_jeopardy_champion_arthur_chu_and_daily_double_hunting.html">
-                Here</a>.
+                here</a>.
         </p>
 
         <p>

@@ -3,6 +3,7 @@
 var charts = require('./charts.js');
 var dataStore = require('./dataStore.js');
 var makeOptionsBlocks = require('./makeOptionsBlocks.js');
+var refreshBoards = require('./refreshBoards.js');
 var _ = require('lodash');
 
 //------------------------------------------------------------------------------
@@ -31,6 +32,31 @@ var createTableHtml = function (tableId, topTitles, leftTitles) {
 
     html += '</table>';
     return html;
+};
+
+//------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
+var setOptionsBlock = function (blockId, s0, s1, s2, s3, s4, s5, s6) {
+    var cb = $('.controls-div-inline.stats-color-'+blockId);
+    cb.find('select:eq(0)')[0].selectedIndex = s0 || 0;
+    cb.find('select:eq(1)')[0].selectedIndex = s1 || 0;
+    cb.find('select:eq(2)')[0].selectedIndex = s2 || 0;
+    cb.find('select:eq(3)')[0].selectedIndex = s3 || 0;
+    cb.find('select:eq(4)')[0].selectedIndex = s4 || 0;
+    cb.find('select:eq(5)')[0].selectedIndex = s5 || 0;
+    cb.find('select:eq(6)')[0].selectedIndex = s6 || 0;
+};
+
+//------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
+var setupExamples = function () {
+    $('#example1').click(function () {
+        setOptionsBlock(1, 3);
+        setOptionsBlock(2);
+        setOptionsBlock(3);
+        setOptionsBlock(4);
+        refreshBoards();
+    });
 };
 
 //------------------------------------------------------------------------------
@@ -141,37 +167,37 @@ module.exports = function () {
         .appendTo(buttonDiv);
 
     // Button to show the Final Jeopardy statistics
-    $('<button type="button" id="examplesButton" class="btn btn-primary graph-button">Examples</button>')
-        .click(function () {
-        var newLinkText;
-        var examplesDiv = $('#examplesDiv');
-        if (examplesDiv.is(':visible')) {
-            examplesDiv.slideUp(500);
-            newLinkText = 'Examples';
-        } else {
-            examplesDiv.slideDown(500);
-            newLinkText = 'Hide Examples';
-        }
-        $('#examplesButton').text(newLinkText);
-    })
-        .appendTo(buttonDiv);
-
     $('<button type="button" class="btn btn-primary graph-button">Show Final Jeopardy</button>')
         .on('click', function () {
-        var finalJeopardyDiv = getFinalJeopardyDiv();
-        var newText;
-        if (finalJeopardyDiv.is(':visible')) {
-            finalJeopardyDiv.hide(500);
-            newText = 'Show Final Jeopardy';
-        } else {
-            finalJeopardyDiv.show(500);
-            newText = 'Hide Final Jeopardy';
-        }
-        $(this).text(newText);
-    })
+            var finalJeopardyDiv = getFinalJeopardyDiv();
+            var newText;
+            if (finalJeopardyDiv.is(':visible')) {
+                finalJeopardyDiv.hide(500);
+                newText = 'Show Final Jeopardy';
+            } else {
+                finalJeopardyDiv.show(500);
+                newText = 'Hide Final Jeopardy';
+            }
+            $(this).text(newText);
+        })
         .appendTo(buttonDiv);
 
     // Help and Examples buttons and DIVs
+    $('<button type="button" id="examplesButton" class="btn btn-primary graph-button">Examples</button>')
+        .click(function () {
+            var newLinkText;
+            var examplesDiv = $('#examplesDiv');
+            if (examplesDiv.is(':visible')) {
+                examplesDiv.slideUp(500);
+                newLinkText = 'Examples';
+            } else {
+                examplesDiv.slideDown(500);
+                newLinkText = 'Hide Examples';
+            }
+            $('#examplesButton').text(newLinkText);
+        })
+        .appendTo(buttonDiv);
+
     $('<button type="button" id="helpButton" class="btn btn-primary graph-button">Help</button>')
         .click(function () {
             var newLinkText;
@@ -189,7 +215,9 @@ module.exports = function () {
 
     $('<div id="examplesDiv" class="well well-sm"></div>')
         .appendTo(container)
-        .load('site/examples.html')
+        .load('site/examples.html', function () {
+            setupExamples();
+        })
         .hide();
 
     $('<div id="helpDiv" class="well well-sm"></div>')

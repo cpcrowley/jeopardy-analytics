@@ -51,7 +51,7 @@ var init = function() {
 
         console.log('games.slice(0,10)', games.slice(0, 10));
 
-        refreshBoards(boards, games);
+        refreshBoards();
     });
 };
 
