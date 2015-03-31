@@ -156,30 +156,44 @@ module.exports = function () {
     })
         .appendTo(buttonDiv);
 
-    // Add in the show an hide Help button
-    var $helpToggle = $('<button type="button" class="btn btn-primary graph-button">Help</button>')
+    // Help and Examples buttons and DIVs
+    $('<button type="button" id="helpButton" class="btn btn-primary graph-button">Help</button>')
         .click(function () {
             var newLinkText;
-            if ($helpDiv.is(':visible')) {
-                $helpDiv.slideUp(500);
+            var helpDiv = $('#helpDiv');
+            if (helpDiv.is(':visible')) {
+                helpDiv.slideUp(500);
                 newLinkText = 'Show Help';
             } else {
-                $helpDiv.slideDown(500);
+                helpDiv.slideDown(500);
                 newLinkText = 'Hide Help';
             }
-            $helpToggle.text(newLinkText);
+            $('#helpButton').text(newLinkText);
         })
         .appendTo(buttonDiv);
+    $('<div id="helpDiv" class="well well-sm"></div>')
+        .appendTo(container)
+        .load('site/help.html')
+        .hide();
+    $('<button type="button" id="examplesButton" class="btn btn-primary graph-button">Examples</button>')
+        .click(function () {
+            var newLinkText;
+            var examplesDiv = $('#examplesDiv');
+            if (examplesDiv.is(':visible')) {
+                examplesDiv.slideUp(500);
+                newLinkText = 'Show Help';
+            } else {
+                examplesDiv.slideDown(500);
+                newLinkText = 'Hide Help';
+            }
+            $('#examplesButton').text(newLinkText);
+        })
+        .appendTo(buttonDiv);
+    $('<div id="examplesDiv" class="well well-sm"></div>')
+        .appendTo(container)
+        .load('site/examples.html')
+        .hide();
 
-    // Add in the Help DIV
-    var $helpDiv = $('<div class="well well-sm"></div>')
-    .click(function () {
-        $helpToggle.click();
-    })
-    .appendTo(container)
-    .load('site/help.html')
-    .hide();
-    
     // Add in the Final Jeopardy DIV
     container.append('<div id="final-div"></div>');
 
