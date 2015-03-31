@@ -23,85 +23,90 @@ function fillRound(roundNumber, board, gameData) {
         var increment_count = 1;
         var increment_total = 1;
 
-        // Check the daily double conditions
-        var includeDailyDoubles = board.options.includeDailyDoubles;
-        if(includeDailyDoubles !== 'include') {
-            if (clue.isDD) {
-                if(includeDailyDoubles === 'exclude') {
-                    // Exclude this daily double
+        switch(board.options.includeDailyDoubles) {
+            case 'dontcare':
+                break;
+            case 'exclude':
+                if (clue.isDD) {
                     increment_count = 0;
                     increment_total = 0;
                 }
-            } else {
-                if(includeDailyDoubles === 'only') {
-                    // Exclude this non-daily double
+                break;
+            case 'only':
+                if (!clue.isDD) {
                     increment_count = 0;
                     increment_total = 0;
                 }
-            }
+                break;
         }
 
-        // Check the out-of-order conditions
-        var includeOutOfOrder = board.options.includeOutOfOrder;
-        // If we include them in all case, no need to check the details.
-        if(includeOutOfOrder !== 'include') {
-            // This check can only exclude a clue counting,
-            // so we only need to check if it is still included.
-            if (increment_count === 1) {
-                // These are the only cases left, 'include' was already checked for.
-                switch (includeOutOfOrder) {
-                    case 'first-only':
-                        if(clue.outOfOrder !== 2) {
-                            increment_count = 0;
-                            increment_total = 0;
-                        }
-                        break;
-                    case 'any-only':
-                        if(clue.outOfOrder > 0) {
-                            increment_count = 0;
-                            increment_total = 0;
-                        }
-                        break;
+        switch(board.options.includeOutOfOrder) {
+            case 'dontcare':
+                break;
+            case 'any-only':
+                if(clue.outOfOrder > 0) {
+                    increment_count = 0;
+                    increment_total = 0;
                 }
-            }
+                break;
+            case 'first-only':
+                if(clue.outOfOrder !== 2) {
+                    increment_count = 0;
+                    increment_total = 0;
+                }
+                break;
         }
 
-        // Check the total to show conditions.
-        if (increment_count === 1) {
-            increment_count = 0;
-            switch (board.options.totalToShow) {
-            case 'total':
-                increment_count = 1;
+        switch(board.options.numberRight) {
+            case 'dontcare':
                 break;
-            case '1-any':
-                if (clue.rightAnswer === 1) increment_count = 1;
+            case '0':
+                if(clue.rightAnswer !== 0) {
+                    increment_count = 0;
+                    increment_total = 0;
+                }
                 break;
-            case '1-0':
-                if (clue.rightAnswer === 1 && clue.wrongAnswers === 0) increment_count = 1;
+            case '1':
+                if(clue.rightAnswer !== 1) {
+                    increment_count = 0;
+                    increment_total = 0;
+                }
                 break;
-            case '1-1':
-                if (clue.rightAnswer === 1 && clue.wrongAnswers === 1) increment_count = 1;
+        }
+        
+        switch(board.options.numberWrong) {
+            case 'dontcare':
                 break;
-            case '1-2':
-                if (clue.rightAnswer === 1 && clue.wrongAnswers === 2) increment_count = 1;
+            case '1-3':
+                if(clue.wrongAnswers === 0) {
+                    increment_count = 0;
+                    increment_total = 0;
+                }
                 break;
-
-            case '0-any':
-                if (clue.rightAnswer === 0) increment_count = 1;
+            case '0':
+                if(clue.wrongAnswers !== 0) {
+                    increment_count = 0;
+                    increment_total = 0;
+                }
                 break;
-            case '0-0':
-                if (clue.rightAnswer === 0 && clue.wrongAnswers === 0) increment_count = 1;
+            case '1':
+                if(clue.wrongAnswers !== 1) {
+                    increment_count = 0;
+                    increment_total = 0;
+                }
                 break;
-            case '0-1':
-                if (clue.rightAnswer === 0 && clue.wrongAnswers === 1) increment_count = 1;
+            case '2':
+                if(clue.wrongAnswers !== 2) {
+                    increment_count = 0;
+                    increment_total = 0;
+                }
                 break;
-            case '0-2':
-                if (clue.rightAnswer === 0 && clue.wrongAnswers === 2) increment_count = 1;
+            case '3':
+                if(clue.wrongAnswers !== 3) {
+                    increment_count = 0;
+                    increment_total = 0;
+                }
                 break;
-            case '0-3':
-                if (clue.rightAnswer === 0 && clue.wrongAnswers === 3) increment_count = 1;
-                break;
-            }
         }
 
         if (increment_count) {

@@ -1,4 +1,4 @@
-
+"use strict";
 var reconstructGames = require('./reconstructGames.js');
 var refreshBoards = require('./refreshBoards.js');
 var _ = require('lodash');

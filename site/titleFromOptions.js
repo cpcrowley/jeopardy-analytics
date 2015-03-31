@@ -4,87 +4,84 @@ module.exports = function (options) {
     "use strict"; 
     var title = '';
     switch (options.percentSelect) {
-        case "cell":
-            title += "%";
+        case 'cell':
+            title += '%';
             break;
-        case "row":
-            title += "% (based on row)";
+        case 'row':
+            title += '% (based on row)';
             break;
-        case "column":
-            title += "% (based on column)";
+        case 'column':
+            title += '% (based on column)';
             break;
-        case "board":
-            title += "% (board on whole board)";
+        case 'board':
+            title += '% (board on whole board)';
             break;
     }
     title += ' ';
-    switch (options.totalToShow) {
-        case "none":
-            title += "None";
+    switch (options.numberRight) {
+        case 'dontcare':
+            title += '# right: 0 or 1';
             break;
-        case "total":
-            title += "Total";
+        case '0':
+            title += '# right: 0';
             break;
-        case "1-any":
-            title += "Answered correctly";
+        case '1':
+            title += '# right: 1';
             break;
-        case "1-0":
-            title += "Answered correctly (none wrong)";
+    }
+    title += ', ';
+    switch (options.numberWrong) {
+        case 'dontcare':
+            title += '# wrong: 0-3';
             break;
-        case "1-1":
-            title += "Answered correctly (+1 wrong)";
+        case '1-3':
+            title += '# wrong: 1-3';
             break;
-        case "1-2":
-            title += "Answered correctly (+2 wrong)";
+        case '0':
+            title += '# wrong: 0';
             break;
-        case "0-any":
-            title += "No correct answer";
+        case '1':
+            title += '# wrong: 1';
             break;
-        case "0-0":
-            title += "No answers at all";
+        case '2':
+            title += '# wrong: 2)';
             break;
-        case "0-1":
-            title += "1 wrong answer";
-            break;
-        case "0-2":
-            title += "2 wrong answers";
-            break;
-        case "03":
-            title += "3 wrong answers";
+        case '3':
+            title += '# wrong: 3';
             break;
     }
     title += ', ';
     switch (options.whichRounds) {
-        case "both":
-            title += "includes both rounds";
+        case 'dontcare':
+            title += 'includes both rounds';
             break;
-        case "single":
-            title += "Jeopardy round ONLY";
+        case 'single':
+            title += 'Jeopardy round ONLY';
             break;
-        case "double":
-            title += "Double Jeopardy round ONLY";
+        case 'double':
+            title += 'Double Jeopardy round ONLY';
             break;
     }
     switch (options.includeDailyDoubles) {
-        case "include":
-            title += "";
+        case 'dontcare':
+            title += '';
             break;
-        case "exclude":
-            title += ", excluding Daily Doubles";
+        case 'exclude':
+            title += ', excluding Daily Doubles';
             break;
-        case "only":
-            title += ", Daily Doubles ONLY";
+        case 'only':
+            title += ', Daily Doubles ONLY';
             break;
     }
     switch (options.includeOutOfOrder) {
-        case "include":
-            title += "";
+        case 'dontcare':
+            title += '';
             break;
-        case "first-only":
-            title += ", first out-of-order answers ONLY";
+        case 'first-only':
+            title += ', first out-of-order answers ONLY';
             break;
-        case "any-only":
-            title += ", out-of-order answers ONLY";
+        case 'any-only':
+            title += ', out-of-order answers ONLY';
             break;
     }
     return title;

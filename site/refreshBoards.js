@@ -9,20 +9,22 @@ var _ = require('lodash');
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
 var fetchOptions = function (boardNumber) {
-    var tts = document.getElementById('total-to-show-' + boardNumber);
-    var ioo = document.getElementById('include-out-of-order-' + boardNumber);
-    var idd = document.getElementById('include-daily-doubles-' + boardNumber);
-    var wr = document.getElementById('which-rounds-' + boardNumber);
-    var ps = document.getElementById('percent-select-' + boardNumber);
-    var sc = document.getElementById('show-counts-' + boardNumber);
+    var numberRight = document.getElementById('number-right-' + boardNumber);
+    var numberWrong = document.getElementById('number-wrong-' + boardNumber);
+    var includeOutOfOrder = document.getElementById('include-out-of-order-' + boardNumber);
+    var includeDailyDoubles = document.getElementById('include-daily-doubles-' + boardNumber);
+    var whichRounds = document.getElementById('which-rounds-' + boardNumber);
+    var percentSelect = document.getElementById('percent-select-' + boardNumber);
+    var showCounts = document.getElementById('show-counts-' + boardNumber);
 
     return {
-        totalToShow: tts.options[tts.selectedIndex].value,
-        includeOutOfOrder: ioo.options[ioo.selectedIndex].value,
-        includeDailyDoubles: idd.options[idd.selectedIndex].value,
-        whichRounds: wr.options[wr.selectedIndex].value,
-        percentSelect: ps.options[ps.selectedIndex].value,
-        showCounts: sc.options[sc.selectedIndex].value
+        numberRight: numberRight.options[numberRight.selectedIndex].value,
+        numberWrong: numberWrong.options[numberWrong.selectedIndex].value,
+        includeOutOfOrder: includeOutOfOrder.options[includeOutOfOrder.selectedIndex].value,
+        includeDailyDoubles: includeDailyDoubles.options[includeDailyDoubles.selectedIndex].value,
+        whichRounds: whichRounds.options[whichRounds.selectedIndex].value,
+        percentSelect: percentSelect.options[percentSelect.selectedIndex].value,
+        showCounts: showCounts.options[showCounts.selectedIndex].value
     };
 };
 

@@ -2,6 +2,11 @@
 + add ability to see a single season
 + add ability to show by seasons not years
 + add ability to show specified players
++ Add "wait for data to load" message
++ move "counts" option out of boxes, have one that applied to all
++ add SELECTs to set all four slave SELECTs, make it easy to reset things.
++ Add a list of common questions, you can pick one and it will set all the SELECTs
+  to the right values, useful for learning how they work.
 
 + move the totals column from the right to the left side in the summary graph
 + add mode to show a single game in the matrix

@@ -1,7 +1,6 @@
 "use strict";
 
 var charts = require('./charts.js');
-var refreshBoards = require('./refreshBoards.js');
 var dataStore = require('./dataStore.js');
 var makeOptionsBlocks = require('./makeOptionsBlocks.js');
 var _ = require('lodash');
@@ -84,7 +83,7 @@ module.exports = function () {
         .appendTo('body');
 
     // Add title
-    var title = $('<h1>Jeopardy Analytics</h1>')
+    $('<h1>Jeopardy Analytics</h1>')
         .appendTo(container);
     
     // Add options blocks

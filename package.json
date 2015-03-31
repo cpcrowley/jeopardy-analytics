@@ -11,8 +11,8 @@
   "scripts": {
     "wc": "wc index.html site/*.css site/[^b]*.js | sort -nr",
     "wc2": "wc jeopstats.js public/* lib/*.js | sort -nr",
-    "build-js": "browserify site/index.js -d | exorcist site/bundle.js.map > site/bundle.js",
-    "watch-js": "watchify site/index.js -dv  | exorcist site/bundle.js.map > site/bundle.js"
+    "b": "browserify site/index.js -d | exorcist site/bundle.js.map > site/bundle.js",
+    "watch": "watchify site/index.js -dv  | exorcist site/bundle.js.map > site/bundle.js"
   },
   "repository": {
     "type": "git",

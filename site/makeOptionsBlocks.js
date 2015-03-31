@@ -46,35 +46,34 @@ var makeControlsBlockTemplate = function (wide) {
         '<div class="' + mainDivClass + ' stats-color-<%= cbId %>">' +
         '<span class="controls-title"><%= cbId %>:</span>' +
         '<button type="button" class="btn btn-default btn-sm graph-button">Graph by Year</button>' +
-        makeSelectControlsBlock(wide, 'total-to-show', 'Show', makeOptionList([
-            ["none", "None"],
-            ["total", "total only"],
-            ["1-any", "right:1 wrong:any"],
-            ["1-0", "right:1 wrong:0"],
-            ["1-1", "right:1 wrong:1"],
-            ["1-2", "right:1 wrong:2"],
-            ["0-any", "right:0 wrong:any"],
-            ["0-0", "right:0 wrong:0"],
-            ["0-1", "right:0 wrong:1"],
-            ["0-2", "right:0 wrong:2"],
-            ["0-3", "right:0 wrong:3"]])) +
+        makeSelectControlsBlock(wide, 'number-right', '# correct', makeOptionList([
+            ["dontcare", "Don't care"],
+            ["0", "0"],
+            ["1", "1"]])) +
+        makeSelectControlsBlock(wide, 'number-wrong', '# wrong', makeOptionList([
+            ["dontcare", "Don't care"],
+            ["1-3", "1-3"],
+            ["0", "0"],
+            ["1", "1"],
+            ["2", "2"],
+            ["3", "3"]])) +
         makeSelectControlsBlock(wide, 'include-daily-doubles', 'Daily doubles', makeOptionList([
-            ["include", "Include"],
-            ["exclude", "Exclude"],
-            ["only", "Only"]])) +
+            ["dontcare", "Don't care"],
+            ["exclude", "No (exclude)"],
+            ["only", "Yes (only)"]])) +
         makeSelectControlsBlock(wide, 'include-out-of-order', 'Out of order', makeOptionList([
-            ["include", "Include"],
+            ["dontcare", "Don't care"],
             ["first-only", "First OO only"],
-            ["any-only", "Any OO only"]])) +
+            ["any-only", "Yes (only)"]])) +
         makeSelectControlsBlock(wide, 'which-rounds', 'Rounds', makeOptionList([
-            ["both", "Both"],
-            ["single", "Jeopardy only"],
-            ["double", "Double only"]])) +
+            ["dontcare", "Don't care"],
+            ["single", "Jeopardy"],
+            ["double", "Double Jeopardy"]])) +
         makeSelectControlsBlock(wide, 'percent-select', '%', makeOptionList([
-            ["cell", "By cell"],
-            ["row", "By row"],
-            ["column", "By column"],
-            ["board", "By board"]])) +
+            ["cell", "passed/cell total"],
+            ["row", "passed/row total"],
+            ["column", "passed/column total"],
+            ["board", "passed/board total"]])) +
         makeSelectControlsBlock(wide, 'show-counts', 'Counts', makeOptionList([
             ["none", "None"],
             ["count", "count only"],
