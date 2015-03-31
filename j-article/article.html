@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Jeopardy Questions</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- bootstrap css and theme-->
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css">
+
+    <!-- site CSS -->
+    <link rel="stylesheet" href="article.css">
+
+    <!-- Google loader and Google Visualization (packages: corechart) -->
+    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+    <script type="text/javascript">
+        google.load('visualization', '1.0', {
+            'packages': ['corechart', 'table']
+        });
+    </script>
+
+    <!-- jquery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+
+    <!-- bootstrap -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+
+    <!-- lodash -- now handled with require
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/3.5.0/lodash.min.js"></script> -->
+
+    <!-- My JavaScript -->
+    <script src="article.js"></script>
+</head>
+
+<body>
+    <div class="container-fluid">
+        <h1>Jeopardy</h1>
+
+        <h3>The Jeopardy Board</h3>
+
+        <p>
+            The Jeopardy board has five *rows* and six *columns*. Each square on the board will be called a *cell*. Each column is a *category* but in this analysis we will only not be concerned with the actual content of the clues and responses so we will just use the word *column*.
+        </p>
+        <p>
+            A Jeopardy game consists of two rounds, Jeopardy and Double Jeopardy. The dollar value of the answers is doubled in Double Jeopardy.
+        </p>
+        <p>
+            The board has five rows which we will number one to five. Going to higher numbered rows will be called *going down the rows*. In the Jeopardy round the dollar values of the five rows are: $200, $400, $600, $800, and $1000. In the Double Jeopardy round the dollar values of the five rows are: $400, $800, $1200, $1600, and $2000.
+        </p>
+        <p>
+            A Jeopardy game has three *contestants*.
+        </p>
+        <p>
+            The words written on a board cell are called the *clue*. When a contestant answers they give a *response*.
+        </p>
+
+        <h3>How often are correct responses made?</h3>
+
+        <p>
+            The correct response percentage is:
+        </p>
+
+        <div id="overall-correct-by-round"></div>
+
+        <p>
+            So it is true that Double Jeopardy is harder but the difference is not large.
+        </p>
+
+
+        <h3>How much harder do the clues get as you move down the rows?</h3>
+
+        <p>
+            Here is the percent correct responses by row:
+        </p>
+
+        <div id="correct-by-row"></div>
+
+        <p>
+            The clues do get harder as you go down the row, the percentage drops about 4% a row. Row 5 is especially hard, from 80% to 71% correct going from row 4 to row 5.
+        </p>
+
+        <p>
+            Here are the percent of correct responses by row and by round:
+        </p>
+
+        <div id="correct-by-row-and-round"></div>
+        <!--<div id="correct-by-row-and-round-chart"></div>-->
+        <!--<div id="correct-by-row-and-round-chart0"></div>-->
+
+        <p>
+            So the Double Jeopardy round has harder questions both overall and by row.
+        </p>
+
+
+        <h3>Does clue hardness vary by columns?</h3>
+
+        <p>
+            Not by much, the middle four columns are indistinguishable but the left-hand column is consistently a litle harder (2% less) than the rest and the right-hand column is consistently a little easier (2% more) than the rest.
+        </p>
+
+
+        <h3>How does the number wrong vary by rows?</h3>
+
+        <p>
+            Here is the percent wrong responses by row:
+        </p>
+
+        <div id="wrong-by-row"></div>
+
+
+        <p>
+            So as the clues get harder down the row the number of wrong responses increases but not by a lot.
+        </p>
+
+
+
+        <h3>Are Daily Doubles harder than other clues?</h3>
+
+        <p>
+            The above figures combine regular clues with Daily Doubles. In this section we will separate these and compute the percentages separately.
+        </p>
+
+        <p>
+            Here is the percent answered correctly for regular clues / daily doubles:
+        </p>
+
+        <div id="regular-dd-correct-by-round"></div>
+        <!--<div id="regular-dd-correct-by-round-chart"></div>-->
+        <!--<div id="regular-dd-correct-by-round-chart0"></div>-->
+
+        <p>
+            The Daily Double clues are considerably harder than the regular clues. Note that the percent correct for regular clues is a bit up from the percentages for all clues in above sections.
+        </p>
+
+        <p>
+            These figures are misleading though since they include all five rows. The rows get harder as you go down and there are more daily doubles in the lower rows so these results need breaking out.
+        </p>
+
+        <h3>Are Daily Doubles harder than other clues by row?</h3>
+
+        <p>
+            Here are the percent answered correctly by row, regular clues / Daily Doubles (both rounds):
+        </p>
+
+        <div id="regular-dd-correct-by-row"></div>
+        <!--<div id="regular-dd-correct-by-row-chart"></div>-->
+        <!--<div id="regular-dd-correct-by-row-chart0"></div>-->
+
+        <p>
+            The daily double clues in each row are considerably harder than the regular clues in that row, roughly 20% fewer correct answers down the board. Like the regular clues, the daily doubles also get harder as we go down the board, with roughly the same drops per row (about 4-5% per row). The main difference is that, for regular clues, there is a large difference between rows 4 and 5, with a 10% drop in percent correct (double the drops between other rows).
+        </p>
+
+        <p>
+            You can safely ignore the results for row 1 since there are so few data points that the statistics mean little. In 31 seasons and almost 5000 games a Daily Double has been in row 1 only 16 times. Compare that with over 5000 times in row 4.
+        </p>
+
+
+        <h3>Final Jeopardy</h3>
+
+        <p>
+            Anyone watching Jeopardy knows that the Final Jeopardy questions can get very hard. It is not uncommon for all three players to miss the Final Jeopardy question. Overall players get 49% correct on final jeopardy questions.
+        </p>
+
+        <p>
+            As we saw above, 85% of the clues in the game are answered correctly. Even the hardest game questions, row 5 Daily Doubles, are answered correctly 60% of the time.
+        </p>
+
+
+
+        <h3>Variations over the years</h3>
+
+        <p>
+            TODO
+        </p>
+
+
+
+        <h3>Daily Double Hunting</h3>
+
+        <p>
+            Typically the contestants picks the clues in a row from top to bottom, row 1 to row 5. But the daily doubles are most commonly found in rows 4, then row 3, then row 5. A contestant gets a big advantage getting a daily double since they can bet as much as they want and they don't have to compete with the other contestants for the answer. As a consequence, contestents often jump into columns in row 3 or 4. We call this *Daily Double hunting*.
+        </p>
+
+        <p>
+            The home viewer tend not to like this since they don't get to see the category unfold by seeing the easier questions first.
+        </p>
+
+        <p>
+            Once question is whether this affects the contestants, that is, do they do better or worse on clues found during hunting?
+        </p>
+
+        <p>
+            First let's look at all cases where clues are chosen out of the usual row 1 to row 5 order. We will distinguish between *first-time out of order* where the first clue chosen in a column is not in row 1 and *any out of order* where a clue is chosen in a column when there are still unchosen clues in an eariler row. We will exclude clues out of order that turn out to be daily doubles. Here is the number of correct responses in three cases: all clues in or out of order / clues out of order / clues first out of order:
+        </p>
+
+        <div id="overall-correct-by-row-oo"></div>
+        <!--<div id="overall-correct-by-row-oo-chart"></div>-->
+
+
+        <p>
+            NOTE TO SELF: actually row 1, any out of order is not zero, look into that and see what is wrong.
+        </p>
+
+
+        <p>
+            So there is no difference in the percent of correct responses when clues are taken out of order. One might think that not seeing how the category works would affect the rate but it seems not.
+        </p>
+
+        <p>
+            Now we will look at the same statistics but for daily doubles only:
+        </p>
+
+        <div id="dd-correct-by-row-oo"></div>
+        <!--<div id="dd-correct-by-row-oo-chart"></div>-->
+
+        <p>
+            In all cases the percentage correct is greater on out-of-order daily doubles than in order daily doubles. in the cases of rows 2 and 5 the difference is quite large. Going out of order would seem to be a disadvantage but the correct response percentage is higher for out of order cases. One possible explanation for this is that out of order daily doubles are most commonly found by contestants who are hunting for daily double and therefor using a more sophisticated Jeopardy strategy than the contestants who encounter daily doubles in order of going down a column. These contestants might alos have studied for or just be better player and so they get a higher percentage correct.
+        </p>
+
+
+
+
+        <h3>Where are the daily doubles?</h3>
+
+        <p>
+            Anyone who watches Jeopardy for a while notices that daily doubles rarely occur in the first row. It is even unusual to find them in the second row. The third and fourth rows are where they seem to occur the most. The sign that a player is "hunting" for a Daily Double is that the player chooses the to start a column in the third or fourth row.
+        </p>
+
+        <p>
+            Here is where the daily doubles are most often found by row:
+        </p>
+
+        <div id="dd-occur-by-row"></div>
+
+        <p>
+            This is way serious Daily Double hunters start in the fourth row. After the fourth row they usually go to the third row since the clues are easier there than in the fifth row (see the next section).
+        </p>
+
+        <h3>Do daily doubles vary by column?</h3>
+
+        <p>
+            A little but not by much.
+        </p>
+
+        <p>
+            SHOW GRAPH
+        </p>
+
+
+
+        <p>
+            The [Flowing Date](http://flowingdata.com/2015/03/03/where-to-find-jeopardy-daily-doubles) site has an entertaining interactive graphic of where daily doubles are found.
+        </p>
+
+
+        <h3>Jeopardy Recent Events</h3>
+
+        <p>
+            The appearance of Arthur Chu on Jeopardy in 2014 caused a lot of internet comment. A lot of the commentary was his use of "game theory" to win. What he had done was to look at web sites and books that discussed best strategies for Jeopardy, added some of his own, and developed a distictive playing stategy. The most obvious feature was his tendency to "jump around", that is, not to go down the board in a category from the easiest to hardest questions but to jump into the middle of categories and jump between categories.
+        </p>
+
+        <p>
+            The main advantage of this strategy is that it increases your chance of finding the Daily Doubles. Finding a Daily Double is an advantage to the player for several reasons. First the player can wager a large amount of money (up to as much as the player has) on the clue. This allows a player to win a lot of money quicky and either catch up to a leading player or take a commanding lead which discourages the other players. Second the player does not have to compete with any other players to answer the question. The player can take the time to think about the answer and answer carefully. Third the plater deprives the other player from getting the advantages of a Daily Double. So play who is a ways ahead can find the Daily Doubles and prevent another player from quickly catching up.
+        </p>
+
+        <p>
+            Another advantage of jumping around is that it can rattle the other player. The choosing player knows which category is next but the other players do not whoch gives the choosing player a slight time advantage.
+        </p>
+
+
+        <h3>Jeopardy Articles</h3>
+
+        <p>
+            Articles can analyze Jeopardy from two points of view: playing strategy and clue content. Some articles look at the clues and categories themselves: how often is there a geography category, how often is a state the answer to a clue, how often are English kings mentioned, etc. This information is useful for players preparing for the game in that is gives pointers and what to study and how much time to spend on different topics.
+        </p>
+
+
+        <p>
+            More common are articles on playing strategies: how much should you bet on Daily Doubles, should you "hunt" for Daily Doubles, what is the best wagering strategy for Final Jeopardy, etc. There is pretty much universal agreement that it is advantageous to hunt for Daily Doubles. The problem is that this strategy is unpopular with viewers.
+        </p>
+
+        <p>
+            The first place to go for Jeopardy data is the amazing
+            <a href="http://www.j-archive.com/">J! Archive</a>. You can explore words used in Jeopardy clues at the
+            <a href="http://time.com/42984/jeopardy-interactive/">n-gram</a> site. You can see which
+            <a href="http://www.slate.com/articles/arts/culturebox/2014/05/jeopardy_map_the_dollar_value_of_american_locales_as_determined_by_alex.html">
+                state are most valuable</a> in Jeopardy.
+
+            <a href="http://flowingdata.com/2015/03/03/where-to-find-jeopardy-daily-doubles/">
+                This site</a> has a nice dynamic graphic showing where the daily doubles are.
+
+            <a href="http://thefinalwager.co/">This site</a> has everything you need to know about making the Final Jeopardy wager, including analysis of the final wager for hundreds of recent games. More <a href="http://bgr.com/2015/03/18/final-jeopardy-betting-strategy/">here</a> on Final Jeopardy betting strategy.
+        </p>
+
+        <p>
+            You can look at
+            <a href="http://www.salon.com/2014/02/05/the_seven_biggest_jeopardy_fails_ever/">Jeaopardy Fails</a>. And more <a href="http://mashable.com/2014/04/04/alex-trebek-suit-jeopardy/">awkward moments</a>.
+        </p>
+
+        <p>
+            Arthur Chu's run on Jeopardy got lots of commentary: in <a href="http://www.salon.com/2014/02/04/in_praise_of_arthur_chu_the_game_theory_nerd_who_broke_jeopardy/">
+            Salon</a>. in <a href="http://mashable.com/2014/02/05/jeopardy-arthur-chu/">Mashable</a>. and more <a href="xxx">http://kotaku.com/meet-the-man-who-hacked-jeopardy-1516792430</a>.
+
+            <a href="http://mentalfloss.com/article/54853/our-interview-jeopardy-champion-arthur-chu">Here</a> is an interview.
+
+
+            <a href="http://www.metafilter.com/136347/The-Prisoners-Dilemma-For-100-Alex">Here</a> is a discussion of his strategies. This article has lots of good comments.
+
+            <a href="http://www.thewire.com/entertainment/2014/01/jeopardys-newest-star-proves-optimal-strategy-really-unfriendly/357609/">More</a> on his strategires. And Ken Jennings weighs in
+            <a href="http://www.slate.com/articles/arts/culturebox/2014/02/ken_jennings_on_jeopardy_champion_arthur_chu_and_daily_double_hunting.html">
+                Here</a>.
+        </p>
+
+        <p>
+            And <a href="http://mashable.com/2014/06/02/julia-collins-jeopardy-over/">Julia Collins</a> record-breaking streak a few months later put her as thr second-winningest Jeopardy campion ever, second the Ken Jennings. Her strategies are discussed
+            <a href="http://www.washingtonpost.com/blogs/wonkblog/wp/2014/05/29/how-to-dominate-jeopardy-like-julia-collins/">here</a>, limits on streaks
+            <a href="http://www.salon.com/2014/06/02/julia_collinss_legendary_jeopardy_run_proves_we_need_a_five_win_limit/">
+            here</a>, and gender issues <a href="http://www.metafilter.com/139490/Gender-and-Jeopardy">here</a>
+        </p>
+
+        <h3>Data from tht J! Archive</h3>
+
+        <p>
+            278,640 clues and counting!
+        </p>
+
+        <p>
+            List of tournaments and special play prizes [http://www.j-archive.com/listprizes.php]
+        </p>
+
+        <h4>Daily double statistics: For each season</h4>
+
+        <ul>
+            <li> when it is found</li>
+            <li> by which podium</li>
+            <li> how much people risked</li>
+            <li> true daily doubles, and wagers below the clue's value</li>
+            <li> high, low, average wagers</li>
+            <li> number and percent correct by row and overall</li>
+            <li> ================== check with my stats, add ability to look at one season only.</li>
+        </ul>
+
+        <h4>Final Jeopardy statistics</h4>
+        <ul>
+
+            <li> correct distribution responses</li>
+            <li> Shore's conjecture, lots of final jeopardy wagering strategy</li>
+            <li> List of all final jeopardy questions and categories</li>
+        </ul>
+
+        <h4>Miscellaneous statistics</h4>
+        <ul>
+
+            <li> scores, number correct, etc etc
+        </ul>
+
+        <h4>For each game:</h4>
+        <ul>
+
+            <li> contestants</li>
+            <li> all clues, all answers</li>
+            <li> Alex's comments</li>
+            <li> order clues were picked</li>
+            <li> right and wrong answers</li>
+            <li> daily doubles, with bet and outcome</li>
+            <li> scores at each break</li>
+            <li> final jeopardy clue, answer, right, wrong, bets</li>
+        </ul>
+
+
+    </div>
+
+</body>
+
+</html>

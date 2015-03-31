@@ -1,9 +1,10 @@
 ----- To Do
-+ do a refresh every time one of the select boxes changes
++ add ability to see a single season
++ add ability to show by seasons not years
++ add ability to show specified players
+
 + move the totals column from the right to the left side in the summary graph
 + add mode to show a single game in the matrix
-+ finish article with overview and analysis based on my site
-+ add button to hide the legend
 + when the final jeopardy results are hidden redo the graph
 + maybe add a log div which shows each calcuation you have made, with easy select and copy, and a clear button
 
