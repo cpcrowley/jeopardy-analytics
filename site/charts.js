@@ -41,7 +41,7 @@ var chartBy4 = function (boards, title) {
         var dataArray = [label];
         _.each(dataStore.boardRange, function (boardNumber) {
             var board = boards[boardNumber];
-            if (board.options.totalToShow === 'none') {
+            if (board.options.numberRight === 'doNotShow') {
                 dataArray.push(0);
             } else {
                 var totalOfRowData = board.board1[row][0];

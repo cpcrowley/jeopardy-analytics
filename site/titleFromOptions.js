@@ -19,7 +19,7 @@ module.exports = function (options) {
     }
     title += ' ';
     switch (options.numberRight) {
-        case 'dontcare':
+        case 'any':
             title += '# right: 0 or 1';
             break;
         case '0':
@@ -31,7 +31,7 @@ module.exports = function (options) {
     }
     title += ', ';
     switch (options.numberWrong) {
-        case 'dontcare':
+        case 'any':
             title += '# wrong: 0-3';
             break;
         case '1-3':

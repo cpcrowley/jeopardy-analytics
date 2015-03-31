@@ -60,6 +60,9 @@
 .stats-color-4 {
     color: rgb(13,148,21);
 }
+.stats-color-Reset {
+    color: black;
+}
 .space-right {
     margin-right: 1em;
 }

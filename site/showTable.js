@@ -14,7 +14,7 @@ var fillTD = function (td, row, col, boards) {
         var board1 = board.board1;
         var options = board.options;
 
-        if (options.totalToShow === 'none') {
+        if (options.numberRight === 'doNotShow') {
             return; 
         }
 

@@ -1,4 +1,8 @@
 ----- To Do
++ Bug? when I change the '%' select it changes the summary table but not the chart, why not?
++ add "examples" to help which have a button which runs them
++ add info box which tells how many seasons, games, rounds, clues, players found and most recent update
++ fix up the problems it finds with missing data and HTML files.
 + add ability to see a single season
 + add ability to show by seasons not years
 + add ability to show specified players
@@ -7,6 +11,11 @@
 + add SELECTs to set all four slave SELECTs, make it easy to reset things.
 + Add a list of common questions, you can pick one and it will set all the SELECTs
   to the right values, useful for learning how they work.
+  
++ clean up web site, move everything I don't use to an "old" directory which is not git'ed.
+  Also clean up the server side, get rid of old files. Look through them and then
+  let rsync -d get rid of the unused things.
++ put website up on dreamhost, github and google and compare them.
 
 + move the totals column from the right to the left side in the summary graph
 + add mode to show a single game in the matrix
@@ -14,14 +23,16 @@
 + maybe add a log div which shows each calcuation you have made, with easy select and copy, and a clear button
 
 
+
+
 ----- browserify: seems to be working, source map also works
-% npm run build-js -- to create a new version after editing
-% npm run watch-js -- start a watcher to recreate a new version every time a file is saved.
+% r b -- to create a new version after editing
+% r watch-js -- start a watcher to recreate a new version every time a file is saved.
 
 ----- package.json
 - added some useful scripts, make replacement
-% npm run wc -- line counts for web site
-% npm run wc2 -- line counts for node.js site
+% r wc -- line counts for web site
+% r wc2 -- line counts for node.js site
 
 ----- grunt: installed and seems to be working
 % grunt browserify -- create new web site

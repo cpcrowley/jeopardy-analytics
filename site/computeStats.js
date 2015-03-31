@@ -58,53 +58,53 @@ function fillRound(roundNumber, board, gameData) {
         }
 
         switch(board.options.numberRight) {
-            case 'dontcare':
+            case 'any':
                 break;
             case '0':
                 if(clue.rightAnswer !== 0) {
                     increment_count = 0;
-                    increment_total = 0;
+                    //increment_total = 0;
                 }
                 break;
             case '1':
                 if(clue.rightAnswer !== 1) {
                     increment_count = 0;
-                    increment_total = 0;
+                    //increment_total = 0;
                 }
                 break;
         }
         
         switch(board.options.numberWrong) {
-            case 'dontcare':
+            case 'any':
                 break;
             case '1-3':
                 if(clue.wrongAnswers === 0) {
                     increment_count = 0;
-                    increment_total = 0;
+                    //increment_total = 0;
                 }
                 break;
             case '0':
                 if(clue.wrongAnswers !== 0) {
                     increment_count = 0;
-                    increment_total = 0;
+                    //increment_total = 0;
                 }
                 break;
             case '1':
                 if(clue.wrongAnswers !== 1) {
                     increment_count = 0;
-                    increment_total = 0;
+                    //increment_total = 0;
                 }
                 break;
             case '2':
                 if(clue.wrongAnswers !== 2) {
                     increment_count = 0;
-                    increment_total = 0;
+                    //increment_total = 0;
                 }
                 break;
             case '3':
                 if(clue.wrongAnswers !== 3) {
                     increment_count = 0;
-                    increment_total = 0;
+                    //increment_total = 0;
                 }
                 break;
         }
@@ -129,7 +129,7 @@ module.exports = function () {
     for (var boardNumber = 1; boardNumber < boards.length; ++boardNumber) {
         var board = boards[boardNumber];
 
-        if (board.options.totalToShow === 'none') {
+        if (board.options.numberRight === 'doNotShow') {
             break;
         }
 

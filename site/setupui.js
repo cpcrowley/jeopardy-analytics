@@ -172,13 +172,14 @@ module.exports = function () {
         .appendTo(buttonDiv);
 
     // Add in the Help DIV
-    var $helpDiv = $('<div class="well well-sm">No help yet</div>')
+    var $helpDiv = $('<div class="well well-sm"></div>')
     .click(function () {
         $helpToggle.click();
     })
     .appendTo(container)
+    .load('site/help.html')
     .hide();
-
+    
     // Add in the Final Jeopardy DIV
     container.append('<div id="final-div"></div>');
 
