@@ -1,7 +1,10 @@
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
 module.exports = function (options) {
-    "use strict"; 
+    "use strict";
+    if(options.showFilter === "doNotShow") {
+        return '';
+    }
     var title = '';
     switch (options.percentSelect) {
         case 'cell':
@@ -19,8 +22,6 @@ module.exports = function (options) {
     }
     title += ' ';
     switch (options.numberRight) {
-        case 'doNotShow':
-            return '';
         case 'any':
             title += '# right: 0 or 1';
             break;

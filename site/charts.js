@@ -5,6 +5,9 @@
 var dataStore = require('./dataStore.js');
 var _ = require('lodash');
 
+var chartWidth = 1000;
+var chartHeight = 600;
+
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
 var chartFinal = function (rightWrongData, title) {
@@ -15,8 +18,8 @@ var chartFinal = function (rightWrongData, title) {
 
     var options = {
         title: title,
-        width: 1200,
-        height: 600
+        width: chartWidth,
+        height: chartHeight
     };
 
     var chart = new google.visualization.LineChart(document.getElementById('graph-div'));
@@ -41,7 +44,7 @@ var chartBy4 = function (boards, title) {
         var dataArray = [label];
         _.each(dataStore.boardRange, function (boardNumber) {
             var board = boards[boardNumber];
-            if (board.options.numberRight === 'doNotShow') {
+            if (board.options.showFilter === 'doNotShow') {
                 dataArray.push(0);
             } else {
                 var totalOfRowData = board.board1[row][0];
@@ -60,8 +63,8 @@ var chartBy4 = function (boards, title) {
 
     var options = {
         title: title,
-        width: 1200,
-        height: 600
+        width: chartWidth,
+        height: chartHeight
         //legend: { position: 'bottom' }
     };
 
@@ -102,8 +105,8 @@ var chartByYear = function (boardsByYear, title) {
 
     var options = {
         title: title,
-        width: 1200,
-        height: 600
+        width: chartWidth,
+        height: chartHeight
         //legend: { position: 'bottom' }
     };
 

@@ -1,4 +1,4 @@
-"use strict"; 
+"use strict";
 
 var dataStore = require('./dataStore.js');
 var setupui = require('./setupui.js');

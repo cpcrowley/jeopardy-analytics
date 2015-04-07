@@ -7,6 +7,8 @@ var refreshBoards = require('./refreshBoards.js');
 var titleFromOptions = require('./titleFromOptions.js');
 var _ = require('lodash');
 
+var cb0, cb1, cb2, cb3, cb4, cb5, optionsBlock;
+
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
 var makeOptionList = function (items) {
@@ -39,8 +41,24 @@ var makeControlsBlockTemplate = function () {
         '<div class="controls-div-inline stats-color-<%= cbId %>">' +
         '<span class="controls-title"><%= cbId %>:</span>' +
         '<button type="button" class="btn btn-default btn-sm graph-button">Graph by Year</button>' +
+        makeSelectControlsBlock('show-filter', 'Show this filter?', makeOptionList([
+            ["show", "Yes"],
+            ["doNotShow", "No"]])) +
+        '<div class="controls-subtitle">Clues to include</div>' +
+        makeSelectControlsBlock('include-daily-doubles', 'Daily doubles', makeOptionList([
+            ["dontcare", "Include all"],
+            ["exclude", "No (exclude)"],
+            ["only", "Yes (only)"]])) +
+        makeSelectControlsBlock('include-out-of-order', 'Out of order', makeOptionList([
+            ["dontcare", "Yes"],
+            ["first-only", "First OO only"],
+            ["any-only", "Only"]])) +
+        makeSelectControlsBlock('which-rounds', 'Rounds', makeOptionList([
+            ["dontcare", "Both rounds"],
+            ["single", "Jeopardy"],
+            ["double", "Double Jeopardy"]])) +
+        '<div class="controls-subtitle">What to count</div>' +
         makeSelectControlsBlock('number-right', '# correct', makeOptionList([
-            ["doNotShow", "Do not show"],
             ["any", "Any"],
             ["0", "0"],
             ["1", "1"]])) +
@@ -51,18 +69,7 @@ var makeControlsBlockTemplate = function () {
             ["1", "1"],
             ["2", "2"],
             ["3", "3"]])) +
-        makeSelectControlsBlock('include-daily-doubles', 'Daily doubles', makeOptionList([
-            ["dontcare", "Don't care"],
-            ["exclude", "No (exclude)"],
-            ["only", "Yes (only)"]])) +
-        makeSelectControlsBlock('include-out-of-order', 'Out of order', makeOptionList([
-            ["dontcare", "Don't care"],
-            ["first-only", "First OO only"],
-            ["any-only", "Yes (only)"]])) +
-        makeSelectControlsBlock('which-rounds', 'Rounds', makeOptionList([
-            ["dontcare", "Don't care"],
-            ["single", "Jeopardy"],
-            ["double", "Double Jeopardy"]])) +
+        '<div class="controls-subtitle">What to show</div>' +
         makeSelectControlsBlock('percent-select', '%', makeOptionList([
             ["cell", "passed/cell total"],
             ["row", "passed/row total"],
@@ -75,11 +82,80 @@ var makeControlsBlockTemplate = function () {
         '</div>');
 };
 
+//------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
+var makeOverallControlsBlock = function () {
+    var html =
+        '<div class="controls-div-inline stats-color-Reset">' +
+        '<div class="controls-title">Controls</div>' +
+
+        '<div class="controls-block">' +
+        '<label for="number-of-counts">Number of counts</label>' +
+        '<select id="number-of-counts" class="stats-color-Reset form-control">' +
+        '<option value="1">1</option>' +
+        '<option value="2">2</option>' +
+        '<option value="3">3</option>' +
+        '<option value="4">4</option>' +
+        '</select>' +
+        '</div>' +
+
+        /*'<button type="button" class="btn btn-default btn-sm graph-button">Show Game Board</button>' +
+        '<br/>' +
+        '<button type="button" class="btn btn-default btn-sm graph-button">Show Graph</button>' +
+        '<br/>' +
+        '<button type="button" class="btn btn-default btn-sm graph-button">Show Final Jeopardy</button>' +
+        '<br/>' +*/
+        '<button type="button" class="btn btn-default btn-sm graph-button">Help</button>' +
+        '</div>';
+    return $(html);
+};
+
+//------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
+var setNumberOfCounts = function (n) {
+    var n2 = parseInt(n,10);
+    switch(n2) {
+        case 1:
+            console.log('n2 = 1');
+            cb2.attr('display', 'none');
+            cb3.attr('display', 'none');
+            cb4.attr('display', 'none');
+            break;
+        case 2:
+            console.log('n2 = 2');
+            cb2.attr('display', 'inline-block');
+            cb3.attr('display', 'none');
+            cb4.attr('display', 'none');
+            break;
+        case 3:
+            console.log('n2 = 3');
+            cb2.attr('display', 'inline-block');
+            cb3.attr('display', 'inline-block');
+            cb4.attr('display', 'none');
+            break;
+        case 4:
+            console.log('n2 = 4');
+            cb2.attr('display', 'inline-block');
+            cb3.attr('display', 'inline-block');
+            cb4.attr('display', 'inline-block');
+            break;
+        default:
+            console.log('default n2='+n2);
+            break;
+    }
+    //refreshBoards();
+};
+
 module.exports = function () {
     
+    cb0 = makeOverallControlsBlock();
+    cb0.find('#number-of-counts').on('change', function () {
+        setNumberOfCounts(this.options[this.selectedIndex].value);
+    });
+
     var controlBlockHtmlTemplate = makeControlsBlockTemplate();
 
-    var cb1 = $(controlBlockHtmlTemplate({cbId: '1'}));
+    cb1 = $(controlBlockHtmlTemplate({cbId: '1'}));
     cb1.find('select:eq(0)')[0].selectedIndex = 3;
     cb1.find('select:eq(4)')[0].selectedIndex = 1;
     cb1.find('.graph-button').on('click', function () {
@@ -87,7 +163,7 @@ module.exports = function () {
         charts('chartByYear', board.boardsByYear, '1: ' + titleFromOptions(board.options));
     });
 
-    var cb2 = $(controlBlockHtmlTemplate({cbId: '2'}));
+    cb2 = $(controlBlockHtmlTemplate({cbId: '2'}));
     cb2.find('select:eq(0)')[0].selectedIndex = 3;
     cb2.find('select:eq(4)')[0].selectedIndex = 2;
     cb2.find('.graph-button').on('click', function () {
@@ -95,7 +171,7 @@ module.exports = function () {
         charts('chartByYear', board.boardsByYear, '2: ' + titleFromOptions(board.options));
     });
 
-    var cb3 = $(controlBlockHtmlTemplate({cbId: '3'}));
+    cb3 = $(controlBlockHtmlTemplate({cbId: '3'}));
     cb3.find('select:eq(0)')[0].selectedIndex = 3;
     cb3.find('select:eq(3)')[0].selectedIndex = 2;
     cb3.find('.graph-button').on('click', function () {
@@ -103,7 +179,7 @@ module.exports = function () {
         charts('chartByYear', board.boardsByYear, '3: ' + titleFromOptions(board.options));
     });
 
-    var cb4 = $(controlBlockHtmlTemplate({cbId: '4'}));
+    cb4 = $(controlBlockHtmlTemplate({cbId: '4'}));
     cb4.find('select:eq(0)')[0].selectedIndex = 3;
     cb4.find('select:eq(2)')[0].selectedIndex = 2;
     cb4.find('.graph-button').on('click', function () {
@@ -111,7 +187,7 @@ module.exports = function () {
         charts('chartByYear', board.boardsByYear, '4: ' + titleFromOptions(board.options));
     });
 
-    var cb5 = $(controlBlockHtmlTemplate({cbId: 'Reset'}));
+    cb5 = $(controlBlockHtmlTemplate({cbId: 'Reset'}));
     cb5.find('.graph-button').remove();
     
     _.each([0, 1, 2, 3, 4, 5, 6], function (index) {
@@ -127,7 +203,9 @@ module.exports = function () {
         });
     });
 
-    var optionsBlock = $('<div id="options-div"></div>').append(cb1, cb2, cb3, cb4, cb5);
+    optionsBlock = $('<div id="options-div"></div>').append(cb1, cb2, cb3, cb4);
+    
+    //setNumberOfCounts(numberOfCounts);
 
     optionsBlock.find('select').on('change', refreshBoards);
     

@@ -1,3 +1,12 @@
+/*-------------------------------------------------*/
+/* Major DIVs */
+/*-------------------------------------------------*/
+#summary-table {
+    display: block;
+}
+#options-div {
+    display: inline-block;
+}
 #table-div table {
     background-color: ghostwhite;
 }
@@ -12,10 +21,37 @@
 #button-div {
     margin: 15px 0 0 20px;
 }
-.controls-div {
-    display: block;
-    margin: 0px 0px 10px 0px;
-    background-color: antiquewhite;
+
+/*-------------------------------------------------*/
+/* Others */
+/*-------------------------------------------------*/
+.graph-button {
+    margin: 0 1em;
+}
+.space-right {
+    margin-right: 1em;
+}q
+
+/*-------------------------------------------------*/
+/* Colors */
+/*-------------------------------------------------*/
+/*.stats-color-1 {color: rgb(51,102,204);}*/
+.stats-color-1 {color:blue;}
+.stats-color-2 {color: rgb(220,56,17);}
+.stats-color-3 {color: rgb(255,153,0);}
+.stats-color-4 {color: rgb(13,148,21);}
+.stats-color-Reset {color: black;}
+
+/*-------------------------------------------------*/
+/* Controls */
+/*-------------------------------------------------*/
+.controls-title {
+    font-size: 1.75em;
+    font-weight: bold;
+}
+.controls-subtitle {
+    text-align: center;
+    /*border: solid black 1px;*/
 }
 .controls-div-inline {
     display: inline-block;
@@ -31,41 +67,8 @@
 .controls-block label {
     margin-right: 4px;
 }
-.controls-block-line label {
-    margin-right: 4px;
-}
-.controls-block-inline {
-    display: inline-block;
-    width: auto;
-    height: auto;
-}
 .controls-block select {
     display: inline-block;
     width: auto;
     height: auto;
-}
-.controls-title {
-    font-size: 1.75em;
-    font-weight: bold;
-}
-.stats-color-1 {
-    color: rgb(51,102,204);
-}
-.stats-color-2 {
-    color: rgb(220,56,17);
-}
-.stats-color-3 {
-    color: rgb(255,153,0);
-}
-.stats-color-4 {
-    color: rgb(13,148,21);
-}
-.stats-color-Reset {
-    color: black;
-}
-.space-right {
-    margin-right: 1em;
-}
-.graph-button {
-    margin: 0 1em;
 }

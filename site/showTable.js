@@ -6,15 +6,19 @@ var _ = require('lodash');
 
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
-var fillTD = function (td, row, col, boards) {
+var fillTD = function (td, row, col, boards, onlyBoardNumber) {
+    if(!onlyBoardNumber) onlyBoardNumber = 0;
     var html = '';
     var addSeperator = false;
     _.each(dataStore.boardRange, function (boardNumber) {
+        if(onlyBoardNumber && (onlyBoardNumber !== boardNumber)) {
+            return;
+        }
         var board = boards[boardNumber];
         var board1 = board.board1;
         var options = board.options;
 
-        if (options.numberRight === 'doNotShow') {
+        if (options.showFilter === 'doNotShow') {
             return; 
         }
 
@@ -70,12 +74,10 @@ var fillTD = function (td, row, col, boards) {
 module.exports = function () {
     var boards = dataStore.boards();
 
-    $('#summaryTable').find('tbody').find('tr').each(function () {
+    $('#summary-table').find('tbody').find('tr').each(function (row) {
+        if(row === 5) row = 0; else row += 1;
         $(this).find('td').each(function (col) {
-            // Note col is really row since this table is on its side.
-            // Adjust row to match where we put the totals
-            if (col === 5) col = 0; else col += 1;
-            fillTD (this, col, 0, boards);
+            fillTD (this, row, 0, boards, 1+col);
         });
     });
     
@@ -91,7 +93,7 @@ module.exports = function () {
         if (row === 5) row = 0;
         else row += 1;
         $(this).find('td').each(function (col) {
-            fillTD (this, row, col, boards);
+            fillTD (this, row, col, boards, false);
         });
     });
 };

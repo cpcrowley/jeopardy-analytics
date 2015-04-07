@@ -111,16 +111,23 @@ module.exports = function () {
     // Add title
     $('<h1>Jeopardy Analytics</h1>')
         .appendTo(container);
-    
+
     // Add options blocks
     container.append(makeOptionsBlocks());
-    
+
     // Add the summary table
-    $(createTableHtml('summaryTable',
+    // Horizontal version
+    /*$(createTableHtml('summaryTable',
                       ['', '$200/$400', '$400/$800', '$600/$1200', '$800/$1600', '$1000/$2000', 'Totals'],
-                      ['Totals']))
+                      ['Totals']))        
+        .appendTo(container);*/
+    // vertical version
+    $(createTableHtml('summary-table',
+                      ['', '1', '2', '3', '4'],
+                      ['$200/$400', '$400/$800', '$600/$1200', '$800/$1600', '$1000/$2000', 'Total']
+                     ))
         .appendTo(container);
-    
+
     // Add in the legend block
     container.append('<div id="legend-div"></div>');
 

@@ -129,7 +129,7 @@ module.exports = function () {
     for (var boardNumber = 1; boardNumber < boards.length; ++boardNumber) {
         var board = boards[boardNumber];
 
-        if (board.options.numberRight === 'doNotShow') {
+        if (board.options.showFilter === 'doNotShow') {
             break;
         }
 

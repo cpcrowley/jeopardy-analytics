@@ -10,6 +10,21 @@ var _ = require('lodash');
 //------------------------------------------------------------------------------
 var fetchOptions = function (boardNumber) {
     var numberRight = document.getElementById('number-right-' + boardNumber);
+    var nr = $('#number-right-' + boardNumber);
+    //console.log('fetchOptions: nr, visible', nr, nr.is(':visible'));
+    if(!nr.is(':visible')) {
+        return {
+            showFilter: "doNotShow",
+            numberRight: "any",
+            numberWrong: "any",
+            includeOutOfOrder: "dontcare",
+            includeDailyDoubles: "dontcare",
+            whichRounds: "dontcare",
+            percentSelect: "cell",
+            showCounts: "none"
+        };
+    }
+    var showFilter = document.getElementById('show-filter-' + boardNumber);
     var numberWrong = document.getElementById('number-wrong-' + boardNumber);
     var includeOutOfOrder = document.getElementById('include-out-of-order-' + boardNumber);
     var includeDailyDoubles = document.getElementById('include-daily-doubles-' + boardNumber);
@@ -18,6 +33,7 @@ var fetchOptions = function (boardNumber) {
     var showCounts = document.getElementById('show-counts-' + boardNumber);
 
     return {
+        showFilter: showFilter.options[showFilter.selectedIndex].value,
         numberRight: numberRight.options[numberRight.selectedIndex].value,
         numberWrong: numberWrong.options[numberWrong.selectedIndex].value,
         includeOutOfOrder: includeOutOfOrder.options[includeOutOfOrder.selectedIndex].value,
