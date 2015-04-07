@@ -30,7 +30,7 @@ var fetchOptions = function (boardNumber) {
     var includeDailyDoubles = document.getElementById('include-daily-doubles-' + boardNumber);
     var whichRounds = document.getElementById('which-rounds-' + boardNumber);
     var percentSelect = document.getElementById('percent-select-' + boardNumber);
-    var showCounts = document.getElementById('show-counts-' + boardNumber);
+    var showCounts = document.getElementById('show-counts');
 
     return {
         showFilter: showFilter.options[showFilter.selectedIndex].value,

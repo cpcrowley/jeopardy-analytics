@@ -75,10 +75,10 @@ var makeControlsBlockTemplate = function () {
             ["row", "passed/row total"],
             ["column", "passed/column total"],
             ["board", "passed/board total"]])) +
-        makeSelectControlsBlock('show-counts', 'Counts', makeOptionList([
+        /*makeSelectControlsBlock('show-counts', 'Counts', makeOptionList([
             ["none", "None"],
             ["count", "count only"],
-            ["fraction", "count/total"]])) +
+            ["fraction", "count/total"]])) +*/
         '</div>');
 };
 
@@ -86,26 +86,19 @@ var makeControlsBlockTemplate = function () {
 //------------------------------------------------------------------------------
 var makeOverallControlsBlock = function () {
     var html =
-        '<div class="controls-div-inline stats-color-Reset">' +
-        '<div class="controls-title">Controls</div>' +
-
-        '<div class="controls-block">' +
-        '<label for="number-of-counts">Number of counts</label>' +
-        '<select id="number-of-counts" class="stats-color-Reset form-control">' +
-        '<option value="1">1</option>' +
-        '<option value="2">2</option>' +
-        '<option value="3">3</option>' +
-        '<option value="4">4</option>' +
+        '<div class="controls-overall stats-color-Reset">' +
+        
+        '<div class="controls-block-inline">' +
+        '<label for="show-counts">Show counts</label>' +
+        '<select id="show-counts" class="stats-color-Reset form-control">' +
+        '<option value="none">None</option>' +
+        '<option value="count">count only</option>' +
+        '<option value="fraction">count/total</option>' +
         '</select>' +
         '</div>' +
 
-        /*'<button type="button" class="btn btn-default btn-sm graph-button">Show Game Board</button>' +
-        '<br/>' +
-        '<button type="button" class="btn btn-default btn-sm graph-button">Show Graph</button>' +
-        '<br/>' +
-        '<button type="button" class="btn btn-default btn-sm graph-button">Show Final Jeopardy</button>' +
-        '<br/>' +*/
-        '<button type="button" class="btn btn-default btn-sm graph-button">Help</button>' +
+        //'<button type="button" class="btn btn-default btn-sm graph-button">Help</button>' +
+        
         '</div>';
     return $(html);
 };
@@ -149,8 +142,7 @@ var setNumberOfCounts = function (n) {
 module.exports = function () {
     
     cb0 = makeOverallControlsBlock();
-    cb0.find('#number-of-counts').on('change', function () {
-        setNumberOfCounts(this.options[this.selectedIndex].value);
+    cb0.find('#show-counts').on('change', function () {
     });
 
     var controlBlockHtmlTemplate = makeControlsBlockTemplate();
@@ -203,7 +195,7 @@ module.exports = function () {
         });
     });
 
-    optionsBlock = $('<div id="options-div"></div>').append(cb1, cb2, cb3, cb4);
+    optionsBlock = $('<div id="options-div"></div>').append(cb0, cb1, cb2, cb3, cb4);
     
     //setNumberOfCounts(numberOfCounts);
 

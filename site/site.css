@@ -35,6 +35,11 @@
 /*-------------------------------------------------*/
 /* Controls */
 /*-------------------------------------------------*/
+.controls-overall {
+    display: block;
+    margin: 4px 4px 4px 4px;
+    background-color: antiquewhite;
+}
 .controls-title {
     font-size: 1.75em;
     font-weight: bold;
@@ -58,6 +63,20 @@
     margin-right: 4px;
 }
 .controls-block select {
+    display: inline-block;
+    width: auto;
+    height: auto;
+}
+.controls-block-inline {
+    display: inline-block;
+    width: auto;
+    height: auto;
+    margin: 4px 4px 0px 4px;
+}
+.controls-block-inline label {
+    margin-right: 4px;
+}
+.controls-block-inline select {
     display: inline-block;
     width: auto;
     height: auto;
