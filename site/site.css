@@ -33,16 +33,6 @@
 }q
 
 /*-------------------------------------------------*/
-/* Colors */
-/*-------------------------------------------------*/
-/*.stats-color-1 {color: rgb(51,102,204);}*/
-.stats-color-1 {color:blue;}
-.stats-color-2 {color: rgb(220,56,17);}
-.stats-color-3 {color: rgb(255,153,0);}
-.stats-color-4 {color: rgb(13,148,21);}
-.stats-color-Reset {color: black;}
-
-/*-------------------------------------------------*/
 /* Controls */
 /*-------------------------------------------------*/
 .controls-title {
@@ -72,3 +62,12 @@
     width: auto;
     height: auto;
 }
+
+/*-------------------------------------------------*/
+/* Colors */
+/*-------------------------------------------------*/
+.stats-color-1 {color: rgb(51,102,204);}
+.stats-color-2 {color: rgb(220,56,17);}
+.stats-color-3 {color: rgb(255,153,0);}
+.stats-color-4 {color: rgb(13,148,21);}
+.stats-color-Reset {color: black;}
