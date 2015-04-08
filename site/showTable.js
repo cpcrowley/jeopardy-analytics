@@ -51,7 +51,7 @@ var fillTD = function (td, row, col, boards, onlyBoardNumber) {
         }
 
         html += Math.round(100 * count / divisor).toString() + '%';
-        switch (options.showCounts) {
+        switch (dataStore.getOption('showCounts')) {
             case 'none':
                 break;
             case 'count':

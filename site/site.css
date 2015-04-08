@@ -4,6 +4,9 @@
 #summary-table {
     display: block;
 }
+#all-options-div {
+    display: block;
+}
 #options-div {
     display: inline-block;
 }
@@ -35,11 +38,6 @@
 /*-------------------------------------------------*/
 /* Controls */
 /*-------------------------------------------------*/
-.controls-overall {
-    display: block;
-    margin: 4px 4px 4px 4px;
-    background-color: antiquewhite;
-}
 .controls-title {
     font-size: 1.75em;
     font-weight: bold;
@@ -80,6 +78,11 @@
     display: inline-block;
     width: auto;
     height: auto;
+}
+#controls-overall {
+    display: block;
+    margin: 0 0 4px 0;
+    background-color: antiquewhite;
 }
 
 /*-------------------------------------------------*/

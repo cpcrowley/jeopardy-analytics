@@ -7,7 +7,9 @@ var refreshBoards = require('./refreshBoards.js');
 var titleFromOptions = require('./titleFromOptions.js');
 var _ = require('lodash');
 
-var cb0, cb1, cb2, cb3, cb4, cb5, optionsBlock;
+var cb0, cb1, cb2, cb3, cb4, optionsBlock;
+
+var animationDelay = 500;
 
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
@@ -75,19 +77,26 @@ var makeControlsBlockTemplate = function () {
             ["row", "passed/row total"],
             ["column", "passed/column total"],
             ["board", "passed/board total"]])) +
-        /*makeSelectControlsBlock('show-counts', 'Counts', makeOptionList([
-            ["none", "None"],
-            ["count", "count only"],
-            ["fraction", "count/total"]])) +*/
         '</div>');
+};
+
+//------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
+var makeCheckboxBlock = function (id, label) {
+    var s =
+        '<div class="controls-block-inline">' +
+        '<input type="checkbox" id="' + id + '"/>' +
+        '<label for="' + id + '">' + label + '</label>' +
+        '</div>';
+    return s;
 };
 
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
 var makeOverallControlsBlock = function () {
     var html =
-        '<div class="controls-overall stats-color-Reset">' +
-        
+        '<div id="controls-overall" class="stats-color-Reset">' +
+
         '<div class="controls-block-inline">' +
         '<label for="show-counts">Show counts</label>' +
         '<select id="show-counts" class="stats-color-Reset form-control">' +
@@ -96,55 +105,136 @@ var makeOverallControlsBlock = function () {
         '<option value="fraction">count/total</option>' +
         '</select>' +
         '</div>' +
-
-        //'<button type="button" class="btn btn-default btn-sm graph-button">Help</button>' +
         
+        makeCheckboxBlock('showOptions', 'Show Options') +
+        makeCheckboxBlock('showSummary', 'Show Summary') +
+        makeCheckboxBlock('showLegend', 'Show Legend') +
+        makeCheckboxBlock('showGameBoard', 'Show Game Board') +
+        makeCheckboxBlock('showGraph', 'Show Graph') +
+        makeCheckboxBlock('showFinalJeopardy', 'Show Final Jeopardy') +
+        makeCheckboxBlock('showExamples', 'Show Examples') +
+        makeCheckboxBlock('showHelp', 'Show Help') +
+
         '</div>';
     return $(html);
 };
 
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
-var setNumberOfCounts = function (n) {
-    var n2 = parseInt(n,10);
-    switch(n2) {
-        case 1:
-            console.log('n2 = 1');
-            cb2.attr('display', 'none');
-            cb3.attr('display', 'none');
-            cb4.attr('display', 'none');
-            break;
-        case 2:
-            console.log('n2 = 2');
-            cb2.attr('display', 'inline-block');
-            cb3.attr('display', 'none');
-            cb4.attr('display', 'none');
-            break;
-        case 3:
-            console.log('n2 = 3');
-            cb2.attr('display', 'inline-block');
-            cb3.attr('display', 'inline-block');
-            cb4.attr('display', 'none');
-            break;
-        case 4:
-            console.log('n2 = 4');
-            cb2.attr('display', 'inline-block');
-            cb3.attr('display', 'inline-block');
-            cb4.attr('display', 'inline-block');
-            break;
-        default:
-            console.log('default n2='+n2);
-            break;
+var getFinalJeopardyDiv = function () {
+    var fjDiv = $('#final-div');
+    if (fjDiv.text().length === 0) {
+        var rights = 0,
+            wrongs = 0;
+        var rightWrongByYear = {};
+        _.each(dataStore.yearRange, function (year) {
+            rightWrongByYear[year] = [0, 0];
+        });
+
+        _.each(dataStore.games(), function (gameData) {
+            var finalData = gameData.finalData;
+            var year = parseInt(gameData.gameDate.substring(0, 4), 10);
+            rights += finalData.rights;
+            wrongs += finalData.wrongs;
+            rightWrongByYear[year][0] += finalData.rights;
+            rightWrongByYear[year][1] += finalData.wrongs;
+        });
+
+        var divisor = rights + wrongs;
+        if (divisor === 0) divisor = 1;
+        fjDiv.html('Final Jeopardy: right=' + rights + ', wrong=' + wrongs +
+                   ' or <span class="stats-color-2">' + Math.round(100 * rights / divisor) + '% right</span>');
+
+        var rightWrongData = [];
+        _.each(dataStore.yearRange, function (year) {
+            var rw = rightWrongByYear[year];
+            var ratio = 0;
+            var divisor = rw[0] + rw[1];
+            if (divisor !== 0) ratio = Math.round(100 * rw[0] / divisor);
+            rightWrongData.push([year.toString(), ratio]);
+        });
+        charts('chartFinal', rightWrongData, 'Final Jeopardy correct answers by year');
     }
-    //refreshBoards();
+
+    return fjDiv;
+};
+
+
+//------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
+var handleCheckboxClick = function () {
+    return function () {
+        
+    };
 };
 
 module.exports = function () {
     
+    //--------------------------------------------------------------------------
+    // Make top control block
+    //--------------------------------------------------------------------------
     cb0 = makeOverallControlsBlock();
-    cb0.find('#show-counts').on('change', function () {
+    
+    // Setup the "show counts" SELECT
+    var showCountIndex = 0;
+    switch(dataStore.getOption('showCounts')) {
+        default: case 'none': showCountIndex = 0; break;
+        case 'count': showCountIndex = 1; break;
+        case 'fraction': showCountIndex = 2; break;
+    }
+    var cb0showCountsSelect = cb0.find('#show-counts');
+    cb0showCountsSelect[0].selectedIndex = showCountIndex;
+    cb0showCountsSelect.on('change', function () {
+        var value = this.options[this.selectedIndex].value;
+        dataStore.setOption('showCounts', value);
+        refreshBoards();
     });
 
+    var cbox = cb0.find('#showGameBoard').on('click', function () {
+        $('#boardTable')[this.checked ? 'show' : 'hide'](animationDelay);
+        dataStore.setOption('showGameBoard', this.checked);
+    });
+    console.log('options.showGameBoard='+dataStore.getOption('showGameBoard'));
+    console.log('cbox,cbox[0]',cbox,cbox[0]);
+
+    cb0.find('#showOptions').on('click', function () {
+        $('#options-div')[this.checked ? 'slideDown' : 'slideUp'](animationDelay);
+        dataStore.setOption('showOptions', this.checked);
+    }).attr('checked', dataStore.getOption('showOptions'));
+
+    cb0.find('#showSummary').on('click', function () {
+        $('#summary-table')[this.checked ? 'slideDown' : 'slideUp'](animationDelay);
+        dataStore.setOption('showSummary', this.checked);
+    }).attr('checked', dataStore.getOption('showSummary'));
+
+    cb0.find('#showLegend').on('click', function () {
+        $('#legend-div')[this.checked ? 'slideDown' : 'slideUp'](animationDelay);
+        dataStore.setOption('showLegend', this.checked);
+    }).attr('checked', dataStore.getOption('showLegend'));
+
+    cb0.find('#showGraph').on('click', function () {
+        $('#graph-div')[this.checked ? 'slideDown' : 'slideUp'](animationDelay);
+        dataStore.setOption('showGraph', this.checked);
+    }).attr('checked', dataStore.getOption('showGraph'));
+
+    cb0.find('#showFinalJeopardy').on('click', function () {
+        getFinalJeopardyDiv()[this.checked ? 'show' : 'hide'](animationDelay);
+        dataStore.setOption('showFinalJeopardy', this.checked);
+    }).attr('checked', dataStore.getOption('showFinalJeopardy'));
+
+    cb0.find('#showExamples').on('click', function () {
+        $('#examplesDiv')[this.checked ? 'slideDown' : 'slideUp'](animationDelay);
+        dataStore.setOption('showExamples', this.checked);
+    }).attr('checked', dataStore.getOption('showExamples'));
+
+    cb0.find('#showHelp').on('click', function () {
+        $('#helpDiv')[this.checked ? 'slideDown' : 'slideUp'](animationDelay);
+        dataStore.setOption('showHelp', this.checked);
+    }).attr('checked', dataStore.getOption('showHelp'));
+
+    //--------------------------------------------------------------------------
+    // Make the 4 options blocks
+    //--------------------------------------------------------------------------
     var controlBlockHtmlTemplate = makeControlsBlockTemplate();
 
     cb1 = $(controlBlockHtmlTemplate({cbId: '1'}));
@@ -179,13 +269,15 @@ module.exports = function () {
         charts('chartByYear', board.boardsByYear, '4: ' + titleFromOptions(board.options));
     });
 
-    cb5 = $(controlBlockHtmlTemplate({cbId: 'Reset'}));
+    //--------------------------------------------------------------------------
+    // Make the reset block
+    //--------------------------------------------------------------------------
+    /*cb5 = $(controlBlockHtmlTemplate({cbId: 'Reset'}));
     cb5.find('.graph-button').remove();
     
     _.each([0, 1, 2, 3, 4, 5, 6], function (index) {
         var selector = 'select:eq(' + index + ')';
         cb5.find(selector).on('change', function () {
-            //console.log('index='+index+' selector='+selector);
             var selectedIndex = this.selectedIndex;
             cb1.find(selector)[0].selectedIndex = selectedIndex;
             cb2.find(selector)[0].selectedIndex = selectedIndex;
@@ -193,14 +285,16 @@ module.exports = function () {
             cb4.find(selector)[0].selectedIndex = selectedIndex;
             refreshBoards();
         });
-    });
+    });*/
 
-    optionsBlock = $('<div id="options-div"></div>').append(cb0, cb1, cb2, cb3, cb4);
-    
-    //setNumberOfCounts(numberOfCounts);
+    //--------------------------------------------------------------------------
+    // Put them all together
+    //--------------------------------------------------------------------------
+    optionsBlock = $('<div id="options-div"></div>').append(cb1, cb2, cb3, cb4);
+    var allOptionsDiv = $('<div id="all-options-div"></div>').append(cb0, optionsBlock);
+    allOptionsDiv.find('select').on('change', refreshBoards);
 
-    optionsBlock.find('select').on('change', refreshBoards);
     
-    return optionsBlock;
+    return allOptionsDiv;
 
 };

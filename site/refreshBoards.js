@@ -20,8 +20,7 @@ var fetchOptions = function (boardNumber) {
             includeOutOfOrder: "dontcare",
             includeDailyDoubles: "dontcare",
             whichRounds: "dontcare",
-            percentSelect: "cell",
-            showCounts: "none"
+            percentSelect: "cell"
         };
     }
     var showFilter = document.getElementById('show-filter-' + boardNumber);
@@ -30,7 +29,6 @@ var fetchOptions = function (boardNumber) {
     var includeDailyDoubles = document.getElementById('include-daily-doubles-' + boardNumber);
     var whichRounds = document.getElementById('which-rounds-' + boardNumber);
     var percentSelect = document.getElementById('percent-select-' + boardNumber);
-    var showCounts = document.getElementById('show-counts');
 
     return {
         showFilter: showFilter.options[showFilter.selectedIndex].value,
@@ -39,8 +37,7 @@ var fetchOptions = function (boardNumber) {
         includeOutOfOrder: includeOutOfOrder.options[includeOutOfOrder.selectedIndex].value,
         includeDailyDoubles: includeDailyDoubles.options[includeDailyDoubles.selectedIndex].value,
         whichRounds: whichRounds.options[whichRounds.selectedIndex].value,
-        percentSelect: percentSelect.options[percentSelect.selectedIndex].value,
-        showCounts: showCounts.options[showCounts.selectedIndex].value
+        percentSelect: percentSelect.options[percentSelect.selectedIndex].value
     };
 };
 

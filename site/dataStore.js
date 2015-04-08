@@ -7,6 +7,42 @@ var games = null;
 var boards = null;
 var yearRange = _.range(1984, 2016);
 var boardRange = _.range(1, 5);
+var optionsList = [
+    {key:'showCounts', defaultValue:'none'},
+    {key:'showOptions', defaultValue: true},
+    {key:'showSummary', defaultValue: true},
+    {key:'showLegend', defaultValue: true},
+    {key:'showGameBoard', defaultValue: false},
+    {key:'showGraph', defaultValue: true},
+    {key:'showFinalJeopardy', defaultValue: false},
+    {key:'showExamples', defaultValue: false},
+    {key:'showHelp', defaultValue: false}
+];
+var options = {};
+
+//------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
+var getOption = function (optionName) {
+    return options[optionName];
+};
+var setOption = function (optionName, newValue) {
+    options[optionName] = newValue;
+    localStorage[optionName] = newValue;
+};
+
+//------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
+var getOptionsFromLocalStorage = function () {
+    _.each(optionsList, function (optionListItem) {
+        var key = optionListItem.key;
+        var savedValue = localStorage[key];
+        if(_.isUndefined(savedValue)) {
+            savedValue = optionListItem.defaultValue;
+        }
+        setOption(key, savedValue);
+    });
+    console.log('options', options);
+};
 
 //------------------------------------------------------------------------------
 // This board holds basic infomation about a set of games.
@@ -30,6 +66,8 @@ var createZeroedBoard = function () {
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
 var init = function() {
+    getOptionsFromLocalStorage();
+    
     // Initialize boards
     boards = [null]; // boards[0] is never used. Subscripts work out better that way.
     _.each(boardRange, function (boardNumber) {
@@ -59,6 +97,8 @@ var init = function() {
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
 exports.init = init;
+exports.getOption = getOption;
+exports.setOption = setOption;
 exports.games = function(){return games;};
 exports.boards = function(){return boards;};
 exports.yearRange = yearRange;
