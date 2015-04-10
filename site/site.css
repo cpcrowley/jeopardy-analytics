@@ -17,6 +17,7 @@
     font-size: 1.5em;
     color: blue;
     background-color: antiquewhite;
+    padding: 10px 10px 10px 10px;
 };
 #legend-div {
     margin: 0 0 20px 0;

@@ -165,7 +165,8 @@ var getFinalJeopardyDiv = function () {
         var divisor = rights + wrongs;
         if (divisor === 0) divisor = 1;
         fjDiv.html('Final Jeopardy: right=' + rights + ', wrong=' + wrongs +
-                   ' or <span class="stats-color-2">' + Math.round(100 * rights / divisor) + '% right</span>');
+                   ' or <span class="stats-color-2">' + Math.round(100 * rights / divisor) +
+                   '% right</span>');
 
         var rightWrongData = [];
         _.each(dataStore.yearRange, function (year) {
