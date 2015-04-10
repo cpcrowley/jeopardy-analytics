@@ -8,7 +8,8 @@ var boards = null;
 var yearRange = _.range(1984, 2016);
 var boardRange = _.range(1, 5);
 var optionsList = [
-    {key:'showCounts', defaultValue:'none'},
+    {key:'showCounts', defaultValue: false},
+    {key:'showTotals', defaultValue: false},
     {key:'showOptions', defaultValue: true},
     {key:'showSummary', defaultValue: true},
     {key:'showLegend', defaultValue: true},

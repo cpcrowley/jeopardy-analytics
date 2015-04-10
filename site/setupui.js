@@ -59,6 +59,11 @@ var setupExamples = function () {
 
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
+var setupShowToggles = function () {
+};
+
+//------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
 module.exports = function () {
     //--------------------------------------------------------------------------
     // Start with the container-fluid to hold everything
@@ -74,6 +79,7 @@ module.exports = function () {
     container.append(makeOptionsBlocks());
     if(!dataStore.getOption('showOptions')) {$('#options-div').hide();}
 
+    
     // Add the summary table
     var st = $(createTableHtml('summary-table',
                       ['', '1', '2', '3', '4'],
@@ -82,28 +88,33 @@ module.exports = function () {
         .appendTo(container);
     if(!dataStore.getOption('showSummary')) {st.hide();}
 
+    
     // Add in the legend block
     var le = $('<div id="legend-div"></div>');
     container.append(le);
     if(!dataStore.getOption('showLegend')) {le.hide();}
 
-    var ex = $('<div id="examplesDiv" class="well well-sm"></div>')
+    /*var ex = $('<div id="examplesDiv" class="well well-sm"></div>')
         .appendTo(container)
         .load('site/examples.html', function () {
             setupExamples();
         });
-    if(!dataStore.getOption('showExamples')) {ex.hide();}
+    if(!dataStore.getOption('showExamples')) {ex.hide();}*/
 
+    
+    //Add the Help DIV
     var he = $('<div id="helpDiv" class="well well-sm"></div>')
         .appendTo(container)
         .load('site/help.html');
     if(!dataStore.getOption('showHelp')) {he.hide();}
 
+    
     // Add in the Final Jeopardy DIV
     var fj = $('<div id="final-div"></div>');
     container.append(fj);
     if(!dataStore.getOption('showFinalJeopardy')) {fj.hide();}
 
+    
     // Add in the Board Detail DIV
     var bo = $(createTableHtml('boardTable',
                       ['', 'Row Total', 'Cat 1', 'Cat 2', 'Cat 3', 'Cat 4', 'Cat 5', 'Cat 6'],
@@ -111,6 +122,7 @@ module.exports = function () {
         .appendTo(container);
     if(!dataStore.getOption('showGameBoard')) {bo.hide();}
 
+    
     // Add in the Chart DIV
     var gr = $('<div id="graph-div"></div>');
     container.append(gr);

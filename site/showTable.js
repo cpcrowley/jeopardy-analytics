@@ -51,16 +51,12 @@ var fillTD = function (td, row, col, boards, onlyBoardNumber) {
         }
 
         html += Math.round(100 * count / divisor).toString() + '%';
-        switch (dataStore.getOption('showCounts')) {
-            case 'none':
-                break;
-            case 'count':
-                html += ' (' + count + ')';
-                break;
-            case 'fraction':
-                html += ' (' + count + '/' + divisor + ')';
-                break;
-        }
+        var showCounts = dataStore.getOption('showCounts');
+        var showTotals = dataStore.getOption('showTotals');
+        if(showCounts || showTotals) { html += ' ('; }
+        if(showCounts) { html += count; }
+        if(showTotals) { html += '/' + divisor; }
+        if(showCounts || showTotals) { html += ')'; }
 
         html += '</span>';
         addSeperator = true;

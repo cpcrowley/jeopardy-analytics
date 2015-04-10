@@ -4,6 +4,9 @@
 var dataStore = require('./dataStore.js');
 var _ = require('lodash');
 
+var numCols = 7;
+var ddcol;
+
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
 function fillRound(roundNumber, board, gameData) {
@@ -12,12 +15,23 @@ function fillRound(roundNumber, board, gameData) {
     var board1 = board.board1;
     var year = parseInt(gameData.gameDate.substring(0, 4), 10);
     var board2 = board.boardsByYear[year];
+    
+    var colOfFirstDD = -1;
 
     _.each(clues, function (clue) {
 
         // Get the cell values array to use.
         var cell1 = board1[clue.row][clue.col];
         var cell2 = board2[clue.row][clue.col];
+        
+        if (clue.isDD) {
+            if (colOfFirstDD < 0) {
+                colOfFirstDD = clue.col;
+            } else {
+                ddcol[colOfFirstDD][clue.col] += 1;
+                ddcol[clue.col][colOfFirstDD] += 1;
+            }
+        }
 
         // Start out assuming this clue will be counted.
         var increment_count = 1;
@@ -132,6 +146,12 @@ module.exports = function () {
         if (board.options.showFilter === 'doNotShow') {
             break;
         }
+        
+        ddcol = [];
+        var icol;
+        for(icol=0; icol<numCols; ++icol) {
+            ddcol.push([0,0,0,0,0,0,0]);
+        }
 
         var whichRounds = board.options.whichRounds;
         _.each(games, function (gameData) {
@@ -142,5 +162,10 @@ module.exports = function () {
                 fillRound(2, board, gameData);
             }
         });
+        
+        for(icol=0; icol<numCols; ++icol) {
+            console.log(icol+': '+ddcol[icol]);
+        }
+
     }
 };

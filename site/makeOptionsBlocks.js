@@ -80,56 +80,65 @@ var makeControlsBlockTemplate = function () {
         '</div>');
 };
 
+var cb0;
+
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
-var makeCheckboxBlock = function (elementId, label) {
-    var s =
-        '<div class="controls-block-inline">' +
-        '<input type="checkbox" id="' + elementId + '"/>' +
-        '<label for="' + elementId + '">' + label + '</label>' +
-        '</div>';
-    return s;
+var makeCheckboxBlock = function (elementId, label, clickHandler) {
+    var cbb = $('<div class="controls-block-inline">' +
+                '<input type="checkbox" id="' + elementId + '"/>' +
+                '<label for="' + elementId + '">' + label + '</label>' +
+                '</div>');
+    cbb.find('input')
+    .on('click', clickHandler)
+    .prop('checked',  dataStore.getOption(elementId));
+    return cbb;
 };
 
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
 var makeOverallControlsBlock = function () {
-    var html =
-        '<div id="controls-overall" class="stats-color-Reset">' +
-
-        '<div class="controls-block-inline">' +
-        '<label for="show-counts">Show: counts</label>' +
-        '<select id="show-counts" class="stats-color-Reset form-control">' +
-        '<option value="none">None</option>' +
-        '<option value="count">count only</option>' +
-        '<option value="fraction">count/total</option>' +
-        '</select>' +
-        '</div>' +
-
-        /*'<div class="controls-block-inline">' +
-        '<label for="what-to-show">Show:</label>' +
-        '<select id="what-to-show" multiple size="2" class="stats-color-Reset form-control">' +
-        '<option value="Options">Options</option>' +
-        '<option value="Summary">Summary</option>' +
-        '<option value="Legend">Legend</option>' +
-        '<option value="Board">Game Board</option>' +
-        '<option value="Graph">Graph</option>' +
-        '<option value="Final">Final Jeopardy</option>' +
-        '<option value="Examples">Examples</option>' +
-        '<option value="Help">Help</option>' +
-        '</select>' +
-        '</div>' +*/
-
-        makeCheckboxBlock('showOptions', 'Options') +
-        makeCheckboxBlock('showSummary', 'Summary') +
-        makeCheckboxBlock('showLegend', 'Legend') +
-        makeCheckboxBlock('showGameBoard', 'Game Board') +
-        makeCheckboxBlock('showGraph', 'Graph') +
-        makeCheckboxBlock('showFinalJeopardy', 'Final Jeopardy') +
-        makeCheckboxBlock('showHelp', 'Help') +
-
-        '</div>';
-    return $(html);
+    cb0 = $('<div id="controls-overall" class="stats-color-Reset">Show: </div>');
+    cb0.append(makeCheckboxBlock('showCounts', 'Counts', function () {
+        dataStore.setOption('showCounts', this.checked);
+        refreshBoards();
+    }));
+    cb0.append(makeCheckboxBlock('showTotals', 'Totals', function () {
+        dataStore.setOption('showTotals', this.checked);
+        refreshBoards();
+    }));
+    cb0.append(makeCheckboxBlock('showOptions', 'Options', function () {
+        var optionsDiv = $('#options-div');
+        //console.log('showOptions', this, this.checked, optionsDiv[0]);
+        $('#options-div')[this.checked ? 'slideDown' : 'slideUp'](animationDelay);
+        dataStore.setOption('showOptions', this.checked);
+    }));
+    cb0.append(makeCheckboxBlock('showSummary', 'Summary', function () {
+        $('#summary-table')[this.checked ? 'slideDown' : 'slideUp'](animationDelay);
+        dataStore.setOption('showSummary', this.checked);
+    }));
+    cb0.append(makeCheckboxBlock('showLegend', 'Legend', function () {
+        $('#legend-div')[this.checked ? 'slideDown' : 'slideUp'](animationDelay);
+        dataStore.setOption('showLegend', this.checked);
+    }));
+    cb0.append(makeCheckboxBlock('showGameBoard', 'Game Board', function () {
+        $('#boardTable')[this.checked ? 'show' : 'hide'](animationDelay);
+        dataStore.setOption('showGameBoard', this.checked);
+    }));
+    cb0.append(makeCheckboxBlock('showGraph', 'Graph', function () {
+        $('#graph-div')[this.checked ? 'slideDown' : 'slideUp'](animationDelay);
+        dataStore.setOption('showGraph', this.checked);
+    }));
+    cb0.append(makeCheckboxBlock('showFinalJeopardy', 'Final Jeopardy', function () {
+        getFinalJeopardyDiv()[this.checked ? 'show' : 'hide'](animationDelay);
+        dataStore.setOption('showFinalJeopardy', this.checked);
+    }));
+    cb0.append(makeCheckboxBlock('showHelp', 'Help', function () {
+        $('#helpDiv')[this.checked ? 'slideDown' : 'slideUp'](animationDelay);
+        dataStore.setOption('showHelp', this.checked);
+    }));
+    
+    return cb0;
 };
 
 //------------------------------------------------------------------------------
@@ -188,61 +197,6 @@ module.exports = function () {
     //--------------------------------------------------------------------------
     cb0 = makeOverallControlsBlock();
     
-    // Setup the "show counts" SELECT
-    var showCountIndex = 0;
-    switch(dataStore.getOption('showCounts')) {
-        default: case 'none': showCountIndex = 0; break;
-        case 'count': showCountIndex = 1; break;
-        case 'fraction': showCountIndex = 2; break;
-    }
-    var cb0showCountsSelect = cb0.find('#show-counts');
-    cb0showCountsSelect[0].selectedIndex = showCountIndex;
-    cb0showCountsSelect.on('change', function () {
-        var value = this.options[this.selectedIndex].value;
-        dataStore.setOption('showCounts', value);
-        refreshBoards();
-    });
-
-    cb0.find('#showGameBoard').on('click', function () {
-        $('#boardTable')[this.checked ? 'show' : 'hide'](animationDelay);
-        dataStore.setOption('showGameBoard', this.checked);
-    }).prop('checked',  dataStore.getOption('showGameBoard'));
-
-    cb0.find('#showOptions').on('click', function () {
-        $('#options-div')[this.checked ? 'slideDown' : 'slideUp'](animationDelay);
-        dataStore.setOption('showOptions', this.checked);
-    }).prop('checked', dataStore.getOption('showOptions'));
-
-    cb0.find('#showSummary').on('click', function () {
-        $('#summary-table')[this.checked ? 'slideDown' : 'slideUp'](animationDelay);
-        dataStore.setOption('showSummary', this.checked);
-    }).prop('checked', dataStore.getOption('showSummary'));
-
-    cb0.find('#showLegend').on('click', function () {
-        $('#legend-div')[this.checked ? 'slideDown' : 'slideUp'](animationDelay);
-        dataStore.setOption('showLegend', this.checked);
-    }).prop('checked', dataStore.getOption('showLegend'));
-
-    cb0.find('#showGraph').on('click', function () {
-        $('#graph-div')[this.checked ? 'slideDown' : 'slideUp'](animationDelay);
-        dataStore.setOption('showGraph', this.checked);
-    }).prop('checked', dataStore.getOption('showGraph'));
-
-    cb0.find('#showFinalJeopardy').on('click', function () {
-        getFinalJeopardyDiv()[this.checked ? 'show' : 'hide'](animationDelay);
-        dataStore.setOption('showFinalJeopardy', this.checked);
-    }).prop('checked', dataStore.getOption('showFinalJeopardy'));
-
-    cb0.find('#showExamples').on('click', function () {
-        $('#examplesDiv')[this.checked ? 'slideDown' : 'slideUp'](animationDelay);
-        dataStore.setOption('showExamples', this.checked);
-    }).prop('checked', dataStore.getOption('showExamples'));
-
-    cb0.find('#showHelp').on('click', function () {
-        $('#helpDiv')[this.checked ? 'slideDown' : 'slideUp'](animationDelay);
-        dataStore.setOption('showHelp', this.checked);
-    }).prop('checked', dataStore.getOption('showHelp'));
-
     //--------------------------------------------------------------------------
     // Make the 4 options blocks
     //--------------------------------------------------------------------------
@@ -281,11 +235,23 @@ module.exports = function () {
     });
 
     //--------------------------------------------------------------------------
-    // Make the reset block
+    // Put them all together
     //--------------------------------------------------------------------------
-    /*cb5 = $(controlBlockHtmlTemplate({cbId: 'Reset'}));
-    cb5.find('.graph-button').remove();
+    optionsBlock = $('<div id="options-div"></div>').append(cb1, cb2, cb3, cb4);
+    var allOptionsDiv = $('<div id="all-options-div"></div>').append(cb0, optionsBlock);
+    allOptionsDiv.find('select').on('change', refreshBoards);
+
     
+    return allOptionsDiv;
+
+};
+
+//--------------------------------------------------------------------------
+// Make the reset block
+//--------------------------------------------------------------------------
+/*cb5 = $(controlBlockHtmlTemplate({cbId: 'Reset'}));
+    cb5.find('.graph-button').remove();
+
     _.each([0, 1, 2, 3, 4, 5, 6], function (index) {
         var selector = 'select:eq(' + index + ')';
         cb5.find(selector).on('change', function () {
@@ -297,15 +263,3 @@ module.exports = function () {
             refreshBoards();
         });
     });*/
-
-    //--------------------------------------------------------------------------
-    // Put them all together
-    //--------------------------------------------------------------------------
-    optionsBlock = $('<div id="options-div"></div>').append(cb1, cb2, cb3, cb4);
-    var allOptionsDiv = $('<div id="all-options-div"></div>').append(cb0, optionsBlock);
-    allOptionsDiv.find('select').on('change', refreshBoards);
-
-    
-    return allOptionsDiv;
-
-};
