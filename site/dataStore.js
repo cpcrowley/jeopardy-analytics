@@ -8,10 +8,13 @@ var boards = null;
 var yearRange = _.range(1984, 2016);
 var boardRange = _.range(1, 5);
 var optionsList = [
+    {key:'showOptionsBlock1', defaultValue: true},
+    {key:'showOptionsBlock2', defaultValue: true},
+    {key:'showOptionsBlock3', defaultValue: false},
+    {key:'showOptionsBlock4', defaultValue: false},
+    {key:'animationDelay', defaultValue: 500},
     {key:'showCounts', defaultValue: false},
     {key:'showTotals', defaultValue: false},
-    {key:'showOptions', defaultValue: true},
-    {key:'showSummary', defaultValue: true},
     {key:'showLegend', defaultValue: true},
     {key:'showGameBoard', defaultValue: false},
     {key:'showGraph', defaultValue: true},
@@ -45,7 +48,6 @@ var getOptionsFromLocalStorage = function () {
         }
         setOption(key, savedValue);
     });
-    //console.log('options', options);
 };
 
 //------------------------------------------------------------------------------

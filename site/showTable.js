@@ -18,7 +18,7 @@ var fillTD = function (td, row, col, boards, onlyBoardNumber) {
         var board1 = board.board1;
         var options = board.options;
 
-        if (options.showFilter === 'doNotShow') {
+        if (!dataStore.getOption('showOptionsBlock'+boardNumber)) {
             return; 
         }
 
@@ -79,8 +79,11 @@ module.exports = function () {
     
     var legendDiv = $('#legend-div').empty();
     _.each(dataStore.boardRange, function(boardNumber) {
-        legendDiv.append('<div class="stats-color-'+boardNumber+'">'+
-                         titleFromOptions(boards[boardNumber].options)+'</div>');
+        if (!dataStore.getOption('showOptionsBlock'+boardNumber)) {
+            legendDiv.append('<div class="stats-color-'+boardNumber+'">'+
+                             titleFromOptions(boards[boardNumber].options)+'</div>');
+        }
+
     });
     
 

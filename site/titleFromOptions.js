@@ -1,10 +1,11 @@
+"use strict";
+
+var dataStore = require('./dataStore.js');
+
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
 module.exports = function (options) {
     "use strict";
-    if(options.showFilter === "doNotShow") {
-        return '';
-    }
     var title = '';
     switch (options.percentSelect) {
         case 'cell':

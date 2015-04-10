@@ -2,10 +2,12 @@
 /* Major DIVs */
 /*-------------------------------------------------*/
 #summary-table {
-    display: block;
+    display: inline-block;
 }
-#all-options-div {
+#show-controls-div {
     display: block;
+    margin: 0 0 4px 0;
+    /*background-color: antiquewhite;*/
 }
 #options-div {
     display: inline-block;
@@ -45,7 +47,13 @@
 }
 .controls-subtitle {
     text-align: center;
-    /*border: solid black 1px;*/
+    display: inline-block;
+    width: 100%;
+    color: black;
+}
+.controls-titled-box {
+    border-width: 1px;
+    border-style: solid;
 }
 .controls-div-inline {
     display: inline-block;
@@ -79,11 +87,6 @@
     display: inline-block;
     width: auto;
     height: auto;
-}
-#controls-overall {
-    display: block;
-    margin: 0 0 4px 0;
-    /*background-color: antiquewhite;*/
 }
 
 /*-------------------------------------------------*/
