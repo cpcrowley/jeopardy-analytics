@@ -26,6 +26,9 @@ var getOption = function (optionName) {
     return options[optionName];
 };
 var setOption = function (optionName, newValue) {
+    if(newValue==='true') newValue = true;
+    else if(newValue==='false') newValue = false;
+    //console.log('setOption('+optionName+')=<'+newValue+'> typeof='+(typeof newValue));
     options[optionName] = newValue;
     localStorage[optionName] = newValue;
 };
@@ -41,7 +44,7 @@ var getOptionsFromLocalStorage = function () {
         }
         setOption(key, savedValue);
     });
-    console.log('options', options);
+    //console.log('options', options);
 };
 
 //------------------------------------------------------------------------------

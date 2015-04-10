@@ -33,7 +33,7 @@
 }
 .space-right {
     margin-right: 1em;
-}q
+}
 
 /*-------------------------------------------------*/
 /* Controls */
@@ -82,7 +82,7 @@
 #controls-overall {
     display: block;
     margin: 0 0 4px 0;
-    background-color: antiquewhite;
+    /*background-color: antiquewhite;*/
 }
 
 /*-------------------------------------------------*/

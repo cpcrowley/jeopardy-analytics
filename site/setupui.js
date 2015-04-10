@@ -2,6 +2,7 @@
 
 var makeOptionsBlocks = require('./makeOptionsBlocks.js');
 var refreshBoards = require('./refreshBoards.js');
+var dataStore = require('./dataStore.js');
 
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
@@ -71,46 +72,48 @@ module.exports = function () {
 
     // Add options blocks
     container.append(makeOptionsBlocks());
+    if(!dataStore.getOption('showOptions')) {$('#options-div').hide();}
 
     // Add the summary table
-    // Horizontal version
-    /*$(createTableHtml('summaryTable',
-                      ['', '$200/$400', '$400/$800', '$600/$1200', '$800/$1600', '$1000/$2000', 'Totals'],
-                      ['Totals']))        
-        .appendTo(container);*/
-    // vertical version
-    $(createTableHtml('summary-table',
+    var st = $(createTableHtml('summary-table',
                       ['', '1', '2', '3', '4'],
                       ['$200/$400', '$400/$800', '$600/$1200', '$800/$1600', '$1000/$2000', 'Total']
                      ))
         .appendTo(container);
+    if(!dataStore.getOption('showSummary')) {st.hide();}
 
     // Add in the legend block
-    container.append('<div id="legend-div"></div>');
+    var le = $('<div id="legend-div"></div>');
+    container.append(le);
+    if(!dataStore.getOption('showLegend')) {le.hide();}
 
-    $('<div id="examplesDiv" class="well well-sm"></div>')
+    var ex = $('<div id="examplesDiv" class="well well-sm"></div>')
         .appendTo(container)
         .load('site/examples.html', function () {
             setupExamples();
-        })
-        .hide();
+        });
+    if(!dataStore.getOption('showExamples')) {ex.hide();}
 
-    $('<div id="helpDiv" class="well well-sm"></div>')
+    var he = $('<div id="helpDiv" class="well well-sm"></div>')
         .appendTo(container)
-        .load('site/help.html')
-        .hide();
+        .load('site/help.html');
+    if(!dataStore.getOption('showHelp')) {he.hide();}
 
     // Add in the Final Jeopardy DIV
-    container.append('<div id="final-div"></div>');
+    var fj = $('<div id="final-div"></div>');
+    container.append(fj);
+    if(!dataStore.getOption('showFinalJeopardy')) {fj.hide();}
 
     // Add in the Board Detail DIV
-    $(createTableHtml('boardTable',
+    var bo = $(createTableHtml('boardTable',
                       ['', 'Row Total', 'Cat 1', 'Cat 2', 'Cat 3', 'Cat 4', 'Cat 5', 'Cat 6'],
                       ['$200/$400', '$400/$800', '$600/$1200', '$800/$1600', '$1000/$2000', 'Total']))
-        .hide()
         .appendTo(container);
+    if(!dataStore.getOption('showGameBoard')) {bo.hide();}
 
     // Add in the Chart DIV
-    container.append('<div id="graph-div"></div>');
+    var gr = $('<div id="graph-div"></div>');
+    container.append(gr);
+    if(!dataStore.getOption('showGraph')) {gr.hide();}
 
 };

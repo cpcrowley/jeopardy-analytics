@@ -82,11 +82,11 @@ var makeControlsBlockTemplate = function () {
 
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
-var makeCheckboxBlock = function (id, label) {
+var makeCheckboxBlock = function (elementId, label) {
     var s =
         '<div class="controls-block-inline">' +
-        '<input type="checkbox" id="' + id + '"/>' +
-        '<label for="' + id + '">' + label + '</label>' +
+        '<input type="checkbox" id="' + elementId + '"/>' +
+        '<label for="' + elementId + '">' + label + '</label>' +
         '</div>';
     return s;
 };
@@ -98,22 +98,35 @@ var makeOverallControlsBlock = function () {
         '<div id="controls-overall" class="stats-color-Reset">' +
 
         '<div class="controls-block-inline">' +
-        '<label for="show-counts">Show counts</label>' +
+        '<label for="show-counts">Show: counts</label>' +
         '<select id="show-counts" class="stats-color-Reset form-control">' +
         '<option value="none">None</option>' +
         '<option value="count">count only</option>' +
         '<option value="fraction">count/total</option>' +
         '</select>' +
         '</div>' +
-        
-        makeCheckboxBlock('showOptions', 'Show Options') +
-        makeCheckboxBlock('showSummary', 'Show Summary') +
-        makeCheckboxBlock('showLegend', 'Show Legend') +
-        makeCheckboxBlock('showGameBoard', 'Show Game Board') +
-        makeCheckboxBlock('showGraph', 'Show Graph') +
-        makeCheckboxBlock('showFinalJeopardy', 'Show Final Jeopardy') +
-        makeCheckboxBlock('showExamples', 'Show Examples') +
-        makeCheckboxBlock('showHelp', 'Show Help') +
+
+        /*'<div class="controls-block-inline">' +
+        '<label for="what-to-show">Show:</label>' +
+        '<select id="what-to-show" multiple size="2" class="stats-color-Reset form-control">' +
+        '<option value="Options">Options</option>' +
+        '<option value="Summary">Summary</option>' +
+        '<option value="Legend">Legend</option>' +
+        '<option value="Board">Game Board</option>' +
+        '<option value="Graph">Graph</option>' +
+        '<option value="Final">Final Jeopardy</option>' +
+        '<option value="Examples">Examples</option>' +
+        '<option value="Help">Help</option>' +
+        '</select>' +
+        '</div>' +*/
+
+        makeCheckboxBlock('showOptions', 'Options') +
+        makeCheckboxBlock('showSummary', 'Summary') +
+        makeCheckboxBlock('showLegend', 'Legend') +
+        makeCheckboxBlock('showGameBoard', 'Game Board') +
+        makeCheckboxBlock('showGraph', 'Graph') +
+        makeCheckboxBlock('showFinalJeopardy', 'Final Jeopardy') +
+        makeCheckboxBlock('showHelp', 'Help') +
 
         '</div>';
     return $(html);
@@ -190,47 +203,45 @@ module.exports = function () {
         refreshBoards();
     });
 
-    var cbox = cb0.find('#showGameBoard').on('click', function () {
+    cb0.find('#showGameBoard').on('click', function () {
         $('#boardTable')[this.checked ? 'show' : 'hide'](animationDelay);
         dataStore.setOption('showGameBoard', this.checked);
-    });
-    console.log('options.showGameBoard='+dataStore.getOption('showGameBoard'));
-    console.log('cbox,cbox[0]',cbox,cbox[0]);
+    }).prop('checked',  dataStore.getOption('showGameBoard'));
 
     cb0.find('#showOptions').on('click', function () {
         $('#options-div')[this.checked ? 'slideDown' : 'slideUp'](animationDelay);
         dataStore.setOption('showOptions', this.checked);
-    }).attr('checked', dataStore.getOption('showOptions'));
+    }).prop('checked', dataStore.getOption('showOptions'));
 
     cb0.find('#showSummary').on('click', function () {
         $('#summary-table')[this.checked ? 'slideDown' : 'slideUp'](animationDelay);
         dataStore.setOption('showSummary', this.checked);
-    }).attr('checked', dataStore.getOption('showSummary'));
+    }).prop('checked', dataStore.getOption('showSummary'));
 
     cb0.find('#showLegend').on('click', function () {
         $('#legend-div')[this.checked ? 'slideDown' : 'slideUp'](animationDelay);
         dataStore.setOption('showLegend', this.checked);
-    }).attr('checked', dataStore.getOption('showLegend'));
+    }).prop('checked', dataStore.getOption('showLegend'));
 
     cb0.find('#showGraph').on('click', function () {
         $('#graph-div')[this.checked ? 'slideDown' : 'slideUp'](animationDelay);
         dataStore.setOption('showGraph', this.checked);
-    }).attr('checked', dataStore.getOption('showGraph'));
+    }).prop('checked', dataStore.getOption('showGraph'));
 
     cb0.find('#showFinalJeopardy').on('click', function () {
         getFinalJeopardyDiv()[this.checked ? 'show' : 'hide'](animationDelay);
         dataStore.setOption('showFinalJeopardy', this.checked);
-    }).attr('checked', dataStore.getOption('showFinalJeopardy'));
+    }).prop('checked', dataStore.getOption('showFinalJeopardy'));
 
     cb0.find('#showExamples').on('click', function () {
         $('#examplesDiv')[this.checked ? 'slideDown' : 'slideUp'](animationDelay);
         dataStore.setOption('showExamples', this.checked);
-    }).attr('checked', dataStore.getOption('showExamples'));
+    }).prop('checked', dataStore.getOption('showExamples'));
 
     cb0.find('#showHelp').on('click', function () {
         $('#helpDiv')[this.checked ? 'slideDown' : 'slideUp'](animationDelay);
         dataStore.setOption('showHelp', this.checked);
-    }).attr('checked', dataStore.getOption('showHelp'));
+    }).prop('checked', dataStore.getOption('showHelp'));
 
     //--------------------------------------------------------------------------
     // Make the 4 options blocks
