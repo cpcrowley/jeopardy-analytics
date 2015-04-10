@@ -1,4 +1,6 @@
 "use strict";
+
+var charts = require('./charts.js');
 var reconstructGames = require('./reconstructGames.js');
 var refreshBoards = require('./refreshBoards.js');
 var _ = require('lodash');
@@ -15,7 +17,6 @@ var optionsList = [
     {key:'animationDelay', defaultValue: 500},
     {key:'showCounts', defaultValue: false},
     {key:'showTotals', defaultValue: false},
-    {key:'showLegend', defaultValue: true},
     {key:'showGameBoard', defaultValue: false},
     {key:'showGraph', defaultValue: true},
     {key:'showFinalJeopardy', defaultValue: false},
@@ -26,16 +27,117 @@ var options = {};
 
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
+var getFinalJeopardyDiv = function () {
+    var fjDiv = $('#final-div');
+    if (fjDiv.text().length === 0) {
+        var rights = 0,
+            wrongs = 0;
+        var rightWrongByYear = {};
+        _.each(yearRange, function (year) {
+            rightWrongByYear[year] = [0, 0];
+        });
+
+        _.each(games(), function (gameData) {
+            var finalData = gameData.finalData;
+            var year = parseInt(gameData.gameDate.substring(0, 4), 10);
+            rights += finalData.rights;
+            wrongs += finalData.wrongs;
+            rightWrongByYear[year][0] += finalData.rights;
+            rightWrongByYear[year][1] += finalData.wrongs;
+        });
+
+        var divisor = rights + wrongs;
+        if (divisor === 0) divisor = 1;
+        fjDiv.html('Final Jeopardy: right=' + rights + ', wrong=' + wrongs +
+                   ' or <span class="stats-color-2">' + Math.round(100 * rights / divisor) +
+                   '% right</span>');
+
+        var rightWrongData = [];
+        _.each(yearRange, function (year) {
+            var rw = rightWrongByYear[year];
+            var ratio = 0;
+            var divisor = rw[0] + rw[1];
+            if (divisor !== 0) ratio = Math.round(100 * rw[0] / divisor);
+            rightWrongData.push([year.toString(), ratio]);
+        });
+        charts('chartFinal', rightWrongData, 'Final Jeopardy correct answers by year');
+    }
+
+    return fjDiv;
+};
+
+//------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
 var getOption = function (optionName) {
     return options[optionName];
 };
 var setOption = function (optionName, newValue) {
+    // Convert "true"/"false" string values to boolean values
     if(newValue==='true') newValue = true;
     else if(newValue==='false') newValue = false;
-    //console.log('setOption('+optionName+')=<'+newValue+'> typeof='+(typeof newValue));
+    
+    // Set the option and save it in localStorage
     options[optionName] = newValue;
     localStorage[optionName] = newValue;
+    
+    // For some options we need to take some actions when they are set
+    var div;
+    switch(optionName) {
+        case 'showGraph':
+            div = $('#graph-div');
+            if(div.length > 0) {
+                div[newValue ? 'slideDown' : 'slideUp'](options.animationDelay);
+            }
+            break;
+        case 'showGameBoard':
+            div = $('#boardTable');
+            if(div.length > 0) {
+                div[newValue ? 'show' : 'hide'](options.animationDelay);
+            }
+            break;
+        case 'showFinalJeopardy':
+            div = getFinalJeopardyDiv();
+            if(div.length > 0) {
+                div[newValue ? 'show' : 'hide'](options.animationDelay);
+            }
+            break;
+        case 'showHelp':
+            div = $('#helpDiv');
+            if(div.length > 0) {
+                div[newValue ? 'slideDown' : 'slideUp'](options.animationDelay);
+            }
+            break;
+        case 'showOptionsBlock1':
+            div = $('.controls-div-inline.stats-color-1');
+            if(div.length > 0) {
+                div[newValue ? 'show' : 'hide'](options.animationDelay);
+                refreshBoards();
+            }
+            break;
+        case 'showOptionsBlock2':
+            div = $('.controls-div-inline.stats-color-2');
+            if(div.length > 0) {
+                div[newValue ? 'show' : 'hide'](options.animationDelay);
+                refreshBoards();
+            }
+            break;
+        case 'showOptionsBlock3':
+            div = $('.controls-div-inline.stats-color-3');
+            if(div.length > 0) {
+                div[newValue ? 'show' : 'hide'](options.animationDelay);
+                refreshBoards();
+            }
+            break;
+        case 'showOptionsBlock4':
+            div = $('.controls-div-inline.stats-color-4');
+            if(div.length > 0) {
+                div[newValue ? 'show' : 'hide'](options.animationDelay);
+                refreshBoards();
+            }
+            break;
+    }
 };
+
 
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------

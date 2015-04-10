@@ -9,8 +9,6 @@ var _ = require('lodash');
 
 var cb1, cb2, cb3, cb4, optionsBlock;
 
-var animationDelay = 500;
-
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
 var makeOptionList = function (items) {
@@ -73,12 +71,12 @@ var makeControlsBlockTemplate = function () {
             ["3", "3"]])) +
         '</div>' +
         '<div class="controls-titled-box">' +
-        '<div class="controls-subtitle">What to show</div>' +
+        '<div class="controls-subtitle">Divisor for %</div>' +
         makeSelectControlsBlock('percent-select', '%', makeOptionList([
-            ["cell", "passed/cell total"],
-            ["row", "passed/row total"],
-            ["column", "passed/column total"],
-            ["board", "passed/board total"]])) +
+            ["cell", "count/(cell total)"],
+            ["row", "count/(row total)"],
+            ["column", "count/(column total)"],
+            ["board", "count/(board total)"]])) +
         '</div>' +
         '</div>');
 };
@@ -95,6 +93,7 @@ module.exports = function () {
     cb1.find('select:eq(0)')[0].selectedIndex = 3;
     cb1.find('select:eq(4)')[0].selectedIndex = 1;
     cb1.find('.graph-button').on('click', function () {
+        dataStore.setOption('showGraph', true);
         var board = dataStore.boards()[1];
         charts('chartByYear', board.boardsByYear, '1: ' + titleFromOptions(board.options));
     });
@@ -103,6 +102,7 @@ module.exports = function () {
     cb2.find('select:eq(0)')[0].selectedIndex = 3;
     cb2.find('select:eq(4)')[0].selectedIndex = 2;
     cb2.find('.graph-button').on('click', function () {
+        dataStore.setOption('showGraph', true);
         var board = dataStore.boards()[2];
         charts('chartByYear', board.boardsByYear, '2: ' + titleFromOptions(board.options));
     });
@@ -111,6 +111,7 @@ module.exports = function () {
     cb3.find('select:eq(0)')[0].selectedIndex = 3;
     cb3.find('select:eq(3)')[0].selectedIndex = 2;
     cb3.find('.graph-button').on('click', function () {
+        dataStore.setOption('showGraph', true);
         var board = dataStore.boards()[3];
         charts('chartByYear', board.boardsByYear, '3: ' + titleFromOptions(board.options));
     });
@@ -119,6 +120,7 @@ module.exports = function () {
     cb4.find('select:eq(0)')[0].selectedIndex = 3;
     cb4.find('select:eq(2)')[0].selectedIndex = 2;
     cb4.find('.graph-button').on('click', function () {
+        dataStore.setOption('showGraph', true);
         var board = dataStore.boards()[4];
         charts('chartByYear', board.boardsByYear, '4: ' + titleFromOptions(board.options));
     });

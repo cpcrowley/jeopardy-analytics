@@ -79,7 +79,7 @@ module.exports = function () {
     
     var legendDiv = $('#legend-div').empty();
     _.each(dataStore.boardRange, function(boardNumber) {
-        if (!dataStore.getOption('showOptionsBlock'+boardNumber)) {
+        if (dataStore.getOption('showOptionsBlock'+boardNumber)) {
             legendDiv.append('<div class="stats-color-'+boardNumber+'">'+
                              titleFromOptions(boards[boardNumber].options)+'</div>');
         }

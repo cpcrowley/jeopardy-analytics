@@ -7,7 +7,6 @@
 #show-controls-div {
     display: block;
     margin: 0 0 4px 0;
-    /*background-color: antiquewhite;*/
 }
 #options-div {
     display: inline-block;
@@ -20,9 +19,10 @@
     color: blue;
     background-color: antiquewhite;
     padding: 10px 10px 10px 10px;
-};
+}
 #legend-div {
     margin: 0 0 20px 0;
+    background-color: antiquewhite;
 }
 #button-div {
     margin: 15px 0 0 20px;
@@ -31,11 +31,17 @@
 /*-------------------------------------------------*/
 /* Others */
 /*-------------------------------------------------*/
+.toggles-div {
+    background-color: antiquewhite;
+}
 .graph-button {
     margin: 0 1em;
 }
 .space-right {
     margin-right: 1em;
+}
+.text-align-center {
+    text-align: center;
 }
 
 /*-------------------------------------------------*/
@@ -57,14 +63,14 @@
 }
 .controls-div-inline {
     display: inline-block;
-    margin: 0px 10px 10px 0px;
+    margin: 0 10px 10px 0;
     background-color: antiquewhite;
 }
 .controls-block {
     display: block;
     width: auto;
     height: auto;
-    margin: 4px 4px 0px 4px;
+    margin: 4px 4px 0 4px;
 }
 .controls-block label {
     margin-right: 4px;
@@ -78,7 +84,7 @@
     display: inline-block;
     width: auto;
     height: auto;
-    margin: 4px 4px 0px 4px;
+    margin: 4px 4px 0 4px;
 }
 .controls-block-inline label {
     margin-right: 4px;
