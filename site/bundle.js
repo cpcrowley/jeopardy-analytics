@@ -12170,8 +12170,8 @@ var analyzeGamesData = function () {
     console.log('Rounds: '+numberOfRounds);
     console.log('Clues: '+numberOfClues);
     console.log('DDs in columns: ');
-    for(icol=1; icol<numCols; ++icol) {
-        console.log(icol+': '+ddcol[icol]);
+    for(icol=0; icol<numCols; ++icol) {
+        console.log(icol+': '+ddcol[icol].slice(1));
     }
 
     options.gamesData = {
@@ -12546,8 +12546,13 @@ var reconstructRound = function (cluesArray) {
 module.exports = function (jsonData) {
     var rgames = [];
     _.each(jsonData, function(item){
+        var seasonNumber = item[0];
+        if(typeof seasonNumber !== "number") {
+            seasonNumber = 0;
+            console.log('seasonNumber='+seasonNumber+':'+item[0]);
+        }
         rgames.push({
-            seasonNumber: item[0],
+            seasonNumber: seasonNumber,
             gameId: item[1],
             gameNumber: item[2],
             gameDate: item[3],
