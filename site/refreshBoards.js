@@ -94,8 +94,8 @@ module.exports = function () {
         var board = dataStore.boards()[boardNumber];
         board.options = fetchOptions(boardNumber);
         zeroOutBoard(board.board1);
-        _.each(dataStore.yearRange, function (year) {
-            zeroOutBoard(board.boardsByYear[year]);
+        _.each(dataStore.seasonRange, function (season) {
+            zeroOutBoard(board.boardsBySeason[season]);
         });
     });
 
@@ -105,8 +105,8 @@ module.exports = function () {
     _.each(dataStore.boardRange, function (boardNumber) {
         var board = dataStore.boards()[boardNumber];
         computeBoardTotals(board.board1);
-        _.each(dataStore.yearRange, function (year) {
-            computeBoardTotals(board.boardsByYear[year]);
+        _.each(dataStore.seasonRange, function (season) {
+            computeBoardTotals(board.boardsBySeason[season]);
         });
     });
 

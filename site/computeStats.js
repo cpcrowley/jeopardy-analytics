@@ -10,8 +10,8 @@ function fillRound(roundNumber, board, gameData) {
     var clues = gameData['round' + roundNumber].clues;
 
     var board1 = board.board1;
-    var year = parseInt(gameData.gameDate.substring(0, 4), 10);
-    var board2 = board.boardsByYear[year];
+    var season = gameData.seasonNumber;
+    var board2 = board.boardsBySeason[season];
 
     _.each(clues, function (clue) {
 

@@ -12,7 +12,7 @@ var chartHeight = 600;
 //------------------------------------------------------------------------------
 var chartFinal = function (rightWrongData, title) {
     var vizData = new google.visualization.DataTable();
-    vizData.addColumn('string', 'year');
+    vizData.addColumn('string', 'season');
     vizData.addColumn('number', '% right');
     vizData.addRows(rightWrongData);
 
@@ -75,9 +75,9 @@ var chartBy4 = function (boards, title) {
 
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
-var chartByYear = function (boardsByYear, title) {
+var chartBySeason = function (boardsBySeason, title) {
     var vizData = new google.visualization.DataTable();
-    vizData.addColumn('string', 'Year');
+    vizData.addColumn('string', 'Season');
     vizData.addColumn('number', '$200/$400');
     vizData.addColumn('number', '$400/$800');
     vizData.addColumn('number', '$600/$1200');
@@ -86,9 +86,11 @@ var chartByYear = function (boardsByYear, title) {
 
     var dataIn = [];
 
-    _.each(dataStore.yearRange, function (year) {
-        var board = boardsByYear[year];
-        var dataArray = [year.toString()];
+    _.each(dataStore.seasonRange, function (season) {
+        var board = boardsBySeason[season];
+        var seasonString = season.toString();
+        if (season===0) { seasonString = 'sj'; }
+        var dataArray = [seasonString];
         for (var row = 1; row < 6; ++row) {
             var totalOfRowData = board[row][0];
             var count = totalOfRowData[1];
@@ -118,7 +120,7 @@ var chartByYear = function (boardsByYear, title) {
 //------------------------------------------------------------------------------
 module.exports = function(chartType, boards, title) {
     switch(chartType) {
-        case 'chartByYear': chartByYear(boards, title); break;
+        case 'chartBySeason': chartBySeason(boards, title); break;
         case 'chartBy4': chartBy4(boards, title); break;
         case 'chartFinal': chartFinal(boards, title); break;
     }

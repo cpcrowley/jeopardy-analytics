@@ -11821,7 +11821,7 @@ var chartHeight = 600;
 //------------------------------------------------------------------------------
 var chartFinal = function (rightWrongData, title) {
     var vizData = new google.visualization.DataTable();
-    vizData.addColumn('string', 'year');
+    vizData.addColumn('string', 'season');
     vizData.addColumn('number', '% right');
     vizData.addRows(rightWrongData);
 
@@ -11884,9 +11884,9 @@ var chartBy4 = function (boards, title) {
 
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
-var chartByYear = function (boardsByYear, title) {
+var chartBySeason = function (boardsBySeason, title) {
     var vizData = new google.visualization.DataTable();
-    vizData.addColumn('string', 'Year');
+    vizData.addColumn('string', 'Season');
     vizData.addColumn('number', '$200/$400');
     vizData.addColumn('number', '$400/$800');
     vizData.addColumn('number', '$600/$1200');
@@ -11895,9 +11895,11 @@ var chartByYear = function (boardsByYear, title) {
 
     var dataIn = [];
 
-    _.each(dataStore.yearRange, function (year) {
-        var board = boardsByYear[year];
-        var dataArray = [year.toString()];
+    _.each(dataStore.seasonRange, function (season) {
+        var board = boardsBySeason[season];
+        var seasonString = season.toString();
+        if (season===0) { seasonString = 'sj'; }
+        var dataArray = [seasonString];
         for (var row = 1; row < 6; ++row) {
             var totalOfRowData = board[row][0];
             var count = totalOfRowData[1];
@@ -11927,7 +11929,7 @@ var chartByYear = function (boardsByYear, title) {
 //------------------------------------------------------------------------------
 module.exports = function(chartType, boards, title) {
     switch(chartType) {
-        case 'chartByYear': chartByYear(boards, title); break;
+        case 'chartBySeason': chartBySeason(boards, title); break;
         case 'chartBy4': chartBy4(boards, title); break;
         case 'chartFinal': chartFinal(boards, title); break;
     }
@@ -11946,8 +11948,8 @@ function fillRound(roundNumber, board, gameData) {
     var clues = gameData['round' + roundNumber].clues;
 
     var board1 = board.board1;
-    var year = parseInt(gameData.gameDate.substring(0, 4), 10);
-    var board2 = board.boardsByYear[year];
+    var season = gameData.seasonNumber;
+    var board2 = board.boardsBySeason[season];
 
     _.each(clues, function (clue) {
 
@@ -12090,7 +12092,7 @@ var _ = require('lodash');
 
 var games = null;
 var boards = null;
-var yearRange = _.range(1984, 2016);
+var seasonRange = _.range(0, 32);
 var boardRange = _.range(1, 5);
 var optionsList = [
     {key:'finalJeopardyData', defaultValue: {}},
@@ -12115,9 +12117,9 @@ var options = {};
 var analyzeGamesData = function () {
     var rights = 0,
         wrongs = 0;
-    var rightWrongByYear = {};
-    _.each(yearRange, function (year) {
-        rightWrongByYear[year] = [0, 0];
+    var rightWrongBySeason = {};
+    _.each(seasonRange, function (season) {
+        rightWrongBySeason[season] = [0, 0];
     });
     
     var numberOfGames = 0;
@@ -12159,11 +12161,11 @@ var analyzeGamesData = function () {
         } else { console.log('Missing round2 in game on ' + gameData.gameDate); }
 
         var finalData = gameData.finalData;
-        var year = parseInt(gameData.gameDate.substring(0, 4), 10);
+        var season = gameData.seasonNumber;
         rights += finalData.rights;
         wrongs += finalData.wrongs;
-        rightWrongByYear[year][0] += finalData.rights;
-        rightWrongByYear[year][1] += finalData.wrongs;
+        rightWrongBySeason[season][0] += finalData.rights;
+        rightWrongBySeason[season][1] += finalData.wrongs;
     });
     
     console.log('Games: '+numberOfGames);
@@ -12184,7 +12186,7 @@ var analyzeGamesData = function () {
     options.finalJeopardyData = {
         rights: rights,
         wrongs: wrongs,
-        rightWrongByYear: rightWrongByYear
+        rightWrongBySeason: rightWrongBySeason
     };
 };
 
@@ -12309,11 +12311,11 @@ var init = function() {
             options: null,
             board1: createZeroedBoard()
         };
-        var boardsByYear = {};
-        _.each(yearRange, function (year) {
-            boardsByYear[year] = createZeroedBoard();
+        var boardsBySeason = {};
+        _.each(seasonRange, function (season) {
+            boardsBySeason[season] = createZeroedBoard();
         });
-        board.boardsByYear = boardsByYear;
+        board.boardsBySeason = boardsBySeason;
         boards.push(board);
     });
 
@@ -12343,7 +12345,7 @@ exports.getOption = getOption;
 exports.setOption = setOption;
 exports.games = function(){return games;};
 exports.boards = function(){return boards;};
-exports.yearRange = yearRange;
+exports.seasonRange = seasonRange;
 exports.boardRange = boardRange;
 
 
@@ -12403,7 +12405,7 @@ var makeControlsBlockTemplate = function () {
     return _.template(
         '<div class="controls-div-inline stats-color-<%= cbId %>">' +
         '<span class="controls-title"><%= cbId %>:</span>' +
-        '<button type="button" class="btn btn-default btn-sm graph-button">Graph by Year</button>' +
+        '<button type="button" class="btn btn-default btn-sm graph-button">Graph by Season</button>' +
         '<div class="controls-titled-box">' +
         '<div class="controls-subtitle">Clues to include</div>' +
         makeSelectControlsBlock('include-daily-doubles', 'Daily doubles', makeOptionList([
@@ -12458,7 +12460,7 @@ module.exports = function () {
     cb1.find('.graph-button').on('click', function () {
         dataStore.setOption('showGraph', true);
         var board = dataStore.boards()[1];
-        charts('chartByYear', board.boardsByYear, '1: ' + titleFromOptions(board.options));
+        charts('chartBySeason', board.boardsBySeason, '1: ' + titleFromOptions(board.options));
     });
 
     cb2 = $(controlBlockHtmlTemplate({cbId: '2'}));
@@ -12467,7 +12469,7 @@ module.exports = function () {
     cb2.find('.graph-button').on('click', function () {
         dataStore.setOption('showGraph', true);
         var board = dataStore.boards()[2];
-        charts('chartByYear', board.boardsByYear, '2: ' + titleFromOptions(board.options));
+        charts('chartBySeason', board.boardsBySeason, '2: ' + titleFromOptions(board.options));
     });
 
     cb3 = $(controlBlockHtmlTemplate({cbId: '3'}));
@@ -12476,7 +12478,7 @@ module.exports = function () {
     cb3.find('.graph-button').on('click', function () {
         dataStore.setOption('showGraph', true);
         var board = dataStore.boards()[3];
-        charts('chartByYear', board.boardsByYear, '3: ' + titleFromOptions(board.options));
+        charts('chartBySeason', board.boardsBySeason, '3: ' + titleFromOptions(board.options));
     });
 
     cb4 = $(controlBlockHtmlTemplate({cbId: '4'}));
@@ -12485,7 +12487,7 @@ module.exports = function () {
     cb4.find('.graph-button').on('click', function () {
         dataStore.setOption('showGraph', true);
         var board = dataStore.boards()[4];
-        charts('chartByYear', board.boardsByYear, '4: ' + titleFromOptions(board.options));
+        charts('chartBySeason', board.boardsBySeason, '4: ' + titleFromOptions(board.options));
     });
     
     // Hide the ones not initially visible
@@ -12549,7 +12551,6 @@ module.exports = function (jsonData) {
         var seasonNumber = item[0];
         if(typeof seasonNumber !== "number") {
             seasonNumber = 0;
-            console.log('seasonNumber='+seasonNumber+':'+item[0]);
         }
         rgames.push({
             seasonNumber: seasonNumber,
@@ -12662,8 +12663,8 @@ module.exports = function () {
         var board = dataStore.boards()[boardNumber];
         board.options = fetchOptions(boardNumber);
         zeroOutBoard(board.board1);
-        _.each(dataStore.yearRange, function (year) {
-            zeroOutBoard(board.boardsByYear[year]);
+        _.each(dataStore.seasonRange, function (season) {
+            zeroOutBoard(board.boardsBySeason[season]);
         });
     });
 
@@ -12673,8 +12674,8 @@ module.exports = function () {
     _.each(dataStore.boardRange, function (boardNumber) {
         var board = dataStore.boards()[boardNumber];
         computeBoardTotals(board.board1);
-        _.each(dataStore.yearRange, function (year) {
-            computeBoardTotals(board.boardsByYear[year]);
+        _.each(dataStore.seasonRange, function (season) {
+            computeBoardTotals(board.boardsBySeason[season]);
         });
     });
 
@@ -12776,14 +12777,16 @@ var makeBlockToggles = function () {
                                  Math.round(100 * fjData.rights / divisor) +
                                  '% right</span>');
             var rightWrongData = [];
-            _.each(dataStore.yearRange, function (year) {
-                var rw = fjData.rightWrongByYear[year];
+            _.each(dataStore.seasonRange, function (season) {
+                var rw = fjData.rightWrongBySeason[season];
                 var ratio = 0;
                 var divisor = rw[0] + rw[1];
                 if (divisor !== 0) ratio = Math.round(100 * rw[0] / divisor);
-                rightWrongData.push([year.toString(), ratio]);
+                var seasonString = season.toString();
+                if (season===0) { seasonString = 'sj'; }
+                rightWrongData.push([seasonString, ratio]);
             });
-            charts('chartFinal', rightWrongData, 'Final Jeopardy correct answers by year');
+            charts('chartFinal', rightWrongData, 'Final Jeopardy correct answers by season');
         }
         dataStore.setOption('showFinalJeopardy', this.checked);
     }))

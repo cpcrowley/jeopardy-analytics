@@ -85,20 +85,22 @@ var makeBlockToggles = function () {
             var fjData = dataStore.getOption('finalJeopardyData');
             var divisor = fjData.rights + fjData.wrongs;
             if (divisor === 0) divisor = 1;
-            $('#final-div').html('Final Jeopardy: right=' + fjData.ights +
+            $('#final-div').html('Final Jeopardy: right=' + fjData.rights +
                                  ', wrong=' + fjData.wrongs +
                                  ' or <span class="stats-color-2">' +
                                  Math.round(100 * fjData.rights / divisor) +
                                  '% right</span>');
             var rightWrongData = [];
-            _.each(dataStore.yearRange, function (year) {
-                var rw = fjData.rightWrongByYear[year];
+            _.each(dataStore.seasonRange, function (season) {
+                var rw = fjData.rightWrongBySeason[season];
                 var ratio = 0;
                 var divisor = rw[0] + rw[1];
                 if (divisor !== 0) ratio = Math.round(100 * rw[0] / divisor);
-                rightWrongData.push([year.toString(), ratio]);
+                var seasonString = season.toString();
+                if (season===0) { seasonString = 'sj'; }
+                rightWrongData.push([seasonString, ratio]);
             });
-            charts('chartFinal', rightWrongData, 'Final Jeopardy correct answers by year');
+            charts('chartFinal', rightWrongData, 'Final Jeopardy correct answers by season');
         }
         dataStore.setOption('showFinalJeopardy', this.checked);
     }))

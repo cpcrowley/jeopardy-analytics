@@ -6,7 +6,7 @@ var _ = require('lodash');
 
 var games = null;
 var boards = null;
-var yearRange = _.range(1984, 2016);
+var seasonRange = _.range(0, 32);
 var boardRange = _.range(1, 5);
 var optionsList = [
     {key:'finalJeopardyData', defaultValue: {}},
@@ -31,9 +31,9 @@ var options = {};
 var analyzeGamesData = function () {
     var rights = 0,
         wrongs = 0;
-    var rightWrongByYear = {};
-    _.each(yearRange, function (year) {
-        rightWrongByYear[year] = [0, 0];
+    var rightWrongBySeason = {};
+    _.each(seasonRange, function (season) {
+        rightWrongBySeason[season] = [0, 0];
     });
     
     var numberOfGames = 0;
@@ -75,11 +75,11 @@ var analyzeGamesData = function () {
         } else { console.log('Missing round2 in game on ' + gameData.gameDate); }
 
         var finalData = gameData.finalData;
-        var year = parseInt(gameData.gameDate.substring(0, 4), 10);
+        var season = gameData.seasonNumber;
         rights += finalData.rights;
         wrongs += finalData.wrongs;
-        rightWrongByYear[year][0] += finalData.rights;
-        rightWrongByYear[year][1] += finalData.wrongs;
+        rightWrongBySeason[season][0] += finalData.rights;
+        rightWrongBySeason[season][1] += finalData.wrongs;
     });
     
     console.log('Games: '+numberOfGames);
@@ -100,7 +100,7 @@ var analyzeGamesData = function () {
     options.finalJeopardyData = {
         rights: rights,
         wrongs: wrongs,
-        rightWrongByYear: rightWrongByYear
+        rightWrongBySeason: rightWrongBySeason
     };
 };
 
@@ -225,11 +225,11 @@ var init = function() {
             options: null,
             board1: createZeroedBoard()
         };
-        var boardsByYear = {};
-        _.each(yearRange, function (year) {
-            boardsByYear[year] = createZeroedBoard();
+        var boardsBySeason = {};
+        _.each(seasonRange, function (season) {
+            boardsBySeason[season] = createZeroedBoard();
         });
-        board.boardsByYear = boardsByYear;
+        board.boardsBySeason = boardsBySeason;
         boards.push(board);
     });
 
@@ -259,6 +259,6 @@ exports.getOption = getOption;
 exports.setOption = setOption;
 exports.games = function(){return games;};
 exports.boards = function(){return boards;};
-exports.yearRange = yearRange;
+exports.seasonRange = seasonRange;
 exports.boardRange = boardRange;
 

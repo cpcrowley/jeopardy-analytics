@@ -40,7 +40,7 @@ var makeControlsBlockTemplate = function () {
     return _.template(
         '<div class="controls-div-inline stats-color-<%= cbId %>">' +
         '<span class="controls-title"><%= cbId %>:</span>' +
-        '<button type="button" class="btn btn-default btn-sm graph-button">Graph by Year</button>' +
+        '<button type="button" class="btn btn-default btn-sm graph-button">Graph by Season</button>' +
         '<div class="controls-titled-box">' +
         '<div class="controls-subtitle">Clues to include</div>' +
         makeSelectControlsBlock('include-daily-doubles', 'Daily doubles', makeOptionList([
@@ -95,7 +95,7 @@ module.exports = function () {
     cb1.find('.graph-button').on('click', function () {
         dataStore.setOption('showGraph', true);
         var board = dataStore.boards()[1];
-        charts('chartByYear', board.boardsByYear, '1: ' + titleFromOptions(board.options));
+        charts('chartBySeason', board.boardsBySeason, '1: ' + titleFromOptions(board.options));
     });
 
     cb2 = $(controlBlockHtmlTemplate({cbId: '2'}));
@@ -104,7 +104,7 @@ module.exports = function () {
     cb2.find('.graph-button').on('click', function () {
         dataStore.setOption('showGraph', true);
         var board = dataStore.boards()[2];
-        charts('chartByYear', board.boardsByYear, '2: ' + titleFromOptions(board.options));
+        charts('chartBySeason', board.boardsBySeason, '2: ' + titleFromOptions(board.options));
     });
 
     cb3 = $(controlBlockHtmlTemplate({cbId: '3'}));
@@ -113,7 +113,7 @@ module.exports = function () {
     cb3.find('.graph-button').on('click', function () {
         dataStore.setOption('showGraph', true);
         var board = dataStore.boards()[3];
-        charts('chartByYear', board.boardsByYear, '3: ' + titleFromOptions(board.options));
+        charts('chartBySeason', board.boardsBySeason, '3: ' + titleFromOptions(board.options));
     });
 
     cb4 = $(controlBlockHtmlTemplate({cbId: '4'}));
@@ -122,7 +122,7 @@ module.exports = function () {
     cb4.find('.graph-button').on('click', function () {
         dataStore.setOption('showGraph', true);
         var board = dataStore.boards()[4];
-        charts('chartByYear', board.boardsByYear, '4: ' + titleFromOptions(board.options));
+        charts('chartBySeason', board.boardsBySeason, '4: ' + titleFromOptions(board.options));
     });
     
     // Hide the ones not initially visible
