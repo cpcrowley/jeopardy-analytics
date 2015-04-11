@@ -1,6 +1,5 @@
 "use strict";
 
-var charts = require('./charts.js');
 var reconstructGames = require('./reconstructGames.js');
 var refreshBoards = require('./refreshBoards.js');
 var _ = require('lodash');
@@ -10,6 +9,8 @@ var boards = null;
 var yearRange = _.range(1984, 2016);
 var boardRange = _.range(1, 5);
 var optionsList = [
+    {key:'finalJeopardyData', defaultValue: {}},
+    {key:'gamesData', defaultValue: {}},
     {key:'showOptionsBlock1', defaultValue: true},
     {key:'showOptionsBlock2', defaultValue: true},
     {key:'showOptionsBlock3', defaultValue: false},
@@ -27,43 +28,80 @@ var options = {};
 
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
-var getFinalJeopardyDiv = function () {
-    var fjDiv = $('#final-div');
-    if (fjDiv.text().length === 0) {
-        var rights = 0,
-            wrongs = 0;
-        var rightWrongByYear = {};
-        _.each(yearRange, function (year) {
-            rightWrongByYear[year] = [0, 0];
-        });
+var analyzeGamesData = function () {
+    var rights = 0,
+        wrongs = 0;
+    var rightWrongByYear = {};
+    _.each(yearRange, function (year) {
+        rightWrongByYear[year] = [0, 0];
+    });
+    
+    var numberOfGames = 0;
+    var numberOfRounds = 0;
+    var numberOfClues = 0;
 
-        _.each(games(), function (gameData) {
-            var finalData = gameData.finalData;
-            var year = parseInt(gameData.gameDate.substring(0, 4), 10);
-            rights += finalData.rights;
-            wrongs += finalData.wrongs;
-            rightWrongByYear[year][0] += finalData.rights;
-            rightWrongByYear[year][1] += finalData.wrongs;
-        });
-
-        var divisor = rights + wrongs;
-        if (divisor === 0) divisor = 1;
-        fjDiv.html('Final Jeopardy: right=' + rights + ', wrong=' + wrongs +
-                   ' or <span class="stats-color-2">' + Math.round(100 * rights / divisor) +
-                   '% right</span>');
-
-        var rightWrongData = [];
-        _.each(yearRange, function (year) {
-            var rw = rightWrongByYear[year];
-            var ratio = 0;
-            var divisor = rw[0] + rw[1];
-            if (divisor !== 0) ratio = Math.round(100 * rw[0] / divisor);
-            rightWrongData.push([year.toString(), ratio]);
-        });
-        charts('chartFinal', rightWrongData, 'Final Jeopardy correct answers by year');
+    var ddcol = [];
+    var numCols = 7;
+    var icol;
+    var colOfFirstDD;
+    var clues;
+    for(icol=0; icol<numCols; ++icol) {
+        ddcol.push([0,0,0,0,0,0,0]);
     }
 
-    return fjDiv;
+    // Go through all the games.
+    _.each(games, function (gameData) {
+        ++numberOfGames;
+        if(gameData.round1) {
+            ++numberOfRounds;
+            clues = gameData.round1.clues;
+            numberOfClues += clues.length;
+        } else { console.log('Missing round1 in game on ' + gameData.gameDate); }
+        if(gameData.round2) {
+            ++numberOfRounds;
+            clues = gameData.round2.clues;
+            numberOfClues += clues.length;
+            colOfFirstDD = -1;
+            _.each(clues, function (clue) {
+                if (clue.isDD) {
+                    if (colOfFirstDD < 0) {
+                        colOfFirstDD = clue.col;
+                    } else {
+                        ddcol[colOfFirstDD][clue.col] += 1;
+                        ddcol[clue.col][colOfFirstDD] += 1;
+                    }
+                }
+            });
+        } else { console.log('Missing round2 in game on ' + gameData.gameDate); }
+
+        var finalData = gameData.finalData;
+        var year = parseInt(gameData.gameDate.substring(0, 4), 10);
+        rights += finalData.rights;
+        wrongs += finalData.wrongs;
+        rightWrongByYear[year][0] += finalData.rights;
+        rightWrongByYear[year][1] += finalData.wrongs;
+    });
+    
+    console.log('Games: '+numberOfGames);
+    console.log('Rounds: '+numberOfRounds);
+    console.log('Clues: '+numberOfClues);
+    console.log('DDs in columns: ');
+    for(icol=0; icol<numCols; ++icol) {
+        console.log(icol+': '+ddcol[icol].slice(1));
+    }
+
+    options.gamesData = {
+        ddcol: ddcol,
+        numberOfGames: numberOfGames,
+        numberOfRounds: numberOfRounds,
+        numberOfClues: numberOfClues
+    };
+
+    options.finalJeopardyData = {
+        rights: rights,
+        wrongs: wrongs,
+        rightWrongByYear: rightWrongByYear
+    };
 };
 
 //------------------------------------------------------------------------------
@@ -71,6 +109,9 @@ var getFinalJeopardyDiv = function () {
 var getOption = function (optionName) {
     return options[optionName];
 };
+
+//------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
 var setOption = function (optionName, newValue) {
     // Convert "true"/"false" string values to boolean values
     if(newValue==='true') newValue = true;
@@ -96,7 +137,7 @@ var setOption = function (optionName, newValue) {
             }
             break;
         case 'showFinalJeopardy':
-            div = getFinalJeopardyDiv();
+            div = $('#final-div');
             if(div.length > 0) {
                 div[newValue ? 'show' : 'hide'](options.animationDelay);
             }
@@ -176,7 +217,7 @@ var createZeroedBoard = function () {
 var init = function() {
     getOptionsFromLocalStorage();
     
-    // Initialize boards
+    // Initialize boards to all zeros
     boards = [null]; // boards[0] is never used. Subscripts work out better that way.
     _.each(boardRange, function (boardNumber) {
         var board = {
@@ -193,10 +234,19 @@ var init = function() {
     });
 
     $.getJSON('data/allGamesCompact.json', function (jsonData) {
+        // It is recorded in JSON but compressed so we need to expand it.
+        // compression consists of converting objects to arrays.
+        // This saves all the fields name which are repeated for each object in an array.
         games = reconstructGames(jsonData);
 
-        console.log('games.slice(0,10)', games.slice(0, 10));
+        // Dump this in case I need to llok at the data representation.
+        console.log('games.slice(0,10), games.slice(200,10)',
+                    games.slice(0, 10), games.slice(200, 10));
+        
+        // Do some initial analysis on the data.
+        analyzeGamesData();
 
+        // Use the games data to fill the boards for display.
         refreshBoards();
     });
 };

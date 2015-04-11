@@ -2,7 +2,9 @@
 
 var makeOptionsBlocks = require('./makeOptionsBlocks.js');
 var refreshBoards = require('./refreshBoards.js');
+var charts = require('./charts.js');
 var dataStore = require('./dataStore.js');
+var _ = require('lodash');
 
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
@@ -79,6 +81,25 @@ var makeBlockToggles = function () {
         dataStore.setOption('showGraph', this.checked);
     }))
     .append(makeCheckboxBlock('showFinalJeopardy', 'Final Jeopardy', function () {
+        if(this.checked) {
+            var fjData = dataStore.getOption('finalJeopardyData');
+            var divisor = fjData.rights + fjData.wrongs;
+            if (divisor === 0) divisor = 1;
+            $('#final-div').html('Final Jeopardy: right=' + fjData.ights +
+                                 ', wrong=' + fjData.wrongs +
+                                 ' or <span class="stats-color-2">' +
+                                 Math.round(100 * fjData.rights / divisor) +
+                                 '% right</span>');
+            var rightWrongData = [];
+            _.each(dataStore.yearRange, function (year) {
+                var rw = fjData.rightWrongByYear[year];
+                var ratio = 0;
+                var divisor = rw[0] + rw[1];
+                if (divisor !== 0) ratio = Math.round(100 * rw[0] / divisor);
+                rightWrongData.push([year.toString(), ratio]);
+            });
+            charts('chartFinal', rightWrongData, 'Final Jeopardy correct answers by year');
+        }
         dataStore.setOption('showFinalJeopardy', this.checked);
     }))
     .append(makeCheckboxBlock('showHelp', 'Help', function () {

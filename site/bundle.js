@@ -11940,9 +11940,6 @@ module.exports = function(chartType, boards, title) {
 var dataStore = require('./dataStore.js');
 var _ = require('lodash');
 
-var numCols = 7;
-var ddcol;
-
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
 function fillRound(roundNumber, board, gameData) {
@@ -11951,23 +11948,12 @@ function fillRound(roundNumber, board, gameData) {
     var board1 = board.board1;
     var year = parseInt(gameData.gameDate.substring(0, 4), 10);
     var board2 = board.boardsByYear[year];
-    
-    var colOfFirstDD = -1;
 
     _.each(clues, function (clue) {
 
         // Get the cell values array to use.
         var cell1 = board1[clue.row][clue.col];
         var cell2 = board2[clue.row][clue.col];
-        
-        if (clue.isDD) {
-            if (colOfFirstDD < 0) {
-                colOfFirstDD = clue.col;
-            } else {
-                ddcol[colOfFirstDD][clue.col] += 1;
-                ddcol[clue.col][colOfFirstDD] += 1;
-            }
-        }
 
         // Start out assuming this clue will be counted.
         var increment_count = 1;
@@ -12082,12 +12068,6 @@ module.exports = function () {
         if (!dataStore.getOption('showOptionsBlock'+boardNumber)) {
             break;
         }
-        
-        ddcol = [];
-        var icol;
-        for(icol=0; icol<numCols; ++icol) {
-            ddcol.push([0,0,0,0,0,0,0]);
-        }
 
         var whichRounds = board.options.whichRounds;
         _.each(games, function (gameData) {
@@ -12098,16 +12078,12 @@ module.exports = function () {
                 fillRound(2, board, gameData);
             }
         });
-        
-        for(icol=0; icol<numCols; ++icol) {
-            console.log(icol+': '+ddcol[icol]);
-        }
-
     }
 };
 
 },{"./dataStore.js":4,"lodash":1}],4:[function(require,module,exports){
 "use strict";
+
 var reconstructGames = require('./reconstructGames.js');
 var refreshBoards = require('./refreshBoards.js');
 var _ = require('lodash');
@@ -12117,6 +12093,8 @@ var boards = null;
 var yearRange = _.range(1984, 2016);
 var boardRange = _.range(1, 5);
 var optionsList = [
+    {key:'finalJeopardyData', defaultValue: {}},
+    {key:'gamesData', defaultValue: {}},
     {key:'showOptionsBlock1', defaultValue: true},
     {key:'showOptionsBlock2', defaultValue: true},
     {key:'showOptionsBlock3', defaultValue: false},
@@ -12134,9 +12112,90 @@ var options = {};
 
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
+var analyzeGamesData = function () {
+    var rights = 0,
+        wrongs = 0;
+    var rightWrongByYear = {};
+    _.each(yearRange, function (year) {
+        rightWrongByYear[year] = [0, 0];
+    });
+    
+    var numberOfGames = 0;
+    var numberOfRounds = 0;
+    var numberOfClues = 0;
+
+    var ddcol = [];
+    var numCols = 7;
+    var icol;
+    var colOfFirstDD;
+    var clues;
+    for(icol=0; icol<numCols; ++icol) {
+        ddcol.push([0,0,0,0,0,0,0]);
+    }
+
+    // Go through all the games.
+    _.each(games, function (gameData) {
+        ++numberOfGames;
+        if(gameData.round1) {
+            ++numberOfRounds;
+            clues = gameData.round1.clues;
+            numberOfClues += clues.length;
+        } else { console.log('Missing round1 in game on ' + gameData.gameDate); }
+        if(gameData.round2) {
+            ++numberOfRounds;
+            clues = gameData.round2.clues;
+            numberOfClues += clues.length;
+            colOfFirstDD = -1;
+            _.each(clues, function (clue) {
+                if (clue.isDD) {
+                    if (colOfFirstDD < 0) {
+                        colOfFirstDD = clue.col;
+                    } else {
+                        ddcol[colOfFirstDD][clue.col] += 1;
+                        ddcol[clue.col][colOfFirstDD] += 1;
+                    }
+                }
+            });
+        } else { console.log('Missing round2 in game on ' + gameData.gameDate); }
+
+        var finalData = gameData.finalData;
+        var year = parseInt(gameData.gameDate.substring(0, 4), 10);
+        rights += finalData.rights;
+        wrongs += finalData.wrongs;
+        rightWrongByYear[year][0] += finalData.rights;
+        rightWrongByYear[year][1] += finalData.wrongs;
+    });
+    
+    console.log('Games: '+numberOfGames);
+    console.log('Rounds: '+numberOfRounds);
+    console.log('Clues: '+numberOfClues);
+    console.log('DDs in columns: ');
+    for(icol=1; icol<numCols; ++icol) {
+        console.log(icol+': '+ddcol[icol]);
+    }
+
+    options.gamesData = {
+        ddcol: ddcol,
+        numberOfGames: numberOfGames,
+        numberOfRounds: numberOfRounds,
+        numberOfClues: numberOfClues
+    };
+
+    options.finalJeopardyData = {
+        rights: rights,
+        wrongs: wrongs,
+        rightWrongByYear: rightWrongByYear
+    };
+};
+
+//------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
 var getOption = function (optionName) {
     return options[optionName];
 };
+
+//------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
 var setOption = function (optionName, newValue) {
     // Convert "true"/"false" string values to boolean values
     if(newValue==='true') newValue = true;
@@ -12155,8 +12214,55 @@ var setOption = function (optionName, newValue) {
                 div[newValue ? 'slideDown' : 'slideUp'](options.animationDelay);
             }
             break;
+        case 'showGameBoard':
+            div = $('#boardTable');
+            if(div.length > 0) {
+                div[newValue ? 'show' : 'hide'](options.animationDelay);
+            }
+            break;
+        case 'showFinalJeopardy':
+            div = $('#final-div');
+            if(div.length > 0) {
+                div[newValue ? 'show' : 'hide'](options.animationDelay);
+            }
+            break;
+        case 'showHelp':
+            div = $('#helpDiv');
+            if(div.length > 0) {
+                div[newValue ? 'slideDown' : 'slideUp'](options.animationDelay);
+            }
+            break;
+        case 'showOptionsBlock1':
+            div = $('.controls-div-inline.stats-color-1');
+            if(div.length > 0) {
+                div[newValue ? 'show' : 'hide'](options.animationDelay);
+                refreshBoards();
+            }
+            break;
+        case 'showOptionsBlock2':
+            div = $('.controls-div-inline.stats-color-2');
+            if(div.length > 0) {
+                div[newValue ? 'show' : 'hide'](options.animationDelay);
+                refreshBoards();
+            }
+            break;
+        case 'showOptionsBlock3':
+            div = $('.controls-div-inline.stats-color-3');
+            if(div.length > 0) {
+                div[newValue ? 'show' : 'hide'](options.animationDelay);
+                refreshBoards();
+            }
+            break;
+        case 'showOptionsBlock4':
+            div = $('.controls-div-inline.stats-color-4');
+            if(div.length > 0) {
+                div[newValue ? 'show' : 'hide'](options.animationDelay);
+                refreshBoards();
+            }
+            break;
     }
 };
+
 
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
@@ -12195,7 +12301,7 @@ var createZeroedBoard = function () {
 var init = function() {
     getOptionsFromLocalStorage();
     
-    // Initialize boards
+    // Initialize boards to all zeros
     boards = [null]; // boards[0] is never used. Subscripts work out better that way.
     _.each(boardRange, function (boardNumber) {
         var board = {
@@ -12212,10 +12318,19 @@ var init = function() {
     });
 
     $.getJSON('data/allGamesCompact.json', function (jsonData) {
+        // It is recorded in JSON but compressed so we need to expand it.
+        // compression consists of converting objects to arrays.
+        // This saves all the fields name which are repeated for each object in an array.
         games = reconstructGames(jsonData);
 
-        console.log('games.slice(0,10)', games.slice(0, 10));
+        // Dump this in case I need to llok at the data representation.
+        console.log('games.slice(0,10), games.slice(200,10)',
+                    games.slice(0, 10), games.slice(200, 10));
+        
+        // Do some initial analysis on the data.
+        analyzeGamesData();
 
+        // Use the games data to fill the boards for display.
         refreshBoards();
     });
 };
@@ -12565,9 +12680,9 @@ module.exports = function () {
 },{"./charts.js":2,"./computeStats.js":3,"./dataStore.js":4,"./showTable.js":10,"lodash":1}],9:[function(require,module,exports){
 "use strict";
 
-var charts = require('./charts.js');
 var makeOptionsBlocks = require('./makeOptionsBlocks.js');
 var refreshBoards = require('./refreshBoards.js');
+var charts = require('./charts.js');
 var dataStore = require('./dataStore.js');
 var _ = require('lodash');
 
@@ -12602,47 +12717,6 @@ var createTableHtml = function (tableId, topTitles, leftTitles) {
 
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
-var getFinalJeopardyDiv = function () {
-    var fjDiv = $('#final-div');
-    if (fjDiv.text().length === 0) {
-        var rights = 0,
-            wrongs = 0;
-        var rightWrongByYear = {};
-        _.each(dataStore.yearRange, function (year) {
-            rightWrongByYear[year] = [0, 0];
-        });
-
-        _.each(dataStore.games(), function (gameData) {
-            var finalData = gameData.finalData;
-            var year = parseInt(gameData.gameDate.substring(0, 4), 10);
-            rights += finalData.rights;
-            wrongs += finalData.wrongs;
-            rightWrongByYear[year][0] += finalData.rights;
-            rightWrongByYear[year][1] += finalData.wrongs;
-        });
-
-        var divisor = rights + wrongs;
-        if (divisor === 0) divisor = 1;
-        fjDiv.html('Final Jeopardy: right=' + rights + ', wrong=' + wrongs +
-                   ' or <span class="stats-color-2">' + Math.round(100 * rights / divisor) +
-                   '% right</span>');
-
-        var rightWrongData = [];
-        _.each(dataStore.yearRange, function (year) {
-            var rw = rightWrongByYear[year];
-            var ratio = 0;
-            var divisor = rw[0] + rw[1];
-            if (divisor !== 0) ratio = Math.round(100 * rw[0] / divisor);
-            rightWrongData.push([year.toString(), ratio]);
-        });
-        charts('chartFinal', rightWrongData, 'Final Jeopardy correct answers by year');
-    }
-
-    return fjDiv;
-};
-
-//------------------------------------------------------------------------------
-//------------------------------------------------------------------------------
 var makeCheckboxBlock = function (elementId, label, clickHandler) {
     var cbb = $('<div class="controls-block-inline">' +
                 '<input type="checkbox" id="' + elementId + '"/>' +
@@ -12657,52 +12731,58 @@ var makeCheckboxBlock = function (elementId, label, clickHandler) {
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
 var makeFilterSetToggles = function () {
-    var animationDelay = dataStore.getOption('animationDelay');
     return $('<div class="toggles-div">' +
                             '<span class="showBlockTitle">Filter sets: </span>' +
                             '</div>')
     .append(makeCheckboxBlock('showOptionsBlock1', 'Filter 1', function () {
         dataStore.setOption('showOptionsBlock1', this.checked);
-        $('.controls-div-inline.stats-color-1')[this.checked ? 'show' : 'hide'](animationDelay);
-        refreshBoards();
     }))
     .append(makeCheckboxBlock('showOptionsBlock2', 'Filter 2', function () {
         dataStore.setOption('showOptionsBlock2', this.checked);
-        $('.controls-div-inline.stats-color-2')[this.checked ? 'show' : 'hide'](animationDelay);
-        refreshBoards();
     }))
     .append(makeCheckboxBlock('showOptionsBlock3', 'Filter 3', function () {
         dataStore.setOption('showOptionsBlock3', this.checked);
-        $('.controls-div-inline.stats-color-3')[this.checked ? 'show' : 'hide'](animationDelay);
-        refreshBoards();
     }))
     .append(makeCheckboxBlock('showOptionsBlock4', 'Filter 4', function () {
         dataStore.setOption('showOptionsBlock4', this.checked);
-        $('.controls-div-inline.stats-color-4')[this.checked ? 'show' : 'hide'](animationDelay);
-        refreshBoards();
     }));
 };
 
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
 var makeBlockToggles = function () {
-    var animationDelay = dataStore.getOption('animationDelay');
     return $('<div class="toggles-div">' +
              '<span class="showBlockTitle">Show extra information: </span>' +
              '</div>')
     .append(makeCheckboxBlock('showGameBoard', 'Game Board', function () {
-        $('#boardTable')[this.checked ? 'show' : 'hide'](animationDelay);
         dataStore.setOption('showGameBoard', this.checked);
     }))
     .append(makeCheckboxBlock('showGraph', 'Graph', function () {
         dataStore.setOption('showGraph', this.checked);
     }))
     .append(makeCheckboxBlock('showFinalJeopardy', 'Final Jeopardy', function () {
-        getFinalJeopardyDiv()[this.checked ? 'show' : 'hide'](animationDelay);
+        if(this.checked) {
+            var fjData = dataStore.getOption('finalJeopardyData');
+            var divisor = fjData.rights + fjData.wrongs;
+            if (divisor === 0) divisor = 1;
+            $('#final-div').html('Final Jeopardy: right=' + fjData.ights +
+                                 ', wrong=' + fjData.wrongs +
+                                 ' or <span class="stats-color-2">' +
+                                 Math.round(100 * fjData.rights / divisor) +
+                                 '% right</span>');
+            var rightWrongData = [];
+            _.each(dataStore.yearRange, function (year) {
+                var rw = fjData.rightWrongByYear[year];
+                var ratio = 0;
+                var divisor = rw[0] + rw[1];
+                if (divisor !== 0) ratio = Math.round(100 * rw[0] / divisor);
+                rightWrongData.push([year.toString(), ratio]);
+            });
+            charts('chartFinal', rightWrongData, 'Final Jeopardy correct answers by year');
+        }
         dataStore.setOption('showFinalJeopardy', this.checked);
     }))
     .append(makeCheckboxBlock('showHelp', 'Help', function () {
-        $('#helpDiv')[this.checked ? 'slideDown' : 'slideUp'](animationDelay);
         dataStore.setOption('showHelp', this.checked);
     }));
 };

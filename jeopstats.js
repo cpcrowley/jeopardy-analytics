@@ -41,7 +41,6 @@ fs.readFile(allGamesFileName, "utf-8", function(err,data){
 //------------------------------------------------------------------------------
 // constants
 //------------------------------------------------------------------------------
-var daterange = 10;
 var jdj = 0;
 
 
@@ -77,9 +76,9 @@ app.get('/search', function(req, res){
     if(games===null) {
         console.log('Still reading data. Try again in a few seconds.');
         return;
-    };
+    }
     var html = analyze.findInClues(req.query.searchstring, games);
-    res.send(html+'<hr>')
+    res.send(html+'<hr>');
 });
 
 //------------------------------------------------------------------------------
@@ -90,12 +89,12 @@ app.get('/table', function(req, res){
     if(gameSummaries===null) {
         console.log('Still reading data. Try again in a few seconds.');
         return;
-    };
+    }
     // Set the global value here.
     jdj = parseInt(req.query.jdj);
     var html = format.numberCorrect(yearSummaries,
         parseInt(req.query.daterange), jdj, parseInt(req.query.dd));
-    res.send(html+'<hr>')
+    res.send(html+'<hr>');
 });
 
 //------------------------------------------------------------------------------
@@ -105,10 +104,10 @@ app.get('/player', function(req, res, next){
     if(games===null) {
         console.log('Still reading data. Try again in a few seconds.');
         return;
-    };
+    }
     var answers = analyze.playerResults(req.query.player, games, byround);
     var html = format.playerResults(answers);
-    res.send(html+'<hr>')
+    res.send(html+'<hr>');
 });
 
 //------------------------------------------------------------------------------

@@ -68,8 +68,7 @@ NOTE: this code is still being developed. I change it often and it doesn't alway
     + NOTES
         - parses the HTML of each game in `../jeopardyData/gamesHTML`, converts it to JSON, and writes it in `../jeopardyData/gamesJSON`
         - reports the various errors
-        - TODO: four game HTML files cannot be read
-        - TODO: eight game HTML file were not parsed correctly
+        - TODO: eight game HTML files only have one round
         - NOTE: 187 games are missed, the HTML does not record the game.
     + LATER: make a second file of clues and answers and put the index into the allGamesCompact file.
     + FIX THIS: the clue answers are not being parsed correctly.
