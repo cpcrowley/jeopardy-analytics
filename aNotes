@@ -1,14 +1,14 @@
------ To 
-+ add info box which tells how many seasons, games, rounds, clues, players found and most recent update
-+ add ability to see a single season
-+ add ability to show by seasons not years
-+ add ability to show specified players
+----- To Do
 
 + Add list of player to compact form, also adds who answered in rights and wrongs, also add more final jeopardy info
-+ fix up the problems it finds with missing data and HTML files.
+
++ add info box which tells how many seasons, games, rounds, clues, players found and most recent update
++ add ability to show specified players
++ use the single round games
 + when the final jeopardy results are hidden redo the graph
 + remember the four options setting in localStorage
 + Add "wait for data to load" message
++ add ability to see a single season
 
 + Add a list of common questions, you can pick one and it will set all the SELECTs
   to the right values, useful for learning how they work.
@@ -23,20 +23,11 @@
 + maybe add a log div which shows each calcuation you have made, with easy select and copy, and a clear button
 
 
-
-
 ----- browserify: seems to be working, source map also works
 % r b -- to create a new version after editing
 % r watch-js -- start a watcher to recreate a new version every time a file is saved.
-
------ package.json
 - added some useful scripts, make replacement
 % r wc -- line counts for web site
 % r wc2 -- line counts for node.js site
-
------ grunt: installed and seems to be working
-% grunt browserify -- create new web site
-% grunt watch -- creates a watcher
-% grunt uglify -- not working, a start at minifying
 
 ----- webpack: wait for later

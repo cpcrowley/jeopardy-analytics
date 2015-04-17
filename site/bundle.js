@@ -12127,6 +12127,7 @@ var analyzeGamesData = function () {
     var numberOfClues = 0;
 
     var ddcol = [];
+    var players = {};
     var numCols = 7;
     var icol;
     var colOfFirstDD;
@@ -12159,6 +12160,15 @@ var analyzeGamesData = function () {
                 }
             });
         } else { console.log('Missing round2 in game on ' + gameData.gameDate); }
+        
+        _.each(gameData.players, function (playerName) {
+            var playerRecord = players[playerName];
+            if (!playerRecord) {
+                playerRecord = { gamesPlayed: 0 };
+                players[playerName] = playerRecord;
+            }
+            playerRecord.gamesPlayed += 1;
+        });
 
         var finalData = gameData.finalData;
         var season = gameData.seasonNumber;
@@ -12172,12 +12182,42 @@ var analyzeGamesData = function () {
     console.log('Rounds: '+numberOfRounds);
     console.log('Clues: '+numberOfClues);
     console.log('DDs in columns: ');
-    for(icol=0; icol<numCols; ++icol) {
+    for(icol=1; icol<numCols; ++icol) {
         console.log(icol+': '+ddcol[icol].slice(1));
     }
+    
+    // Analyze player data
+    var totalPlayers = 0;
+    var appearances1to5 = [0, 0, 0, 0, 0];
+    var appearances6to10 = [[], [], [], [], []];
+    var appearancesOver10 = [];
+    
+    _.each(players, function (playerRecord, playerName) {
+        ++totalPlayers;
+        var gamesPlayed = playerRecord.gamesPlayed;
+        if(gamesPlayed < 6) {
+            appearances1to5[gamesPlayed-1] += 1;
+        } else if(gamesPlayed < 11) {
+            appearances6to10[gamesPlayed-6].push(playerName);
+        } else {
+            console.log(playerName + ': ' + gamesPlayed + ' games played');
+        }
+    });
+    console.log('Total players: ' + totalPlayers);
+    console.log('1 appearances: ' + appearances1to5[0]);
+    console.log('2 appearances: ' + appearances1to5[1]);
+    console.log('3 appearances: ' + appearances1to5[2]);
+    console.log('4 appearances: ' + appearances1to5[3]);
+    console.log('5 appearances: ' + appearances1to5[4]);
+    console.log('6 appearances: ' + appearances6to10[0].length + ' ' + appearances6to10[0]);
+    console.log('7 appearances: ' + appearances6to10[1].length + ' ' + appearances6to10[1]);
+    console.log('8 appearances: ' + appearances6to10[2].length + ' ' + appearances6to10[2]);
+    console.log('9 appearances: ' + appearances6to10[3].length + ' ' + appearances6to10[3]);
+    console.log('10 appearances: ' + appearances6to10[4].length + ' ' + appearances6to10[4]);
 
     options.gamesData = {
         ddcol: ddcol,
+        players: players,
         numberOfGames: numberOfGames,
         numberOfRounds: numberOfRounds,
         numberOfClues: numberOfClues
@@ -12319,7 +12359,7 @@ var init = function() {
         boards.push(board);
     });
 
-    $.getJSON('data/allGamesCompact.json', function (jsonData) {
+    $.getJSON('data/allGamesCompact2.json', function (jsonData) {
         // It is recorded in JSON but compressed so we need to expand it.
         // compression consists of converting objects to arrays.
         // This saves all the fields name which are repeated for each object in an array.
@@ -12327,7 +12367,7 @@ var init = function() {
 
         // Dump this in case I need to llok at the data representation.
         console.log('games.slice(0,10), games.slice(200,10)',
-                    games.slice(0, 10), games.slice(200, 10));
+                    games.slice(0, 10), games.slice(1000, 1010));
         
         // Do some initial analysis on the data.
         analyzeGamesData();
@@ -12557,10 +12597,11 @@ module.exports = function (jsonData) {
             gameId: item[1],
             gameNumber: item[2],
             gameDate: item[3],
+            players: item[4],
             errorCount: 0,
-            round1: reconstructRound(item[4]),
-            round2: reconstructRound(item[5]),
-            finalData: { rights: item[6][0], wrongs: item[6][1] }
+            round1: reconstructRound(item[5]),
+            round2: reconstructRound(item[6]),
+            finalData: { rights: item[7][0], wrongs: item[7][1] }
         });
     });
     return rgames;
@@ -12771,7 +12812,7 @@ var makeBlockToggles = function () {
             var fjData = dataStore.getOption('finalJeopardyData');
             var divisor = fjData.rights + fjData.wrongs;
             if (divisor === 0) divisor = 1;
-            $('#final-div').html('Final Jeopardy: right=' + fjData.ights +
+            $('#final-div').html('Final Jeopardy: right=' + fjData.rights +
                                  ', wrong=' + fjData.wrongs +
                                  ' or <span class="stats-color-2">' +
                                  Math.round(100 * fjData.rights / divisor) +

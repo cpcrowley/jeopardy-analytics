@@ -49,10 +49,11 @@ module.exports = function (jsonData) {
             gameId: item[1],
             gameNumber: item[2],
             gameDate: item[3],
+            players: item[4],
             errorCount: 0,
-            round1: reconstructRound(item[4]),
-            round2: reconstructRound(item[5]),
-            finalData: { rights: item[6][0], wrongs: item[6][1] }
+            round1: reconstructRound(item[5]),
+            round2: reconstructRound(item[6]),
+            finalData: { rights: item[7][0], wrongs: item[7][1] }
         });
     });
     return rgames;
