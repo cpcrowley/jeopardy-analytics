@@ -104,7 +104,7 @@ var analyzeGamesData = function () {
     var totalPlayers = 0;
     var appearances1to5 = [0, 0, 0, 0, 0];
     var appearances6to10 = [[], [], [], [], []];
-    var appearancesOver10 = [];
+    //var appearancesOver10 = [];
     
     _.each(players, function (playerRecord, playerName) {
         ++totalPlayers;

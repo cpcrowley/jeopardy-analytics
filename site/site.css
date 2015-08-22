@@ -27,12 +27,26 @@
 #button-div {
     margin: 15px 0 0 20px;
 }
+.title-h1 {
+    color: antiquewhite;
+    background-image: linear-gradient(to left, red, blue);
+    /*  to top, to bottom, to left, to right, to top right, to top left, to bottom right, to bottom left */
+    /*  */
+    /*  */
+    /*background-image:
+    linear-gradient(
+    to right, 
+    red, 
+    #f06d06, 
+    rgb(255, 255, 0), 
+    green
+    );*/
+}
 
-/*-------------------------------------------------*/
-/* Others */
-/*-------------------------------------------------*/
 .toggles-div {
-    background-color: antiquewhite;
+    margin: 0 0 0 10px;
+    background-image: linear-gradient(to left, bisque, antiquewhite);
+    /*background-color: antiquewhite;*/
 }
 .graph-button {
     margin: 0 1em;

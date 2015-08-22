@@ -12859,7 +12859,7 @@ module.exports = function () {
     //--------------------------------------------------------------------------
     // Create the DIVs
     //--------------------------------------------------------------------------
-    var title = $('<h1 class="text-align-center">Jeopardy Analytics</h1>');
+    var title = $('<h1 class="title-h1 text-align-center">Jeopardy Analytics</h1>');
     var blockToggles = makeBlockToggles();
     var optionsBlocks = makeOptionsBlocks();
     var summaryBlock =
