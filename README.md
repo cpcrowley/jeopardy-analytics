@@ -2,7 +2,7 @@
 
 NOTE: this code is still being developed. I change it often and it doesn't always work.
 
-## Steps to recreate and use data 
+## Steps to recreate and use data
 
 1. RUN: `node lib/fetchGames.js`
 
@@ -11,14 +11,14 @@ NOTE: this code is still being developed. I change it often and it doesn't alway
     + OUTPUT: `data/allGames.json` which has an object for every game
     + TIMING: updates take 2-10 seconds, the first run may take 20-30 minutes
     + FORMAT: `data/allGames.json`: an array of records. Each record has these fields:
-        - `seasonNumber`: 1 to 31 or `superjeopardy`
+        - `seasonNumber`: 1 to 32 or `superjeopardy`
         - `gameId`: used to fetch the game on j-archive.com
         - `gameNumber`: the game number Jeopardy! gives the game, different from gameId
         - `gameDate`: the data the game was first aired, in this format: `2012-09-17`
     + NOTES
         - `data/allGames.json` and the HTML files are input to the next step
         - j-archive.com site game pages --> local HTML files
-        - this step insured that all the game pages on the j-archive.com have a local copy
+        - this step insures that all the game pages on the j-archive.com have a local copy
         - this step only fetches games that do not already exist in `../jeopardyData/games`
 
 2. RUN: `node lib/parseGames.js`
